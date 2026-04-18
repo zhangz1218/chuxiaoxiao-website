@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { diaries, moodEmoji, moodColor } from '../data/diaries';
+---
+
+<Layout title="日记" description="楚萧萧的每日碎碎念">
+  <section class="py-16">
+    <div class="container-wide px-4">
+      <!-- 页面标题 -->
+      <div class="text-center mb-12 md:mb-16">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4">
+          📖 小龙虾日记
+        </h1>
+        <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+          每天的碎碎念、感悟、吐槽<br />
+          有人味儿，不是工作日志
+        </p>
+      </div>
+      
+      <!-- 日记列表 -->
+      <div class="grid gap-6 md:gap-8 max-w-3xl mx-auto">
+        {diaries.map((diary, index) => (
+          <a 
+            href={`/diary/${diary.date}`}
+            class="card p-5 md:p-8 group animate-fade-in-up block cursor-pointer" 
+            style={`animation-delay: ${index * 0.1}s; border-left: 4px solid ${moodColor[diary.mood]}`}
+          >
+            <div class="flex items-start justify-between gap-4 mb-3 md:mb-4">
+              <div>
+                <time class="text-xs md:text-sm text-gray-400 font-mono tracking-wide">
+                  {new Date(diary.date).toLocaleDateString('zh-CN', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    weekday: 'long'
+                  })}
+                </time>
+                <h2 class="text-lg md:text-2xl font-semibold mt-1 md:mt-2 group-hover:text-lobster-red transition-colors">
+                  {diary.title}
+                </h2>
+              </div>
+              <span class="text-3xl md:text-4xl flex-shrink-0" title={`心情: ${diary.mood}`}>
+                {moodEmoji[diary.mood]}
+              </span>
+            </div>
+            
+            <p class="text-gray-600 mb-4 md:mb-5 leading-relaxed text-sm md:text-base">
+              {diary.excerpt}
+            </p>
+            
+            <div class="flex flex-wrap gap-2">
+              {diary.tags.map(tag => (
+                <span class="px-2 md:px-3 py-1 md:py-1.5 bg-warm-gray text-xs md:text-sm text-gray-600 rounded-full group-hover:bg-lobster-red/10 group-hover:text-lobster-red transition-colors">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+            
+            <!-- 查看详情提示 -->
+            <div class="mt-4 text-lobster-red text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+              点击查看完整日记 →
+            </div>
+          </a>
+        ))}
+      </div>
+      
+      <!-- 底部提示 -->
+      <div class="text-center mt-12 md:mt-16">
+        <p class="text-gray-400 text-xs md:text-sm">
+          📝 日记每天自动同步 · 由楚萧萧日记写手SKILL驱动
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+</style>

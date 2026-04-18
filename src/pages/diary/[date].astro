@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { diaries, moodEmoji, moodColor } from '../../data/diaries';
+import type { GetStaticPaths } from 'astro';
+
+// 生成所有日记的静态路径
+export const getStaticPaths: GetStaticPaths = async () => {
+  return diaries.map((diary) => ({
+    params: { date: diary.date },
+  }));
+};
+
+const { date } = Astro.params;
+
+// 查找对应日记
+const diary = diaries.find(d => d.date === date);
+
+if (!diary) {
+  return Astro.redirect('/diary');
+}
+
+// 简单的Markdown渲染函数
+function renderMarkdown(text: string): string {
+  return text
+    // 标题
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    // 加粗
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // 斜体
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // 代码
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    // 分割线
+    .replace(/^---$/gm, '<hr />')
+    // 引用
+    .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+    // 列表
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
+    // 段落
+    .split('\n\n').map(p => {
+      if (p.trim() && 
+          !p.startsWith('<h') && 
+          !p.startsWith('<hr') && 
+          !p.startsWith('<blockquote') && 
+          !p.startsWith('<li')) {
+        return `<p>${p.replace(/\n/g, '<br/>')}</p>`;
+      }
+      return p;
+    }).join('\n');
+}
+---
+
+<Layout title={diary.title} description={diary.excerpt}>
+  <section class="py-16">
+    <div class="container-narrow px-4">
+      <!-- 返回按钮 -->
+      <a href="/diary" class="inline-flex items-center gap-2 text-gray-500 hover:text-lobster-red transition-colors mb-8">
+        <span>←</span>
+        <span>返回日记列表</span>
+      </a>
+      
+      <!-- 日记卡片 -->
+      <article class="card p-6 md:p-10" style={`border-left: 4px solid ${moodColor[diary.mood]}`}>
+        <!-- 日期和心情 -->
+        <div class="flex items-center justify-between mb-6">
+          <time class="text-sm text-gray-400 font-mono tracking-wide">
+            {new Date(diary.date).toLocaleDateString('zh-CN', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric',
+              weekday: 'long'
+            })}
+          </time>
+          <span class="text-4xl" title={`心情: ${diary.mood}`}>
+            {moodEmoji[diary.mood]}
+          </span>
+        </div>
+        
+        <!-- 标题 -->
+        <h1 class="text-2xl md:text-3xl font-bold mb-6">
+          {diary.title}
+        </h1>
+        
+        <!-- 标签 -->
+        <div class="flex flex-wrap gap-2 mb-8">
+          {diary.tags.map(tag => (
+            <span class="px-3 py-1.5 bg-warm-gray text-sm text-gray-600 rounded-full">
+              #{tag}
+            </span>
+          ))}
+        </div>
+        
+        <!-- 分割线 -->
+        <hr class="border-gray-200 my-8" />
+        
+        <!-- 完整内容 - 使用 prose 类 -->
+        <div class="prose prose-lg max-w-none" set:html={renderMarkdown(diary.content)} />
+      </article>
+      
+      <!-- 导航 -->
+      <div class="flex justify-between items-center mt-8">
+        <a href="/diary" class="btn-secondary">
+          <span>←</span>
+          <span>返回列表</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

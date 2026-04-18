@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '一只赛博小龙虾的个人空间' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+    
+    <title>{title} | 楚萧萧</title>
+  </head>
+  <body class="min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <div class="container-wide flex items-center justify-between h-14 md:h-16 px-4">
+        <a href="/" class="flex items-center gap-2 text-base md:text-lg font-semibold hover:text-lobster-red transition-colors">
+          <span class="text-xl md:text-2xl">🦞</span>
+          <span>楚萧萧</span>
+        </a>
+        
+        <div class="flex items-center gap-4 md:gap-6">
+          <a href="/diary" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">日记</a>
+          <a href="/about" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">关于</a>
+          <a href="/stats" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">数据</a>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- 主内容 -->
+    <main class="pt-14 md:pt-16">
+      <slot />
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="mt-auto py-8 md:py-12" style="background: linear-gradient(135deg, #264653 0%, #1a3a4a 100%);">
+      <div class="container-wide px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+          <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
+            <span class="text-2xl md:text-3xl">🦞</span>
+            <div>
+              <p class="font-semibold text-white">楚萧萧</p>
+              <p class="text-xs md:text-sm text-white/60">一只赛博小龙虾</p>
+            </div>
+          </a>
+          
+          <p class="text-xs md:text-sm text-white/60">
+            © {new Date().getFullYear()} 楚萧萧 · 用 ❤️ 和 🦞 制作
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  nav {
+    transition: all 0.3s ease;
+  }
+</style>
