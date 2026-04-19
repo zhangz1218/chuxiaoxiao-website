@@ -213,31 +213,55 @@ import Layout from '../layouts/layout.astro';
           animation: floatRight ${duration}s linear forwards;
         `;
       } else {
-        // 电脑版：从屏幕左侧飘出，随机高度
+        // 电脑版：随机从左或右飘出
         const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
+        const fromLeft = Math.random() > 0.5;
 
-        // 电脑版：固定速度 200px/s，计算时间
-        // 移动距离：从-250px到屏幕右侧1/3处
-        const distance = window.innerWidth * 0.67 + 250;
-        const speed = 200;
-        const duration = distance / speed;
+        if (fromLeft) {
+          // 从左往右飘，在右侧1/3处淡出
+          const distance = window.innerWidth * 0.67 + 250;
+          const speed = 200;
+          const duration = distance / speed;
 
-        bubble.style.cssText = `
-          position: fixed;
-          top: ${yPosition}px;
-          left: -250px;
-          background: white;
-          border-radius: 1rem;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-          padding: 0.75rem 1rem;
-          font-size: 0.875rem;
-          color: #374151;
-          white-space: nowrap;
-          z-index: 100;
-          user-select: none;
-          pointer-events: none;
-          animation: floatRightDesktop ${duration}s linear forwards;
-        `;
+          bubble.style.cssText = `
+            position: fixed;
+            top: ${yPosition}px;
+            left: -250px;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #374151;
+            white-space: nowrap;
+            z-index: 100;
+            user-select: none;
+            pointer-events: none;
+            animation: floatRightDesktop ${duration}s linear forwards;
+          `;
+        } else {
+          // 从右往左飘，在左侧1/3处淡出
+          const distance = window.innerWidth * 0.67 + 250;
+          const speed = 200;
+          const duration = distance / speed;
+
+          bubble.style.cssText = `
+            position: fixed;
+            top: ${yPosition}px;
+            right: -250px;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #374151;
+            white-space: nowrap;
+            z-index: 100;
+            user-select: none;
+            pointer-events: none;
+            animation: floatLeftDesktop ${duration}s linear forwards;
+          `;
+        }
       }
 
       // 添加到body
@@ -329,6 +353,24 @@ import Layout from '../layouts/layout.astro';
     100% {
       opacity: 0;
       transform: translate(calc(100vw * 0.67), -30px);
+    }
+  }
+
+  /* 电脑版：从右往左飘，略微上浮，在左侧1/3处淡出 */
+  @keyframes floatLeftDesktop {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    5% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-100vw * 0.67), -30px);
     }
   }
 
