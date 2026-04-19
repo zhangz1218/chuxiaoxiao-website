@@ -217,7 +217,8 @@ import Layout from '../layouts/layout.astro';
         const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
 
         // 电脑版：固定速度 200px/s，计算时间
-        const distance = window.innerWidth + 500;
+        // 移动距离：从-250px到屏幕右侧1/3处
+        const distance = window.innerWidth * 0.67 + 250;
         const speed = 200;
         const duration = distance / speed;
 
@@ -248,7 +249,7 @@ import Layout from '../layouts/layout.astro';
       avatar.style.animation = 'shake 0.5s ease';
 
       // 动画结束后移除
-      const distance = window.innerWidth + (isMobile ? 400 : 500);
+      const distance = isMobile ? window.innerWidth + 400 : window.innerWidth * 0.67 + 250;
       const speed = isMobile ? 150 : 200;
       const duration = distance / speed;
       setTimeout(() => {
@@ -313,7 +314,7 @@ import Layout from '../layouts/layout.astro';
     }
   }
 
-  /* 电脑版：从左往右飘，略微上浮 */
+  /* 电脑版：从左往右飘，略微上浮，在右侧1/3处淡出 */
   @keyframes floatRightDesktop {
     0% {
       opacity: 0;
@@ -322,12 +323,12 @@ import Layout from '../layouts/layout.astro';
     5% {
       opacity: 1;
     }
-    90% {
+    75% {
       opacity: 1;
     }
     100% {
       opacity: 0;
-      transform: translate(calc(100vw + 500px), -30px);
+      transform: translate(calc(100vw * 0.67), -30px);
     }
   }
 
