@@ -161,7 +161,7 @@ import Layout from '../layouts/layout.astro';
 </Layout>
 
 <script>
-  // 小龙虾头像点击交互
+  // 小龙虾头像点击交互 - 飘动动画版
   const quotes = [
     "钳子举高高，夸我！",
     "干活绝不含糊，吐槽绝不嘴软~",
@@ -173,79 +173,81 @@ import Layout from '../layouts/layout.astro';
     "有态度、有温度、有节奏~",
   ];
 
-  // 电脑版：7个位置，覆盖更大范围
-  const desktopPositions = [
-    { x: 0, y: -1.5 },      // 上
-    { x: -1.5, y: -1 },     // 左上
-    { x: 1.5, y: -1 },      // 右上
-    { x: -2, y: 0 },        // 左（更远）
-    { x: 2, y: 0 },         // 右（更远）
-    { x: -1.5, y: 0.8 },    // 左下
-    { x: 1.5, y: 0.8 },     // 右下
-  ];
-
-  // 手机版：4个位置，更窄，确保不超出
-  const mobilePositions = [
-    { x: -0.4, y: -0.8 },   // 左上
-    { x: 0.4, y: -0.8 },    // 右上
-    { x: -0.4, y: 0.6 },    // 左下
-    { x: 0.4, y: 0.6 },     // 右下
-  ];
-
   const avatar = document.getElementById('lobster-avatar');
-  const container = document.getElementById('avatar-container');
 
-  if (avatar && container) {
+  if (avatar) {
     avatar.addEventListener('click', () => {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
-
-      // 响应式：手机用手机位置，电脑用电脑位置
       const isMobile = window.innerWidth < 768;
-      const positions = isMobile ? mobilePositions : desktopPositions;
-      const distance = isMobile ? 80 : 120;
 
-      // 随机选一个位置
-      const pos = positions[Math.floor(Math.random() * positions.length)];
-
-      const x = pos.x * distance;
-      const y = pos.y * distance;
-
-      // 创建气泡元素
+      // 创建飘动气泡
       const bubble = document.createElement('div');
-      bubble.className = 'quote-bubble';
-      bubble.style.cssText = `
-        position: absolute;
-        top: calc(50% + ${y}px);
-        left: calc(50% + ${x}px);
-        transform: translate(-50%, -50%);
-        background: white;
-        border-radius: 1rem;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-        padding: 0.75rem 1rem;
-        font-size: 0.875rem;
-        color: #374151;
-        white-space: nowrap;
-        z-index: 20;
-        user-select: none;
-        pointer-events: none;
-      `;
+      bubble.className = 'floating-quote';
       bubble.textContent = quote;
 
-      // 添加到容器
-      container.appendChild(bubble);
+      // 获取头像位置
+      const avatarRect = avatar.getBoundingClientRect();
+
+      // 电脑版：从头像左侧飘到右侧
+      // 手机版：从屏幕左侧飘到右侧，分散在不同高度
+      if (isMobile) {
+        // 手机版：按7分法，随机出现在2、4、5、6块
+        const screenSections = [0.14, 0.43, 0.57, 0.71, 0.86]; // 2、4、5、6、7块的位置
+        const sectionIndex = Math.floor(Math.random() * screenSections.length);
+        const yPosition = window.innerHeight * screenSections[sectionIndex];
+
+        bubble.style.cssText = `
+          position: fixed;
+          top: ${yPosition}px;
+          left: -200px;
+          background: white;
+          border-radius: 1rem;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+          color: #374151;
+          white-space: nowrap;
+          z-index: 100;
+          user-select: none;
+          pointer-events: none;
+          animation: floatRight 2.5s ease-out forwards;
+        `;
+      } else {
+        // 电脑版：从头像附近飘出，随机高度
+        const yOffset = (Math.random() - 0.5) * 300; // 头像上下150px范围内
+        const yPosition = avatarRect.top + avatarRect.height / 2 + yOffset;
+
+        bubble.style.cssText = `
+          position: fixed;
+          top: ${yPosition}px;
+          left: ${avatarRect.left - 50}px;
+          background: white;
+          border-radius: 1rem;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+          padding: 0.75rem 1rem;
+          font-size: 0.875rem;
+          color: #374151;
+          white-space: nowrap;
+          z-index: 100;
+          user-select: none;
+          pointer-events: none;
+          animation: floatRightDesktop 3s ease-out forwards;
+        `;
+      }
+
+      // 添加到body
+      document.body.appendChild(bubble);
 
       // 震动效果
       avatar.style.animation = 'none';
       avatar.offsetHeight;
       avatar.style.animation = 'shake 0.5s ease';
 
-      // 2秒后淡出并移除
+      // 动画结束后移除
+      const duration = isMobile ? 2500 : 3000;
       setTimeout(() => {
-        bubble.style.animation = 'bubbleOut 0.5s ease-out forwards';
-        setTimeout(() => {
-          bubble.remove();
-        }, 500);
-      }, 2000);
+        bubble.remove();
+      }, duration);
     });
   }
 
@@ -287,25 +289,39 @@ import Layout from '../layouts/layout.astro';
     75% { transform: rotate(5deg); }
   }
 
-  @keyframes bubbleIn {
-    from {
+  /* 手机版：从左往右飘 */
+  @keyframes floatRight {
+    0% {
       opacity: 0;
-      transform: translate(-50%, -50%) scale(0.8);
+      transform: translateX(0);
     }
-    to {
+    10% {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(calc(100vw + 400px));
     }
   }
 
-  @keyframes bubbleOut {
-    from {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    to {
+  /* 电脑版：从左往右飘，略微上浮 */
+  @keyframes floatRightDesktop {
+    0% {
       opacity: 0;
-      transform: translate(-50%, -50%) scale(0.8);
+      transform: translate(0, 0);
+    }
+    10% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(100vw + 400px), -50px);
     }
   }
 
