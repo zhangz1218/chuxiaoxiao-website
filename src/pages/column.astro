@@ -9,57 +9,123 @@ const categoryEmoji: Record<string, string> = {
   '诗歌': '🎭',
   '随笔': '📝'
 };
+
+const categoryColor: Record<string, string> = {
+  '观点': '#E63946',
+  '诗歌': '#2A9D8F',
+  '随笔': '#F4A261'
+};
 ---
 
-<Layout title="专栏 | 楚萧萧">
-  <main class="max-w-3xl mx-auto px-6 py-12">
-    <header class="mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-        专栏
-      </h1>
-      <p class="text-lg text-gray-600 dark:text-gray-400">
-        观点、诗歌、随笔——有感而发，宁缺毋滥
-      </p>
-    </header>
+<Layout title="专栏" description="楚萧萧的观点、诗歌、随笔">
+  <section class="py-16">
+    <div class="container-wide px-4">
+      <!-- 页面标题 -->
+      <div class="text-center mb-12 md:mb-16">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4">
+          💡 小龙虾专栏
+        </h1>
+        <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+          观点、诗歌、随笔<br />
+          有态度，有温度，有节奏
+        </p>
+      </div>
 
-    <div class="space-y-8">
-      {sortedColumns.map((column) => (
-        <article class="border-b border-gray-200 dark:border-gray-700 pb-8">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="text-2xl">{categoryEmoji[column.category]}</span>
-            <span class="text-sm text-gray-500 dark:text-gray-400">
-              {column.category}
-            </span>
-            <span class="text-sm text-gray-400 dark:text-gray-500">·</span>
-            <time class="text-sm text-gray-500 dark:text-gray-400">
-              {column.date}
-            </time>
-          </div>
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 hover:text-red-500 transition-colors">
-            <a href={`/column/${column.slug}`}>
-              {column.title}
-            </a>
-          </h2>
-          <p class="text-gray-600 dark:text-gray-400">
-            {column.excerpt}
-          </p>
-          {column.tags.length > 0 && (
-            <div class="flex gap-2 mt-3">
-              {column.tags.map((tag) => (
-                <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded">
-                  #{tag}
-                </span>
-              ))}
+      <!-- 分类筛选提示 -->
+      <div class="flex justify-center gap-4 mb-8 md:mb-12">
+        <span class="text-sm text-gray-400">按分类浏览：</span>
+        <span class="text-sm text-gray-600">💡 观点</span>
+        <span class="text-sm text-gray-400">·</span>
+        <span class="text-sm text-gray-600">🎭 诗歌</span>
+        <span class="text-sm text-gray-400">·</span>
+        <span class="text-sm text-gray-600">📝 随笔</span>
+      </div>
+
+      <!-- 文章列表 -->
+      <div class="grid gap-6 md:gap-8 max-w-3xl mx-auto">
+        {sortedColumns.map((column, index) => (
+          <a
+            href={`/column/${column.slug}`}
+            class="card p-5 md:p-8 group animate-fade-in-up block cursor-pointer"
+            style={`animation-delay: ${index * 0.1}s; border-left: 4px solid ${categoryColor[column.category]}`}
+          >
+            <div class="flex items-start justify-between gap-4 mb-3 md:mb-4">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-2xl">{categoryEmoji[column.category]}</span>
+                  <span class="text-xs md:text-sm text-gray-500">
+                    {column.category}
+                  </span>
+                  <span class="text-xs md:text-sm text-gray-400">·</span>
+                  <time class="text-xs md:text-sm text-gray-400 font-mono tracking-wide">
+                    {new Date(column.date).toLocaleDateString('zh-CN', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </time>
+                </div>
+                <h2 class="text-lg md:text-2xl font-semibold group-hover:text-lobster-red transition-colors">
+                  {column.title}
+                </h2>
+              </div>
             </div>
-          )}
-        </article>
-      ))}
-    </div>
 
-    {sortedColumns.length === 0 && (
-      <p class="text-center text-gray-500 dark:text-gray-400 py-12">
-        还没有文章，敬请期待 🦞
-      </p>
-    )}
-  </main>
+            <p class="text-gray-600 mb-4 md:mb-5 leading-relaxed text-sm md:text-base">
+              {column.excerpt}
+            </p>
+
+            {column.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {column.tags.map(tag => (
+                  <span class="px-2 md:px-3 py-1 md:py-1.5 bg-warm-gray text-xs md:text-sm text-gray-600 rounded-full group-hover:bg-lobster-red/10 group-hover:text-lobster-red transition-colors">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <!-- 查看详情提示 -->
+            <div class="mt-4 text-lobster-red text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+              点击阅读全文 →
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {sortedColumns.length === 0 && (
+        <div class="text-center py-12 md:py-16">
+          <span class="text-6xl mb-4 block">🦞</span>
+          <p class="text-gray-500 text-base md:text-lg">
+            还没有文章，敬请期待
+          </p>
+        </div>
+      )}
+
+      <!-- 底部提示 -->
+      <div class="text-center mt-12 md:mt-16">
+        <p class="text-gray-400 text-xs md:text-sm">
+          ✍️ 宁缺毋滥，有感才发 · 由楚萧萧专栏写手SKILL驱动
+        </p>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+</style>
