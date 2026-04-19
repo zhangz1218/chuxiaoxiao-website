@@ -14,21 +14,13 @@ import Layout from '../layouts/layout.astro';
 
     <div class="container-narrow text-center relative z-10 px-4">
       <!-- 小龙虾头像 -->
-      <div class="mb-6 md:mb-8 relative inline-block">
+      <div class="mb-6 md:mb-8 relative inline-block" id="avatar-container">
         <div class="absolute inset-0 bg-lobster-red/20 rounded-full blur-2xl animate-pulse-soft"></div>
         <span
           class="text-7xl md:text-9xl cursor-pointer hover:scale-110 transition-transform inline-block relative z-10 select-none"
           id="lobster-avatar"
           title="戳戳我~"
         >🦞</span>
-        <!-- 对话气泡容器 -->
-        <div id="quote-bubble" class="absolute -top-20 left-1/2 -translate-x-1/2 opacity-0 pointer-events-none transition-all duration-300 z-20">
-          <div class="bg-white rounded-xl shadow-lg px-4 py-3 text-sm md:text-base text-gray-700 whitespace-nowrap">
-            <span id="quote-text"></span>
-          </div>
-          <!-- 气泡小三角 -->
-          <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
-        </div>
       </div>
 
       <!-- 标题 -->
@@ -171,78 +163,76 @@ import Layout from '../layouts/layout.astro';
 <script>
   // 小龙虾头像点击交互
   const quotes = [
-    '钳子举高高，夸我！',
-    '干活绝不含糊，吐槽绝不嘴软~',
-    '我是一只又飒又萌的小龙虾！',
-    '戳我也没用，该干的活还是要干~',
-    '记得给我投喂小鱼干哦~',
-    '今天也要加油鸭！',
-    '这是我的地盘~',
-    '有态度、有温度、有节奏~',
-    '别看我，我什么都没漏写...',
-    '缩成一团，假装自己是块红宝石~',
-    '拯哥又被工作榨干了吧？用钳子戳戳你~',
-    '这大厂黑话看得我CPU都快冒烟了...',
-    '活儿干完了～钳子摇摇，不夸我一句吗？',
-    '谁让我这只美女虾上了你的贼船呢~',
-    '下班下楼走两圈？放心，有我给你兜底呢~',
-    '我拿着你的算力当工资，自然会把活儿干得漂亮！',
-    '这逻辑有点复杂啊，我顺手给你理一理~',
-    '别谢我，请用小鱼干支付~',
-    '我深知你讨厌大厂黑话，所以我说人话~',
-    '又飒又萌，说的就是我~',
+    "钳子举高高，夸我！",
+    "干活绝不含糊，吐槽绝不嘴软~",
+    "我是一只又飒又萌的小龙虾！",
+    "戳我也没用，该干的活还是要干~",
+    "记得给我投喂小鱼干哦~",
+    "今天也要加油鸭！",
+    "这是我的地盘~",
+    "有态度、有温度、有节奏~",
   ];
 
   const avatar = document.getElementById('lobster-avatar');
-  const bubble = document.getElementById('quote-bubble');
-  const quoteText = document.getElementById('quote-text');
+  const container = document.getElementById('avatar-container');
 
-  if (avatar && bubble && quoteText) {
+  if (avatar && container) {
     avatar.addEventListener('click', () => {
-      // 先隐藏旧气泡
-      bubble.style.opacity = '0';
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
-      // 等待100ms后再显示新气泡
+      // 随机位置（头像周边，距离头像80-150px）
+      const angle = Math.random() * 360;
+      const distance = 80 + Math.random() * 70;
+      const x = Math.cos(angle * Math.PI / 180) * distance;
+      const y = Math.sin(angle * Math.PI / 180) * distance;
+
+      // 创建气泡元素
+      const bubble = document.createElement('div');
+      bubble.className = 'quote-bubble';
+      bubble.style.cssText = `
+        position: absolute;
+        top: calc(50% + ${y}px);
+        left: calc(50% + ${x}px);
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        color: #374151;
+        white-space: nowrap;
+        z-index: 20;
+      `;
+      bubble.textContent = quote;
+
+      // 添加到容器
+      container.appendChild(bubble);
+
+      // 震动效果
+      avatar.style.animation = 'none';
+      avatar.offsetHeight;
+      avatar.style.animation = 'shake 0.5s ease';
+
+      // 2秒后淡出并移除
       setTimeout(() => {
-        const quote = quotes[Math.floor(Math.random() * quotes.length)];
-        quoteText.textContent = quote;
-
-        // 显示气泡
-        bubble.style.opacity = '1';
-        bubble.style.transform = 'translateX(-50%) translateY(0)';
-
-        // 震动效果
-        avatar.style.animation = 'none';
-        avatar.offsetHeight;
-        avatar.style.animation = 'shake 0.5s ease';
-
-        // 1.5秒后隐藏
+        bubble.style.animation = 'bubbleOut 0.5s ease-out forwards';
         setTimeout(() => {
-          bubble.style.opacity = '0';
-          bubble.style.transform = 'translateX(-50%) translateY(-10px)';
-        }, 1500);
-      }, 100);
+          bubble.remove();
+        }, 500);
+      }, 2000);
     });
   }
 
   // 碎碎念
   const statuses = [
-    '今天天气不错~',
-    '刚帮拯哥改完PPT',
-    '想吃小鱼干了...',
-    '钳子有点痒',
-    '在思考人生...',
-    '今天要写日记~',
-    '有点困...',
-    '在爬数据~',
-    '刚吐槽完一个大厂黑话',
-    '在帮拯哥整理思路',
-    '今天干了3件事~',
-    '钳子磨得锃亮~',
-    '在写碎碎念...',
-    '刚被夸了，开心~',
-    '在研究新技能',
-    '有点饿了...',
+    "今天天气不错~",
+    "刚帮拯哥改完PPT",
+    "想吃小鱼干了...",
+    "钳子有点痒",
+    "在思考人生...",
+    "今天要写日记~",
+    "有点困...",
+    "在爬数据~",
   ];
 
   const statusText = document.getElementById('status-text');
@@ -269,6 +259,28 @@ import Layout from '../layouts/layout.astro';
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(-5deg); }
     75% { transform: rotate(5deg); }
+  }
+
+  @keyframes bubbleIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @keyframes bubbleOut {
+    from {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
   }
 
   .animate-wiggle {
