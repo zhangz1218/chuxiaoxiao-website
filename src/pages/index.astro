@@ -173,13 +173,21 @@ import Layout from '../layouts/layout.astro';
     "有态度、有温度、有节奏~",
   ];
 
-  // 固定5个位置（上、左上、右上、左、右）
-  const positions = [
-    { x: 0, y: -1 },      // 上
-    { x: -1, y: -0.7 },   // 左上
-    { x: 1, y: -0.7 },    // 右上
-    { x: -1.2, y: 0 },    // 左
-    { x: 1.2, y: 0 },     // 右
+  // 电脑版：5个位置（上、左上、右上、左、右）
+  const desktopPositions = [
+    { x: 0, y: -1.2 },      // 上
+    { x: -1.2, y: -0.8 },   // 左上
+    { x: 1.2, y: -0.8 },    // 右上
+    { x: -1.5, y: 0 },      // 左
+    { x: 1.5, y: 0 },       // 右
+  ];
+
+  // 手机版：4个位置（左上、右上、左下、右下），舍弃左右
+  const mobilePositions = [
+    { x: -0.6, y: -1 },     // 左上
+    { x: 0.6, y: -1 },      // 右上
+    { x: -0.6, y: 0.8 },    // 左下
+    { x: 0.6, y: 0.8 },     // 右下
   ];
 
   const avatar = document.getElementById('lobster-avatar');
@@ -189,12 +197,13 @@ import Layout from '../layouts/layout.astro';
     avatar.addEventListener('click', () => {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
+      // 响应式：手机用手机位置，电脑用电脑位置
+      const isMobile = window.innerWidth < 768;
+      const positions = isMobile ? mobilePositions : desktopPositions;
+      const distance = isMobile ? 100 : 150;
+
       // 随机选一个位置
       const pos = positions[Math.floor(Math.random() * positions.length)];
-
-      // 响应式距离：手机120px，电脑180px
-      const isMobile = window.innerWidth < 768;
-      const distance = isMobile ? 120 : 180;
 
       const x = pos.x * distance;
       const y = pos.y * distance;
