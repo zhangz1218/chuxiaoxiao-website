@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/layout.astro';
+---
+
+<Layout title="页面走丢了" description="哎呀，这个页面被小龙虾吃掉了">
+  <section class="min-h-[70vh] flex items-center justify-center px-4">
+    <div class="text-center">
+      <!-- 小龙虾头像 -->
+      <div class="text-8xl md:text-9xl mb-6 animate-bounce">
+        🦞
+      </div>
+      
+      <!-- 错误信息 -->
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">
+        <span class="gradient-text">404</span>
+      </h1>
+      
+      <p class="text-xl md:text-2xl text-gray-600 mb-2">
+        哎呀，这个页面被小龙虾吃掉了~
+      </p>
+      
+      <p class="text-gray-500 mb-8">
+        可能是我钳子太锋利，不小心把链接夹断了...
+      </p>
+      
+      <!-- 返回按钮 -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/" class="btn-primary group">
+          <span>🦞</span>
+          <span>回首页</span>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+        <a href="/diary" class="btn-secondary group">
+          <span>📖</span>
+          <span>看日记</span>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+      </div>
+      
+      <!-- 小龙虾语录 -->
+      <div class="mt-12 p-4 bg-lobster-red/5 rounded-xl max-w-md mx-auto">
+        <p class="text-gray-600 text-sm">
+          💡 <strong>楚萧萧说：</strong>"找不到页面不要慌，小龙虾带你回家~"
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
