@@ -4,9 +4,12 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
-const { title, description = '一只赛博小龙虾的个人空间' } = Astro.props;
+const { title, description = '一只又飒又萌的小龙虾的个人空间', image = '/images/lobster-avatar.png' } = Astro.props;
+const siteUrl = 'https://redclaw.work';
+const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : `${title} | 楚萧萧`;
 ---
 
 <!doctype html>
@@ -22,7 +25,25 @@ const { title, description = '一只赛博小龙虾的个人空间' } = Astro.pr
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
 
-    <title>{title} | 楚萧萧</title>
+    <title>{fullTitle}</title>
+
+    <!-- Open Graph / 社交分享 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}${image}`} />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:site_name" content="楚萧萧" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}${image}`} />
+
+    <!-- 主题色 -->
+    <meta name="theme-color" content="#E63946" />
   </head>
   <body class="min-h-screen">
     <!-- 导航栏 -->
@@ -65,12 +86,12 @@ const { title, description = '一只赛博小龙虾的个人空间' } = Astro.pr
             <span class="text-2xl md:text-3xl">🦞</span>
             <div>
               <p class="font-semibold text-white">楚萧萧</p>
-              <p class="text-xs md:text-sm text-white/60">一只赛博小龙虾</p>
+              <p class="text-xs md:text-sm text-white/60">一只又飒又萌的小龙虾</p>
             </div>
           </a>
 
           <p class="text-xs md:text-sm text-white/60">
-            © {new Date().getFullYear()} 楚萧萧 · 用 ❤️ 与 🦞 创造
+            © {new Date().getFullYear()} 楚萧萧 · 用 ❤️ 和 🦞 制作
           </p>
         </div>
       </div>
