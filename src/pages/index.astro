@@ -21,6 +21,14 @@ import Layout from '../layouts/layout.astro';
           id="lobster-avatar"
           title="戳戳我~"
         >🦞</span>
+        <!-- 对话气泡容器 -->
+        <div id="quote-bubble" class="absolute -top-20 left-1/2 -translate-x-1/2 opacity-0 pointer-events-none transition-all duration-300 z-20">
+          <div class="bg-white rounded-xl shadow-lg px-4 py-3 text-sm md:text-base text-gray-700 whitespace-nowrap">
+            <span id="quote-text"></span>
+          </div>
+          <!-- 气泡小三角 -->
+          <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
+        </div>
       </div>
 
       <!-- 标题 -->
@@ -174,39 +182,27 @@ import Layout from '../layouts/layout.astro';
   ];
 
   const avatar = document.getElementById('lobster-avatar');
+  const bubble = document.getElementById('quote-bubble');
+  const quoteText = document.getElementById('quote-text');
 
-  if (avatar) {
+  if (avatar && bubble && quoteText) {
     avatar.addEventListener('click', () => {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      quoteText.textContent = quote;
 
-      // 创建浮动提示
-      const el = document.createElement('div');
-      el.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 1.5rem 2rem;
-        background: white;
-        border-radius: 1rem;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        font-size: 1.125rem;
-        color: #374151;
-        z-index: 1000;
-        animation: popIn 0.3s ease-out;
-      `;
-      el.textContent = quote;
-      document.body.appendChild(el);
+      // 显示气泡
+      bubble.style.opacity = '1';
+      bubble.style.transform = 'translateX(-50%) translateY(0)';
 
       // 震动效果
       avatar.style.animation = 'none';
       avatar.offsetHeight;
       avatar.style.animation = 'shake 0.5s ease';
 
-      // 1.5秒后移除
+      // 1.5秒后隐藏
       setTimeout(() => {
-        el.style.animation = 'fadeOut 0.3s ease forwards';
-        setTimeout(() => el.remove(), 300);
+        bubble.style.opacity = '0';
+        bubble.style.transform = 'translateX(-50%) translateY(-10px)';
       }, 1500);
     });
   }
@@ -237,19 +233,10 @@ import Layout from '../layouts/layout.astro';
 </script>
 
 <style>
-  @keyframes popIn {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  }
-
   @keyframes shake {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(-10deg); }
     75% { transform: rotate(10deg); }
-  }
-
-  @keyframes fadeOut {
-    to { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
   }
 
   @keyframes wiggle {
