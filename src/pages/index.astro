@@ -173,6 +173,15 @@ import Layout from '../layouts/layout.astro';
     "有态度、有温度、有节奏~",
   ];
 
+  // 固定5个位置（上、左上、右上、左、右）
+  const positions = [
+    { x: 0, y: -1 },      // 上
+    { x: -1, y: -0.7 },   // 左上
+    { x: 1, y: -0.7 },    // 右上
+    { x: -1.2, y: 0 },    // 左
+    { x: 1.2, y: 0 },     // 右
+  ];
+
   const avatar = document.getElementById('lobster-avatar');
   const container = document.getElementById('avatar-container');
 
@@ -180,11 +189,15 @@ import Layout from '../layouts/layout.astro';
     avatar.addEventListener('click', () => {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
-      // 随机位置（头像四周，距离头像150-250px）
-      const angle = Math.random() * 360;
-      const distance = 150 + Math.random() * 100;
-      const x = Math.cos(angle * Math.PI / 180) * distance;
-      const y = Math.sin(angle * Math.PI / 180) * distance;
+      // 随机选一个位置
+      const pos = positions[Math.floor(Math.random() * positions.length)];
+
+      // 响应式距离：手机120px，电脑180px
+      const isMobile = window.innerWidth < 768;
+      const distance = isMobile ? 120 : 180;
+
+      const x = pos.x * distance;
+      const y = pos.y * distance;
 
       // 创建气泡元素
       const bubble = document.createElement('div');
