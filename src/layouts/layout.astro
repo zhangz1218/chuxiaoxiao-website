@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title: string;
@@ -97,6 +98,9 @@ const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : 
         </div>
       </div>
     </footer>
+
+    <!-- Vercel Analytics -->
+    <Analytics />
   </body>
 </html>
 
