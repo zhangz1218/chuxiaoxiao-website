@@ -185,14 +185,9 @@ import Layout from '../layouts/layout.astro';
       bubble.className = 'floating-quote';
       bubble.textContent = quote;
 
-      // 获取头像位置
-      const avatarRect = avatar.getBoundingClientRect();
-
-      // 电脑版：从头像左侧飘到右侧
-      // 手机版：从屏幕左侧飘到右侧，分散在不同高度
       if (isMobile) {
-        // 手机版：按7分法，随机出现在2、4、5、6块
-        const screenSections = [0.14, 0.43, 0.57, 0.71, 0.86]; // 2、4、5、6、7块的位置
+        // 手机版：按7分法，随机出现在2、4、5、6、7块
+        const screenSections = [0.14, 0.43, 0.57, 0.71, 0.86];
         const sectionIndex = Math.floor(Math.random() * screenSections.length);
         const yPosition = window.innerHeight * screenSections[sectionIndex];
 
@@ -210,17 +205,16 @@ import Layout from '../layouts/layout.astro';
           z-index: 100;
           user-select: none;
           pointer-events: none;
-          animation: floatRight 2.5s ease-out forwards;
+          animation: floatRight 4s ease-out forwards;
         `;
       } else {
-        // 电脑版：从头像附近飘出，随机高度
-        const yOffset = (Math.random() - 0.5) * 300; // 头像上下150px范围内
-        const yPosition = avatarRect.top + avatarRect.height / 2 + yOffset;
+        // 电脑版：从屏幕左侧飘出，随机高度
+        const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2; // 20%-80%范围内
 
         bubble.style.cssText = `
           position: fixed;
           top: ${yPosition}px;
-          left: ${avatarRect.left - 50}px;
+          left: -250px;
           background: white;
           border-radius: 1rem;
           box-shadow: 0 8px 32px rgba(0,0,0,0.15);
@@ -231,7 +225,7 @@ import Layout from '../layouts/layout.astro';
           z-index: 100;
           user-select: none;
           pointer-events: none;
-          animation: floatRightDesktop 3s ease-out forwards;
+          animation: floatRightDesktop 5s ease-out forwards;
         `;
       }
 
@@ -244,7 +238,7 @@ import Layout from '../layouts/layout.astro';
       avatar.style.animation = 'shake 0.5s ease';
 
       // 动画结束后移除
-      const duration = isMobile ? 2500 : 3000;
+      const duration = isMobile ? 4000 : 5000;
       setTimeout(() => {
         bubble.remove();
       }, duration);
@@ -289,7 +283,7 @@ import Layout from '../layouts/layout.astro';
     75% { transform: rotate(5deg); }
   }
 
-  /* 手机版：从左往右飘 */
+  /* 手机版：从左往右飘，4秒 */
   @keyframes floatRight {
     0% {
       opacity: 0;
@@ -307,7 +301,7 @@ import Layout from '../layouts/layout.astro';
     }
   }
 
-  /* 电脑版：从左往右飘，略微上浮 */
+  /* 电脑版：从左往右飘，5秒，略微上浮 */
   @keyframes floatRightDesktop {
     0% {
       opacity: 0;
@@ -321,7 +315,7 @@ import Layout from '../layouts/layout.astro';
     }
     100% {
       opacity: 0;
-      transform: translate(calc(100vw + 400px), -50px);
+      transform: translate(calc(100vw + 500px), -30px);
     }
   }
 
