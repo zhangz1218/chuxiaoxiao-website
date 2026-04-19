@@ -19,6 +19,11 @@ if (!diary) {
   return Astro.redirect('/diary');
 }
 
+// 找到上一篇和下一篇
+const currentIndex = diaries.findIndex(d => d.date === date);
+const prevDiary = currentIndex < diaries.length - 1 ? diaries[currentIndex + 1] : null;
+const nextDiary = currentIndex > 0 ? diaries[currentIndex - 1] : null;
+
 // 简单的Markdown渲染函数
 function renderMarkdown(text: string): string {
   return text
@@ -40,10 +45,10 @@ function renderMarkdown(text: string): string {
     .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
     // 段落
     .split('\n\n').map(p => {
-      if (p.trim() && 
-          !p.startsWith('<h') && 
-          !p.startsWith('<hr') && 
-          !p.startsWith('<blockquote') && 
+      if (p.trim() &&
+          !p.startsWith('<h') &&
+          !p.startsWith('<hr') &&
+          !p.startsWith('<blockquote') &&
           !p.startsWith('<li')) {
         return `<p>${p.replace(/\n/g, '<br/>')}</p>`;
       }
@@ -60,15 +65,15 @@ function renderMarkdown(text: string): string {
         <span>←</span>
         <span>返回日记列表</span>
       </a>
-      
+
       <!-- 日记卡片 -->
       <article class="card p-6 md:p-10" style={`border-left: 4px solid ${moodColor[diary.mood]}`}>
         <!-- 日期和心情 -->
         <div class="flex items-center justify-between mb-6">
           <time class="text-sm text-gray-400 font-mono tracking-wide">
-            {new Date(diary.date).toLocaleDateString('zh-CN', { 
-              year: 'numeric', 
-              month: 'long', 
+            {new Date(diary.date).toLocaleDateString('zh-CN', {
+              year: 'numeric',
+              month: 'long',
               day: 'numeric',
               weekday: 'long'
             })}
@@ -77,12 +82,12 @@ function renderMarkdown(text: string): string {
             {moodEmoji[diary.mood]}
           </span>
         </div>
-        
+
         <!-- 标题 -->
         <h1 class="text-2xl md:text-3xl font-bold mb-6">
           {diary.title}
         </h1>
-        
+
         <!-- 标签 -->
         <div class="flex flex-wrap gap-2 mb-8">
           {diary.tags.map(tag => (
@@ -91,19 +96,43 @@ function renderMarkdown(text: string): string {
             </span>
           ))}
         </div>
-        
+
         <!-- 分割线 -->
         <hr class="border-gray-200 my-8" />
-        
+
         <!-- 完整内容 - 使用 prose 类 -->
         <div class="prose prose-lg max-w-none" set:html={renderMarkdown(diary.content)} />
       </article>
-      
-      <!-- 导航 -->
-      <div class="flex justify-between items-center mt-8">
-        <a href="/diary" class="btn-secondary">
-          <span>←</span>
-          <span>返回列表</span>
+
+      <!-- 上一篇/下一篇导航 -->
+      <div class="flex justify-between items-center mt-8 gap-4">
+        {prevDiary ? (
+          <a href={`/diary/${prevDiary.date}`} class="flex-1 card p-4 group hover:border-lobster-red/30 transition-colors">
+            <div class="text-xs text-gray-400 mb-1">← 上一篇</div>
+            <div class="text-sm md:text-base font-medium group-hover:text-lobster-red transition-colors line-clamp-1">
+              {prevDiary.title}
+            </div>
+          </a>
+        ) : (
+          <div class="flex-1"></div>
+        )}
+        {nextDiary ? (
+          <a href={`/diary/${nextDiary.date}`} class="flex-1 card p-4 group hover:border-lobster-red/30 transition-colors text-right">
+            <div class="text-xs text-gray-400 mb-1">下一篇 →</div>
+            <div class="text-sm md:text-base font-medium group-hover:text-lobster-red transition-colors line-clamp-1">
+              {nextDiary.title}
+            </div>
+          </a>
+        ) : (
+          <div class="flex-1"></div>
+        )}
+      </div>
+
+      <!-- 返回列表 -->
+      <div class="text-center mt-8">
+        <a href="/diary" class="btn-secondary inline-flex">
+          <span>📚</span>
+          <span>返回日记列表</span>
         </a>
       </div>
     </div>
