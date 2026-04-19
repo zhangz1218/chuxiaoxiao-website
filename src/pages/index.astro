@@ -180,9 +180,9 @@ import Layout from '../layouts/layout.astro';
     avatar.addEventListener('click', () => {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
-      // 随机位置（头像周边，距离头像80-150px）
+      // 随机位置（头像四周，距离头像150-250px）
       const angle = Math.random() * 360;
-      const distance = 80 + Math.random() * 70;
+      const distance = 150 + Math.random() * 100;
       const x = Math.cos(angle * Math.PI / 180) * distance;
       const y = Math.sin(angle * Math.PI / 180) * distance;
 
@@ -202,6 +202,8 @@ import Layout from '../layouts/layout.astro';
         color: #374151;
         white-space: nowrap;
         z-index: 20;
+        user-select: none;
+        pointer-events: none;
       `;
       bubble.textContent = quote;
 
