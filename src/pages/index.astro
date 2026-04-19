@@ -191,9 +191,9 @@ import Layout from '../layouts/layout.astro';
         const sectionIndex = Math.floor(Math.random() * screenSections.length);
         const yPosition = window.innerHeight * screenSections[sectionIndex];
 
-        // 手机版：固定速度 80px/s，计算时间
-        const distance = window.innerWidth + 400; // 屏幕宽度 + 起点和终点的额外距离
-        const speed = 80; // 80px/s
+        // 手机版：固定速度 150px/s，计算时间
+        const distance = window.innerWidth + 400;
+        const speed = 150;
         const duration = distance / speed;
 
         bubble.style.cssText = `
@@ -214,11 +214,11 @@ import Layout from '../layouts/layout.astro';
         `;
       } else {
         // 电脑版：从屏幕左侧飘出，随机高度
-        const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2; // 20%-80%范围内
+        const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
 
-        // 电脑版：固定速度 120px/s，计算时间
+        // 电脑版：固定速度 200px/s，计算时间
         const distance = window.innerWidth + 500;
-        const speed = 120; // 120px/s
+        const speed = 200;
         const duration = distance / speed;
 
         bubble.style.cssText = `
@@ -247,9 +247,9 @@ import Layout from '../layouts/layout.astro';
       avatar.offsetHeight;
       avatar.style.animation = 'shake 0.5s ease';
 
-      // 动画结束后移除（根据计算的时间）
-      const distance = isMobile ? window.innerWidth + 400 : window.innerWidth + 500;
-      const speed = isMobile ? 80 : 120;
+      // 动画结束后移除
+      const distance = window.innerWidth + (isMobile ? 400 : 500);
+      const speed = isMobile ? 150 : 200;
       const duration = distance / speed;
       setTimeout(() => {
         bubble.remove();
@@ -309,7 +309,7 @@ import Layout from '../layouts/layout.astro';
     }
     100% {
       opacity: 0;
-      transform: translateX(100%);
+      transform: translateX(calc(100vw + 400px));
     }
   }
 
@@ -327,7 +327,7 @@ import Layout from '../layouts/layout.astro';
     }
     100% {
       opacity: 0;
-      transform: translate(100%, -30px);
+      transform: translate(calc(100vw + 500px), -30px);
     }
   }
 
