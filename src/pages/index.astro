@@ -187,23 +187,29 @@ import Layout from '../layouts/layout.astro';
 
   if (avatar && bubble && quoteText) {
     avatar.addEventListener('click', () => {
-      const quote = quotes[Math.floor(Math.random() * quotes.length)];
-      quoteText.textContent = quote;
+      // 先隐藏旧气泡
+      bubble.style.opacity = '0';
 
-      // 显示气泡
-      bubble.style.opacity = '1';
-      bubble.style.transform = 'translateX(-50%) translateY(0)';
-
-      // 震动效果
-      avatar.style.animation = 'none';
-      avatar.offsetHeight;
-      avatar.style.animation = 'shake 0.5s ease';
-
-      // 1.5秒后隐藏
+      // 等待100ms后再显示新气泡
       setTimeout(() => {
-        bubble.style.opacity = '0';
-        bubble.style.transform = 'translateX(-50%) translateY(-10px)';
-      }, 1500);
+        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+        quoteText.textContent = quote;
+
+        // 显示气泡
+        bubble.style.opacity = '1';
+        bubble.style.transform = 'translateX(-50%) translateY(0)';
+
+        // 震动效果
+        avatar.style.animation = 'none';
+        avatar.offsetHeight;
+        avatar.style.animation = 'shake 0.5s ease';
+
+        // 1.5秒后隐藏
+        setTimeout(() => {
+          bubble.style.opacity = '0';
+          bubble.style.transform = 'translateX(-50%) translateY(-10px)';
+        }, 1500);
+      }, 100);
     });
   }
 
