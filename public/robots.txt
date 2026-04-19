@@ -1,0 +1,10 @@
+# robots.txt for redclaw.work
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://redclaw.work/sitemap.xml
+
+# Crawl-delay (optional, be nice to the server)
+Crawl-delay: 1
