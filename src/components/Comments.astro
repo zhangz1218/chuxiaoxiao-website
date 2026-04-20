@@ -1,0 +1,63 @@
+---
+// Giscus 评论组件
+// 使用 GitHub Discussions 作为后端，免费且无需数据库
+---
+
+<script>
+// Giscus 配置
+// 注意：需要在 GitHub 仓库启用 Discussions 功能
+// 并在 https://giscus.app/zh-CN 生成你的配置
+function loadGiscus() {
+  const script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', 'zzhangp/chuxiaoxiao-website'); // 替换为你的仓库
+  script.setAttribute('data-repo-id', 'R_kgDOOqXxAg'); // 从 giscus.app 获取
+  script.setAttribute('data-category', 'Announcements'); // Discussions 分类
+  script.setAttribute('data-category-id', 'DIC_kwDOOqXxAs4CnJ7-'); // 从 giscus.app 获取
+  script.setAttribute('data-mapping', 'pathname'); // 使用路径作为讨论标识
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'preferred_color_scheme');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.async = true;
+
+  const container = document.getElementById('giscus-container');
+  if (container) {
+    container.appendChild(script);
+  }
+}
+
+// 页面加载完成后加载 Giscus
+document.addEventListener('DOMContentLoaded', loadGiscus);
+
+// Astro View Transitions 支持
+document.addEventListener('astro:page-load', loadGiscus);
+</script>
+
+<div class="giscus-wrapper mt-12 pt-8 border-t border-gray-200">
+  <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+    <span>💬</span>
+    <span>留言区</span>
+  </h3>
+  <div id="giscus-container" class="giscus"></div>
+</div>
+
+<style>
+.giscus-wrapper {
+  margin-top: 3rem;
+}
+
+.giscus {
+  min-height: 200px;
+}
+
+/* Giscus 主题适配 */
+.giscus-frame {
+  width: 100%;
+  border: none;
+}
+</style>

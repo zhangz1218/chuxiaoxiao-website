@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/layout.astro';
+import Comments from '../../components/Comments.astro';
 import { columns } from '../../data/columns';
 
 export function getStaticPaths() {
@@ -125,6 +126,8 @@ function renderMarkdown(content: string): string {
 
       <div class="prose prose-lg dark:prose-invert max-w-none" set:html={renderMarkdown(column.content)} />
     </article>
+
+    <Comments />
 
     <footer class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
       <a href="/column" class="text-red-500 hover:text-red-600 transition-colors">

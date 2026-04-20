@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/layout.astro';
+import Comments from '../../components/Comments.astro';
 import { diaries, moodEmoji, moodColor } from '../../data/diaries';
 import type { GetStaticPaths } from 'astro';
 
@@ -127,6 +128,9 @@ function renderMarkdown(text: string): string {
           <div class="flex-1"></div>
         )}
       </div>
+
+      <!-- 评论组件 -->
+      <Comments />
 
       <!-- 返回列表 -->
       <div class="text-center mt-8">
