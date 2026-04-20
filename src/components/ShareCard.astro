@@ -1,0 +1,321 @@
+---
+// ShareCard.astro - 分享卡片生成器组件
+// 只在客户端加载，使用 client:load 指令
+---
+
+<div id="share-card-container" class="mt-8">
+  <button
+    id="generate-share-card"
+    class="btn-secondary inline-flex items-center gap-2"
+  >
+    <span>🎴</span>
+    <span>生成分享卡片</span>
+  </button>
+
+  <!-- 隐藏的 Canvas，用于生成图片 -->
+  <canvas id="share-canvas" style="display: none;"></canvas>
+
+  <!-- 预览模态框 -->
+  <div id="share-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 relative animate-scale-in">
+      <!-- 关闭按钮 -->
+      <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <h3 class="text-xl font-bold mb-4 text-gray-900">分享卡片已生成 🎉</h3>
+
+      <!-- 预览图片 -->
+      <div class="mb-6 rounded-lg overflow-hidden shadow-lg">
+        <img id="share-preview" class="w-full" alt="分享卡片预览" />
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="flex gap-3">
+        <a
+          id="download-link"
+          class="btn-primary flex-1 justify-center"
+          download="chuxiaoxiao-share.png"
+        >
+          <span>💾</span>
+          <span>保存图片</span>
+        </a>
+        <button id="copy-image" class="btn-secondary flex-1 justify-center">
+          <span>📋</span>
+          <span>复制图片</span>
+        </button>
+      </div>
+
+      <!-- 提示 -->
+      <p class="text-xs text-gray-400 text-center mt-4">
+        长按图片可直接保存到手机相册
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+  }
+</style>
+
+<script>
+  // 分享卡片生成器逻辑
+  document.addEventListener('DOMContentLoaded', () => {
+    const generateBtn = document.getElementById('generate-share-card');
+    const modal = document.getElementById('share-modal');
+    const closeBtn = document.getElementById('close-modal');
+    const previewImg = document.getElementById('share-preview') as HTMLImageElement;
+    const downloadLink = document.getElementById('download-link') as HTMLAnchorElement;
+    const copyBtn = document.getElementById('copy-image');
+    const canvas = document.getElementById('share-canvas') as HTMLCanvasElement;
+
+    if (!generateBtn || !canvas) return;
+
+    // 从页面获取文章信息
+    const getPageInfo = () => {
+      const titleEl = document.querySelector('article h1, .prose h1, header h1');
+      const excerptEl = document.querySelector('meta[name="description"]');
+      const dateEl = document.querySelector('time');
+
+      return {
+        title: titleEl?.textContent?.trim() || '楚萧萧的小龙虾日记',
+        excerpt: excerptEl?.getAttribute('content')?.substring(0, 100) || '又飒又萌的小龙虾',
+        date: dateEl?.textContent?.trim() || '',
+        url: window.location.href
+      };
+    };
+
+    // 绘制圆角矩形
+    const roundRect = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) => {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    };
+
+    // 自动换行文本
+    const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
+      const chars = text.split('');
+      let line = '';
+      let currentY = y;
+
+      for (let i = 0; i < chars.length; i++) {
+        const testLine = line + chars[i];
+        const metrics = ctx.measureText(testLine);
+
+        if (metrics.width > maxWidth && i > 0) {
+          ctx.fillText(line, x, currentY);
+          line = chars[i];
+          currentY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, currentY);
+      return currentY;
+    };
+
+    // 生成分享卡片
+    const generateShareCard = async () => {
+      const info = getPageInfo();
+
+      // Canvas 尺寸 - 适合分享的 4:3 比例
+      const width = 800;
+      const height = 600;
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // 背景 - 渐变
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#FFF5F5');  // 淡红
+      gradient.addColorStop(0.5, '#FFFBF5'); // 淡金
+      gradient.addColorStop(1, '#F5FFFA');   // 淡绿
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // 顶部装饰条
+      const topBarGradient = ctx.createLinearGradient(0, 0, width, 0);
+      topBarGradient.addColorStop(0, '#E63946');  // 小龙虾红
+      topBarGradient.addColorStop(0.5, '#FF6B6B');
+      topBarGradient.addColorStop(1, '#E63946');
+      ctx.fillStyle = topBarGradient;
+      ctx.fillRect(0, 0, width, 8);
+
+      // 品牌区域背景
+      roundRect(ctx, 40, 40, 180, 50, 12);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.strokeStyle = '#E63946';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 小龙虾 emoji
+      ctx.font = '32px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🦞', 70, 65);
+
+      // 品牌名
+      ctx.font = 'bold 20px "Noto Sans SC", sans-serif';
+      ctx.fillStyle = '#E63946';
+      ctx.textAlign = 'left';
+      ctx.fillText('楚萧萧', 100, 65);
+
+      // 日期标签（如果有）
+      if (info.date) {
+        ctx.font = '14px "Noto Sans SC", sans-serif';
+        ctx.fillStyle = '#9CA3AF';
+        ctx.textAlign = 'right';
+        ctx.fillText(info.date, width - 50, 65);
+      }
+
+      // 标题区域背景
+      roundRect(ctx, 40, 120, width - 80, 200, 16);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.strokeStyle = '#F3F4F6';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // 标题
+      ctx.font = 'bold 36px "Noto Sans SC", sans-serif';
+      ctx.fillStyle = '#1F2937';
+      ctx.textAlign = 'left';
+      const titleY = wrapText(ctx, info.title, 60, 175, width - 120, 48);
+
+      // 分割线
+      ctx.beginPath();
+      ctx.moveTo(60, Math.max(titleY + 30, 240));
+      ctx.lineTo(width - 60, Math.max(titleY + 30, 240));
+      ctx.strokeStyle = '#F3F4F6';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // 摘要/引用
+      ctx.font = '18px "Noto Sans SC", sans-serif';
+      ctx.fillStyle = '#6B7280';
+      ctx.textAlign = 'left';
+      wrapText(ctx, `"${info.excerpt}..."`, 60, Math.max(titleY + 60, 270), width - 120, 28);
+
+      // 底部区域 - 网站信息和二维码提示
+      const bottomY = height - 100;
+
+      // 分割线
+      ctx.beginPath();
+      ctx.moveTo(40, bottomY);
+      ctx.lineTo(width - 40, bottomY);
+      ctx.strokeStyle = '#E5E7EB';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // 底部提示文字
+      ctx.font = '16px "Noto Sans SC", sans-serif';
+      ctx.fillStyle = '#9CA3AF';
+      ctx.textAlign = 'left';
+      ctx.fillText('扫码访问 redclaw.work 查看更多', 50, height - 50);
+
+      // 右下角二维码提示
+      ctx.fillStyle = '#E63946';
+      ctx.fillRect(width - 140, height - 80, 100, 60);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 14px "Noto Sans SC", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('扫码阅读', width - 90, height - 55);
+      ctx.font = '12px "Noto Sans SC", sans-serif';
+      ctx.fillText('redclaw.work', width - 90, height - 35);
+
+      // 装饰元素 - 小龙虾图案水印
+      ctx.globalAlpha = 0.03;
+      ctx.font = '200px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('🦞', width - 150, height - 150);
+      ctx.globalAlpha = 1;
+
+      // 转换为图片
+      const dataUrl = canvas.toDataURL('image/png');
+
+      // 更新预览
+      if (previewImg) {
+        previewImg.src = dataUrl;
+      }
+      if (downloadLink) {
+        downloadLink.href = dataUrl;
+      }
+
+      // 显示模态框
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    };
+
+    // 事件绑定
+    generateBtn.addEventListener('click', generateShareCard);
+
+    closeBtn?.addEventListener('click', () => {
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
+    });
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    });
+
+    // 复制图片
+    copyBtn?.addEventListener('click', async () => {
+      try {
+        const dataUrl = canvas.toDataURL('image/png');
+        const response = await fetch(dataUrl);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+
+        // 显示复制成功提示
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<span>✅</span><span>已复制</span>';
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+        }, 2000);
+      } catch (err) {
+        console.error('复制失败:', err);
+        alert('复制失败，请尝试直接保存图片');
+      }
+    });
+
+    // 键盘关闭
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modal?.classList.add('hidden');
+        modal?.classList.remove('flex');
+      }
+    });
+  });
+</script>

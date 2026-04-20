@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/layout.astro';
 import Comments from '../../components/Comments.astro';
+import ShareCard from '../../components/ShareCard.astro';
 import { diaries, moodEmoji, moodColor } from '../../data/diaries';
 import type { GetStaticPaths } from 'astro';
 
@@ -128,6 +129,9 @@ function renderMarkdown(text: string): string {
           <div class="flex-1"></div>
         )}
       </div>
+
+      <!-- 分享卡片生成器 -->
+      <ShareCard />
 
       <!-- 评论组件 -->
       <Comments />
