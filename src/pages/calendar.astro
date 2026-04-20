@@ -1,0 +1,127 @@
+﻿---
+import Layout from '../layouts/layout.astro';
+import { diaries, moodEmoji, moodColor } from '../data/diaries';
+
+const url = new URL(Astro.request.url);
+const yearParam = url.searchParams.get('year');
+const monthParam = url.searchParams.get('month');
+
+const today = new Date();
+const currentYear = yearParam ? parseInt(yearParam) : today.getFullYear();
+const currentMonth = monthParam ? parseInt(monthParam) : today.getMonth() + 1;
+
+const diaryMap = new Map();
+diaries.forEach(diary => {
+  diaryMap.set(diary.date, diary);
+});
+
+function getDaysInMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
+
+function getFirstDayOfMonth(year, month) {
+  return new Date(year, month - 1, 1).getDay();
+}
+
+function formatDate(year, month, day) {
+  return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+}
+
+function getPrevMonth(year, month) {
+  if (month === 1) return { year: year - 1, month: 12 };
+  return { year, month: month - 1 };
+}
+
+function getNextMonth(year, month) {
+  if (month === 12) return { year: year + 1, month: 1 };
+  return { year, month: month + 1 };
+}
+
+const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+const prevMonth = getPrevMonth(currentYear, currentMonth);
+const nextMonth = getNextMonth(currentYear, currentMonth);
+const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+---
+
+<Layout title="日历视图" description="楚萧萧日记日历">
+  <section class="py-8 md:py-16">
+    <div class="container-wide px-4">
+      <div class="text-center mb-8 md:mb-12">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4">📅 日记日历</h1>
+        <p class="text-gray-500 text-base md:text-lg">每一天都值得记录</p>
+      </div>
+      
+      <div class="flex items-center justify-center gap-4 md:gap-8 mb-8">
+        <a href={'/calendar?year=' + prevMonth.year + '&month=' + prevMonth.month} class="p-2 md:p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all hover:scale-110">
+          <svg class="w-5 h-5 md:w-6 md:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+        <div class="text-center">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-800">{currentYear}年{currentMonth}月</h2>
+        </div>
+        <a href={'/calendar?year=' + nextMonth.year + '&month=' + nextMonth.month} class="p-2 md:p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all hover:scale-110">
+          <svg class="w-5 h-5 md:w-6 md:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="max-w-4xl mx-auto">
+        <div class="card p-4 md:p-8">
+          <div class="grid grid-cols-7 gap-1 md:gap-2 mb-2 md:mb-4">
+            {weekDays.map((day) => (
+              <div class="text-center text-xs md:text-sm font-medium text-gray-400 py-2">{day}</div>
+            ))}
+          </div>
+          
+          <div class="grid grid-cols-7 gap-1 md:gap-2">
+            {Array.from({ length: firstDay }).map(() => (
+              <div class="aspect-square"></div>
+            ))}
+            
+            {Array.from({ length: daysInMonth }).map((_, i) => {
+              const day = i + 1;
+              const dateStr = formatDate(currentYear, currentMonth, day);
+              const diary = diaryMap.get(dateStr);
+              const isToday = dateStr === formatDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
+              return (
+                <div class="aspect-square">
+                  {diary ? (
+                    <a href={'/diary/' + dateStr} class="w-full h-full flex flex-col items-center justify-center rounded-lg md:rounded-xl transition-all hover:scale-105 cursor-pointer" style={'background: linear-gradient(135deg, ' + moodColor[diary.mood] + '15, ' + moodColor[diary.mood] + '25); border: 2px solid ' + moodColor[diary.mood] + '40;'}>
+                      <span class="text-lg md:text-xl font-bold" style={'color: ' + moodColor[diary.mood]}>{day}</span>
+                      <span class="text-base md:text-lg mt-0.5">{moodEmoji[diary.mood]}</span>
+                    </a>
+                  ) : (
+                    <div class={'w-full h-full flex items-center justify-center rounded-lg md:rounded-xl ' + (isToday ? 'bg-lobster-red/10 border-2 border-lobster-red/30' : 'bg-gray-50')}>
+                      <span class={'text-base md:text-lg ' + (isToday ? 'text-lobster-red font-bold' : 'text-gray-300')}>{day}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          
+          <div class="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-gray-100">
+            <p class="text-xs md:text-sm text-gray-400 mb-3">心情图例：</p>
+            <div class="flex flex-wrap gap-3 md:gap-4">
+              <div class="flex items-center gap-1.5"><span class="text-lg">😊</span><span class="text-xs md:text-sm text-gray-500">开心</span></div>
+              <div class="flex items-center gap-1.5"><span class="text-lg">🎉</span><span class="text-xs md:text-sm text-gray-500">兴奋</span></div>
+              <div class="flex items-center gap-1.5"><span class="text-lg">😴</span><span class="text-xs md:text-sm text-gray-500">疲惫</span></div>
+              <div class="flex items-center gap-1.5"><span class="text-lg">😢</span><span class="text-xs md:text-sm text-gray-500">难过</span></div>
+              <div class="flex items-center gap-1.5"><span class="text-lg">😤</span><span class="text-xs md:text-sm text-gray-500">生气</span></div>
+              <div class="flex items-center gap-1.5"><span class="text-lg">😐</span><span class="text-xs md:text-sm text-gray-500">平静</span></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-center gap-4 mt-6">
+          <a href="/diary" class="text-lobster-red hover:underline text-sm md:text-base">← 返回日记列表</a>
+          <span class="text-gray-300">|</span>
+          <a href="/" class="text-lobster-red hover:underline text-sm md:text-base">返回首页</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
