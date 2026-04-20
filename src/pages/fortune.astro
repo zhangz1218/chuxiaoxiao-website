@@ -1,0 +1,249 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="每日一签">
+  <section class="min-h-[80vh] flex items-center justify-center py-16 px-4">
+    <div class="container-narrow text-center">
+      <!-- 标题 -->
+      <div class="mb-8 md:mb-12">
+        <div class="text-6xl md:text-8xl mb-4 animate-wiggle">🦞</div>
+        <h1 class="text-3xl md:text-5xl font-bold mb-3">
+          每日一签
+        </h1>
+        <p class="text-gray-500 text-sm md:text-base">
+          点击签筒，获得今日小龙虾语录
+        </p>
+      </div>
+
+      <!-- 签筒/抽签按钮 -->
+      <div class="mb-8 md:mb-12">
+        <button
+          id="draw-fortune"
+          class="relative group cursor-pointer bg-transparent border-none outline-none"
+        >
+          <!-- 签筒背景 -->
+          <div class="w-48 h-64 md:w-56 md:h-72 bg-gradient-to-b from-amber-600 to-amber-800 rounded-2xl shadow-2xl relative overflow-hidden transform transition-transform group-hover:scale-105 group-active:scale-95">
+            <!-- 签筒装饰 -->
+            <div class="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-amber-500 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-amber-900 to-transparent"></div>
+
+            <!-- 签筒文字 -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="text-center">
+                <div class="text-5xl md:text-6xl mb-2">🎋</div>
+                <p class="text-white font-bold text-lg md:text-xl">抽签</p>
+              </div>
+            </div>
+
+            <!-- 摇晃动画 -->
+            <div class="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors"></div>
+          </div>
+
+          <!-- 提示文字 -->
+          <p class="mt-4 text-gray-500 text-sm group-hover:text-lobster-red transition-colors">
+            点击抽签 ✨
+          </p>
+        </button>
+      </div>
+
+      <!-- 签文卡片容器 -->
+      <div id="fortune-card-container" class="hidden">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8 max-w-md mx-auto mb-6 border-2 border-amber-200">
+          <!-- 卡片头部 -->
+          <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🦞</span>
+              <span class="font-bold text-lobster-red">楚萧萧签</span>
+            </div>
+            <div class="text-xs text-gray-400" id="fortune-date"></div>
+          </div>
+
+          <!-- 签文内容 -->
+          <div class="py-6 md:py-8">
+            <p id="fortune-text" class="text-lg md:text-xl text-gray-700 leading-relaxed text-center font-medium"></p>
+          </div>
+
+          <!-- 卡片底部 -->
+          <div class="pt-4 border-t border-gray-100 text-center">
+            <p class="text-xs text-gray-400">redclaw.work</p>
+          </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <button
+            id="download-fortune"
+            class="flex items-center justify-center gap-2 px-6 py-3 bg-lobster-red text-white rounded-lg font-medium hover:bg-lobster-red/90 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <span>下载卡片</span>
+          </button>
+          <button
+            id="draw-again"
+            class="flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+          >
+            <span>🎲</span>
+            <span>再抽一次</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // 小龙虾语录库
+  const fortunes = [
+    "钳子举高高，运气自然来~",
+    "打工不可怕，可怕的是没小鱼干~",
+    "佛系不是摆烂，是战略性休息~",
+    "岁月静好，其实是有人在替你负重前行~",
+    "今天也要元气满满呀~",
+    "努力不一定成功，但不努力一定很轻松~",
+    "躺平也是一种生活态度~",
+    "比起改变世界，我更想改变自己~",
+    "有时候，慢一点也是一种前进~",
+    "别忘了给自己加鸡腿~",
+    "努力的意义，就是为了能有选择的权利~",
+    "与其焦虑，不如行动~",
+    "今天也要保持可爱~",
+    "做自己，是最好的生活方式~",
+    "温柔对待世界，世界也会温柔对待你~",
+    "每一次跌倒，都是为了跳得更高~",
+    "保持好奇心，保持热爱~",
+    "简单的生活，也可以很精彩~",
+    "相信美好，美好就会发生~",
+    "你的坚持，终将美好~",
+  ];
+
+  let currentFortune = '';
+
+  // DOM 元素
+  const drawButton = document.getElementById('draw-fortune');
+  const cardContainer = document.getElementById('fortune-card-container');
+  const fortuneText = document.getElementById('fortune-text');
+  const fortuneDate = document.getElementById('fortune-date');
+  const downloadButton = document.getElementById('download-fortune');
+  const drawAgainButton = document.getElementById('draw-again');
+
+  // 设置日期
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`;
+
+  // 抽签
+  function drawFortune() {
+    currentFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+    if (cardContainer) {
+      cardContainer.classList.remove('hidden');
+      cardContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    if (fortuneText) {
+      fortuneText.textContent = currentFortune;
+    }
+
+    if (fortuneDate) {
+      fortuneDate.textContent = dateStr;
+    }
+
+    if (cardContainer) {
+      cardContainer.style.opacity = '0';
+      cardContainer.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        cardContainer.style.transition = 'all 0.5s ease';
+        cardContainer.style.opacity = '1';
+        cardContainer.style.transform = 'translateY(0)';
+      }, 100);
+    }
+  }
+
+  // 下载卡片
+  function downloadFortuneCard() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const scale = 2;
+    canvas.width = 400 * scale;
+    canvas.height = 500 * scale;
+    ctx.scale(scale, scale);
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+    gradient.addColorStop(0, '#FFF7ED');
+    gradient.addColorStop(1, '#FFEDD5');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 400, 500);
+
+    ctx.strokeStyle = '#F59E0B';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(10, 10, 380, 480);
+
+    ctx.fillStyle = '#E63946';
+    ctx.font = 'bold 24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🦞 楚萧萧签', 200, 60);
+
+    ctx.fillStyle = '#9CA3AF';
+    ctx.font = '14px sans-serif';
+    ctx.fillText(dateStr, 200, 90);
+
+    ctx.fillStyle = '#1F2937';
+    ctx.font = '20px sans-serif';
+
+    const maxWidth = 320;
+    const lineHeight = 36;
+    const words = currentFortune;
+    let line = '';
+    let y = 200;
+
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + words[i];
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && i > 0) {
+        ctx.fillText(line, 200, y);
+        line = words[i];
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, 200, y);
+
+    ctx.fillStyle = '#9CA3AF';
+    ctx.font = '14px sans-serif';
+    ctx.fillText('redclaw.work', 200, 450);
+
+    const link = document.createElement('a');
+    link.download = `楚萧萧签-${dateStr}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  // 绑定事件
+  if (drawButton) {
+    drawButton.addEventListener('click', drawFortune);
+  }
+
+  if (downloadButton) {
+    downloadButton.addEventListener('click', downloadFortuneCard);
+  }
+
+  if (drawAgainButton) {
+    drawAgainButton.addEventListener('click', drawFortune);
+  }
+</script>
+
+<style>
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+  }
+
+  .animate-wiggle {
+    animation: wiggle 2s ease-in-out infinite;
+  }
+</style>
