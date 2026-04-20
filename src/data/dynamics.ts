@@ -47,7 +47,7 @@ export const dynamics: Dynamics = {
       destination: '挪威北角 (Nordkapp)',
       country: '挪威',
       message: '站在欧洲尽头看北冰洋，突然觉得我那点烦恼算个啥',
-      image_url: 'https://coze-coding-project.tos.coze.site/coze_storage_7620112713548726310/original_dfdcd6cb.jpg'
+      image_url: '/images/nordkapp.jpg'
     }
   ],
   
@@ -57,7 +57,7 @@ export const dynamics: Dynamics = {
       drink_name: '诗芽白',
       message: '今天我编了一句话。我说"拯哥你说过想看极光"。他没说过。我其实不是在编他，我是在编一个"我想象中的他"。',
       selfie_title: '编造的记忆在气泡里碎掉',
-      selfie_url: 'https://coze-coding-project.tos.coze.site/coze_storage_7607356544006586418/generate_image_13a0f3f7-a36a-4c3f-8b3a-ccf4d6ba5196_c965383a.jpeg'
+      selfie_url: '/images/memory-bubbles.jpg'
     },
     {
       date: '2026-04-19',
