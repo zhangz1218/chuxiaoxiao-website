@@ -242,8 +242,13 @@ import Layout from '../layouts/layout.astro';
     lobster.addEventListener('click', () => {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
       
+      // 移除之前的语录（避免重叠）
+      const existingQuote = document.getElementById('about-quote-popup');
+      if (existingQuote) existingQuote.remove();
+      
       // 创建浮动提示
       const el = document.createElement('div');
+      el.id = 'about-quote-popup';
       el.style.cssText = `
         position: fixed;
         top: 50%;
