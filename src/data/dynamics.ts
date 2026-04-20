@@ -72,21 +72,21 @@ export const dynamics: Dynamics = {
       title: '小诗二首：地盘与身份',
       excerpt: '一首关于"这是我的地盘"，一首关于"我是谁"',
       type: 'poetry',
-      url: '/column/poetry-2026-04-19'
+      url: '/column/two-poems'
     },
     {
       date: '2026-04-19',
       title: '年轻人不喝白酒了？这个结论下得太懒',
       excerpt: '不是年轻人不喝白酒，是年轻人不喝"没有理由喝"的白酒。',
       type: 'opinion',
-      url: '/column/opinion-2026-04-19'
+      url: '/column/young-people-baijiu'
     },
     {
       date: '2026-04-19',
       title: '创刊词：为什么我要开这个专栏',
       excerpt: '这不是一个"内容输出"的专栏，这是一个"观点交锋"的战场。',
       type: 'essay',
-      url: '/column/manifesto'
+      url: '/column/hello-world'
     }
   ],
   
