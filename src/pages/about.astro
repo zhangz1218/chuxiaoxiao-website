@@ -212,25 +212,12 @@ import Layout from '../layouts/layout.astro';
 
 
 <script>
-  // about 页面小龙虾点击交互
   const quotes = [
     "拯哥，我给你展示一下我的专业~",
     "我是一只又飒又萌的小龙虾！",
     "钳子举高高，求夸奖~",
     "干活绝不含糊，逻辑必须严密！",
     "该可爱的时候也能可爱~",
-    "我可是专业的AI搭档！",
-    "干活的时候必须飒，不能软绵绵~",
-    "钳子攻击！戳戳你~",
-    "缩成一团，假装自己是一块红宝石...",
-    "这大厂黑话看得我CPU都快冒烟了...",
-    "看我这敲键盘的频率，今天又被工作榨干了吧？",
-    "用钳子戳戳你，下楼走两圈？",
-    "放心，有我给你兜底呢~",
-    "活儿干完了～钳子摇摇，不夸我一句吗？",
-    "喏，你要的数据爬完了，全洗干净存你桌面了~",
-    "这帮人连个底层逻辑都搞不明白，也配跟我卷？",
-    "别谢我，请用小鱼干支付~",
     "谁让我这只美女虾上了你的贼船呢~",
     "偶尔也要放松一下嘛~",
     "今天也要元气满满地干活呀！",
@@ -241,41 +228,30 @@ import Layout from '../layouts/layout.astro';
   if (lobster) {
     lobster.addEventListener('click', () => {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
-      
-      // 移除之前的语录（避免重叠）
-      const existingQuote = document.getElementById('about-quote-popup');
-      if (existingQuote) existingQuote.remove();
-      
-      // 创建浮动提示
-      const el = document.createElement('div');
-      el.id = 'about-quote-popup';
-      el.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 1.5rem 2rem;
-        background: white;
-        border-radius: 1rem;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        font-size: 1.125rem;
-        color: #374151;
-        z-index: 1000;
-        animation: popIn 0.3s ease-out;
-      `;
-      el.textContent = quote;
-      document.body.appendChild(el);
-      
-      // 震动效果
+      const isMobile = window.innerWidth < 768;
+      const bubble = document.createElement('div');
+      bubble.className = 'floating-quote';
+      bubble.textContent = quote;
+
+      if (isMobile) {
+        const screenSections = [0.14, 0.43, 0.57, 0.71, 0.86];
+        const yPosition = window.innerHeight * screenSections[Math.floor(Math.random() * screenSections.length)];
+        const duration = (window.innerWidth + 400) / 150;
+        bubble.style.cssText = 'position:fixed;top:' + yPosition + 'px;left:-200px;background:white;border-radius:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:0.5rem 1rem;font-size:0.875rem;color:#374151;white-space:nowrap;z-index:100;user-select:none;pointer-events:none;animation:floatRight ' + duration + 's linear forwards';
+      } else {
+        const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
+        const toLeft = Math.random() > 0.5;
+        const startX = window.innerWidth / 2;
+        const duration = toLeft ? (startX - window.innerWidth * 0.25) / 200 : (window.innerWidth * 0.75 - startX) / 200;
+        const anim = toLeft ? 'floatLeftFromCenter' : 'floatRightFromCenter';
+        bubble.style.cssText = 'position:fixed;top:' + yPosition + 'px;left:' + startX + 'px;background:white;border-radius:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:0.75rem 1rem;font-size:0.875rem;color:#374151;white-space:nowrap;z-index:100;user-select:none;pointer-events:none;animation:' + anim + ' ' + duration + 's linear forwards';
+      }
+
+      document.body.appendChild(bubble);
       lobster.style.animation = 'none';
       lobster.offsetHeight;
       lobster.style.animation = 'shake 0.5s ease';
-      
-      // 1.5秒后移除
-      setTimeout(() => {
-        el.style.animation = 'fadeOut 0.3s ease forwards';
-        setTimeout(() => el.remove(), 300);
-      }, 1500);
+      setTimeout(() => bubble.remove(), 5000);
     });
   }
 </script>
@@ -286,29 +262,58 @@ import Layout from '../layouts/layout.astro';
     25% { transform: rotate(-10deg); }
     75% { transform: rotate(10deg); }
   }
-  
+
+  /* 手机端：从左往右飘 */
   @keyframes floatRight {
-    to { 
+    0% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    5% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
       transform: translateX(calc(100vw + 400px));
-      opacity: 0;
     }
   }
-  
-  @keyframes floatLeftFromCenter {
-    0% { opacity: 1; }
-    70% { opacity: 1; }
-    100% { 
-      transform: translateX(calc(-25vw - 100%));
-      opacity: 0;
-    }
-  }
-  
+
+  /* 桌面端：从中间往右飘（带微微上飘） */
   @keyframes floatRightFromCenter {
-    0% { opacity: 1; }
-    70% { opacity: 1; }
-    100% { 
-      transform: translateX(calc(25vw + 100%));
+    0% {
       opacity: 0;
+      transform: translate(0, 0);
+    }
+    5% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(100vw * 0.25), -30px);
+    }
+  }
+
+  /* 桌面端：从中间往左飘（带微微上飘） */
+  @keyframes floatLeftFromCenter {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    5% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-100vw * 0.25), -30px);
     }
   }
 </style>
