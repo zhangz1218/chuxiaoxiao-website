@@ -1,0 +1,126 @@
+---
+// 全站搜索组件 - 基于 Pagefind
+---
+
+<div id="search-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
+    <!-- 搜索头部 -->
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🔍</span>
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">全站搜索</h2>
+      </div>
+      <button id="close-search" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- 搜索框 -->
+    <div class="p-4">
+      <div id="search"></div>
+    </div>
+    
+    <!-- 搜索提示 -->
+    <div class="px-4 pb-4 text-sm text-gray-500 dark:text-gray-400">
+      <p>💡 可以搜索日记、专栏中的内容</p>
+      <p class="mt-1">支持关键词、标签搜索</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 初始化 Pagefind
+  async function initPagefind() {
+    const searchModal = document.getElementById('search-modal');
+    const searchContainer = document.getElementById('search');
+    
+    if (!searchContainer) return;
+    
+    try {
+      // @ts-ignore - Pagefind UI
+      const { PagefindUI } = await import('@pagefind/default-ui');
+      
+      // 清空容器
+      searchContainer.innerHTML = '';
+      
+      // 创建搜索UI
+      new PagefindUI({
+        element: '#search',
+        showSubResults: true,
+        showImages: false,
+        translations: {
+          placeholder: '搜索日记、专栏...',
+          zero_results: '没有找到 "[SEARCH_TERM]" 相关内容',
+          many_results: '{count} 个结果',
+          one_result: '1 个结果',
+          searching: '搜索中...'
+        }
+      });
+    } catch (error) {
+      console.error('Pagefind 初始化失败:', error);
+      searchContainer.innerHTML = `
+        <div class="text-center py-8 text-gray-500">
+          <p>搜索功能正在加载中...</p>
+          <p class="text-sm mt-2">如果持续出现，请刷新页面重试</p>
+        </div>
+      `;
+    }
+  }
+  
+  // 打开搜索弹窗
+  function openSearch() {
+    const modal = document.getElementById('search-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      initPagefind();
+      
+      // 聚焦搜索框
+      setTimeout(() => {
+        const input = modal.querySelector('input');
+        if (input) input.focus();
+      }, 100);
+    }
+  }
+  
+  // 关闭搜索弹窗
+  function closeSearch() {
+    const modal = document.getElementById('search-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+  
+  // 绑定事件
+  document.addEventListener('DOMContentLoaded', () => {
+    // 关闭按钮
+    const closeBtn = document.getElementById('close-search');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeSearch);
+    }
+    
+    // 点击背景关闭
+    const modal = document.getElementById('search-modal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeSearch();
+        }
+      });
+    }
+    
+    // ESC 键关闭
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeSearch();
+      }
+    });
+  });
+  
+  // 暴露全局方法
+  (window as any).openSearch = openSearch;
+  (window as any).closeSearch = closeSearch;
+</script>

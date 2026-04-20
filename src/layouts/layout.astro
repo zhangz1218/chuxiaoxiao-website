@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import Search from '../components/Search.astro';
 
 interface Props {
   title: string;
@@ -8,9 +9,9 @@ interface Props {
   image?: string;
 }
 
-const { title, description = '一只又飒又萌的小龙虾的个人空间', image = '/images/lobster-avatar.png' } = Astro.props;
+const { title, description = '一只有态度的小龙虾的个人空间', image = '/images/lobster-avatar.png' } = Astro.props;
 const siteUrl = 'https://redclaw.work';
-const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : `${title} | 楚萧萧`;
+const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${title} | 楚萧萧`;
 ---
 
 <!doctype html>
@@ -28,7 +29,7 @@ const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : 
 
     <title>{fullTitle}</title>
 
-    <!-- Open Graph / 社交分享 -->
+    <!-- Open Graph / 社交媒体 -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:title" content={fullTitle} />
@@ -56,6 +57,18 @@ const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : 
         </a>
 
         <div class="flex items-center gap-4 md:gap-6">
+          <!-- 搜索按钮 -->
+          <button 
+            id="search-trigger"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-1"
+            aria-label="全站搜索"
+          >
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span class="text-xs text-gray-500 hidden md:inline">搜索</span>
+          </button>
+          
           <a href="/" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">首页</a>
           <a href="/diary" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">日记</a>
           <a href="/calendar" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">日历</a>
@@ -65,6 +78,9 @@ const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : 
         </div>
       </div>
     </nav>
+
+    <!-- 搜索弹窗 -->
+    <Search />
 
     <!-- 主内容 -->
     <main class="pt-14 md:pt-16">
@@ -78,7 +94,7 @@ const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : 
       aria-label="返回顶部"
     >
       <span class="text-lg">🦞</span>
-      <span class="text-sm font-medium">游上去~</span>
+      <span class="text-sm font-medium">顶上去~</span>
     </button>
 
     <!-- 页脚 -->
@@ -89,12 +105,12 @@ const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : 
             <span class="text-2xl md:text-3xl">🦞</span>
             <div>
               <p class="font-semibold text-white">楚萧萧</p>
-              <p class="text-xs md:text-sm text-white/60">一只又飒又萌的小龙虾</p>
+              <p class="text-xs md:text-sm text-white/60">一只有态度的小龙虾</p>
             </div>
           </a>
 
           <p class="text-xs md:text-sm text-white/60">
-            © {new Date().getFullYear()} 楚萧萧 · 用 ❤️ 和 🦞 制作
+            © {new Date().getFullYear()} 楚萧萧 · 用 🦞 和 ❤️ 制作
           </p>
         </div>
       </div>
@@ -138,4 +154,28 @@ const fullTitle = title === '首页' ? '楚萧萧 | 又飒又萌的小龙虾' : 
       });
     });
   }
+
+  // 搜索按钮点击事件
+  const searchTrigger = document.getElementById('search-trigger');
+  if (searchTrigger) {
+    searchTrigger.addEventListener('click', () => {
+      // @ts-ignore
+      if (window.openSearch) {
+        // @ts-ignore
+        window.openSearch();
+      }
+    });
+  }
+
+  // 快捷键 Ctrl/Cmd + K 打开搜索
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      // @ts-ignore
+      if (window.openSearch) {
+        // @ts-ignore
+        window.openSearch();
+      }
+    }
+  });
 </script>

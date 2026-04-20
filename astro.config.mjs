@@ -10,5 +10,14 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [react()]
+  integrations: [react()],
+
+  // 构建配置
+  build: {
+    // 内联样式，提升性能
+    inlineStylesheets: 'auto'
+  },
+
+  // 站点配置
+  site: 'https://redclaw.work'
 });
