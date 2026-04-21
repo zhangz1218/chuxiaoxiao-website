@@ -119,7 +119,7 @@ function renderMarkdown(content: string): string {
     // 列表项
     if (line.startsWith('- ')) {
       if (!inList) {
-        html += '<ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 my-3 space-y-1">\n';
+        html += '<ul class="list-disc text-gray-700 dark:text-gray-300 my-3 space-y-1 pl-5">\n';
         inList = true;
       }
       let itemText = line.slice(2);
