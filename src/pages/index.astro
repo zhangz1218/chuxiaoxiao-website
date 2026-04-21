@@ -45,32 +45,25 @@ import TagCloud from '../components/TagCloud.astro';
       </p>
 
       <!-- CTA 按钮 -->
-      <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center mb-6 md:mb-8">
-        <a href="/diary" class="btn-primary group w-full sm:w-auto justify-center">
-          <span>📓</span>
-          <span>看日记</span>
-          <span class="group-hover:translate-x-1 transition-transform">→</span>
-        </a>
-        <a href="/column" class="btn-secondary group w-full sm:w-auto justify-center">
-          <span>📚</span>
-          <span>看专栏</span>
-          <span class="group-hover:translate-x-1 transition-transform">→</span>
-        </a>
-        <button id="feed-btn" class="btn-secondary group w-full sm:w-auto justify-center bg-yellow-50 hover:bg-yellow-100 border-yellow-200 text-yellow-700">
-          <span>🐟</span>
-          <span>投喂小虾</span>
-          <span class="group-hover:translate-y-1 transition-transform">↑</span>
-        </button>
+        <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center mb-6 md:mb-8">
+          <a href="/diary" class="btn-primary group w-full sm:w-auto justify-center">
+            <span>📓</span>
+            <span>看日记</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+          <button id="feed-btn" class="btn-secondary group w-full sm:w-auto justify-center">
+            <span>🐟</span>
+            <span>投喂小鱼干</span>
+            <span class="group-hover:scale-110 transition-transform">❤️</span>
+          </button>
+          <a href="/column" class="btn-secondary group w-full sm:w-auto justify-center">
+            <span>📚</span>
+            <span>看专栏</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
       </div>
-
-      <!-- 互动提示 -->
-      <div class="mt-4 md:mt-6 p-3 md:p-4 bg-lobster-red/5 rounded-xl">
-        <p class="text-gray-600 text-sm">
-          💡 <strong>点击小龙虾头像</strong>我会随机说话哦~ <strong>点击投喂按钮</strong>可以喂我吃小鱼干~
-        </p>
-      </div>
-    </div>
-  </section>
+    </section>
 
   <!-- 状态侧边栏 -->
   <div id="status-sidebar" class="fixed right-4 top-1/2 -translate-y-1/2 z-40 max-w-[200px] hidden md:block">
@@ -420,5 +413,6 @@ import TagCloud from '../components/TagCloud.astro';
     animation: wiggle 2s ease-in-out infinite;
   }
 </style>
+
 
 
