@@ -28,6 +28,8 @@ function renderMarkdown(content: string): string {
   const lines = content.split('\n');
   let html = '';
   let inList = false;
+  let inTable = false;
+  let inTableHeader = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -51,6 +53,11 @@ function renderMarkdown(content: string): string {
       continue;
     }
 
+    // H1 - 跳过（标题已在页面header显示）
+    if (line.startsWith('# ') && !line.startsWith('## ')) {
+      continue;
+    }
+
     // H2
     if (line.startsWith('## ')) {
       if (inList) {
@@ -69,6 +76,44 @@ function renderMarkdown(content: string): string {
       }
       html += `<h3 class="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-3">${line.slice(4)}</h3>\n`;
       continue;
+    }
+
+    // 表格
+    if (line.trim().startsWith('|') && line.includes('|')) {
+      // 跳过分隔行
+      if (line.match(/^\|[-\s|:]+\|$/)) {
+        continue;
+      }
+      // 解析表格行
+      const cells = line.split('|').filter(c => c.trim());
+      if (cells.length > 0) {
+        if (!inTable) {
+          html += '<div class="overflow-x-auto my-6"><table class="min-w-full border border-gray-300 dark:border-gray-600">\n';
+          inTable = true;
+        }
+        const isHeader = !inTableHeader;
+        if (isHeader) {
+          inTableHeader = true;
+          html += '<thead class="bg-gray-100 dark:bg-gray-800">\n';
+        }
+        html += '<tr>' + cells.map(c => {
+          const cellText = c.trim().replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+          return isHeader 
+            ? `<th class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left font-semibold">${cellText}</th>`
+            : `<td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${cellText}</td>`;
+        }).join('') + '</tr>\n';
+        if (isHeader) {
+          html += '</thead>\n<tbody>\n';
+        }
+      }
+      continue;
+    }
+
+    // 结束表格
+    if (inTable && !line.trim().startsWith('|')) {
+      html += '</tbody>\n</table>\n</div>\n';
+      inTable = false;
+      inTableHeader = false;
     }
 
     // 列表项
@@ -97,6 +142,9 @@ function renderMarkdown(content: string): string {
 
   if (inList) {
     html += '</ul>\n';
+  }
+  if (inTable) {
+    html += '</tbody>\n</table>\n</div>\n';
   }
 
   return html;
