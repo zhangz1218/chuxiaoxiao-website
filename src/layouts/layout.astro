@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import Search from '../components/Search.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import FeedPanel from '../components/FeedPanel.astro';
 
 interface Props {
   title: string;
@@ -176,6 +177,7 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
   </body>
 </html>
 
+
 <style>
   nav {
     transition: all 0.3s ease;
@@ -184,6 +186,28 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
   #back-to-top.visible {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  /* 投喂相关动画 */
+  @keyframes superHappy {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    10% { transform: translateY(-30px) rotate(-15deg) scale(1.2); }
+    20% { transform: translateY(-20px) rotate(15deg) scale(1.1); }
+    30% { transform: translateY(-40px) rotate(-10deg) scale(1.3); }
+    40% { transform: translateY(-10px) rotate(10deg) scale(1.1); }
+    50% { transform: translateY(-50px) rotate(0deg) scale(1.4); }
+    60% { transform: translateY(-20px) rotate(-5deg) scale(1.2); }
+    70% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+    80% { transform: translateY(-10px) rotate(0deg) scale(1.1); }
+    90% { transform: translateY(-5px) rotate(0deg) scale(1.05); }
+  }
+
+  @keyframes superGlow {
+    0% { opacity: 0.2; transform: scale(1); background: rgba(220, 38, 38, 0.2); }
+    25% { opacity: 0.8; transform: scale(1.5); background: rgba(255, 215, 0, 0.4); }
+    50% { opacity: 1; transform: scale(2); background: rgba(255, 215, 0, 0.6); }
+    75% { opacity: 0.8; transform: scale(1.5); background: rgba(255, 215, 0, 0.4); }
+    100% { opacity: 0.2; transform: scale(1); background: rgba(220, 38, 38, 0.2); }
   }
 </style>
 

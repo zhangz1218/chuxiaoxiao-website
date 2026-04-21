@@ -1,0 +1,259 @@
+---
+// 投喂面板组件 - 增强版投喂系统
+---
+
+<div id="feed-panel" class="fixed bottom-4 right-4 z-50">
+  <!-- 投喂按钮 -->
+  <button 
+    id="feed-toggle" 
+    class="w-14 h-14 bg-lobster-red rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
+    title="投喂小龙虾"
+  >
+    <span class="text-2xl">🦞</span>
+  </button>
+  
+  <!-- 投喂面板 -->
+  <div id="feed-menu" class="absolute bottom-16 right-0 bg-white rounded-2xl shadow-2xl p-4 w-64 hidden">
+    <div class="text-center mb-3">
+      <span class="text-sm text-gray-500">选择投喂物品</span>
+    </div>
+    
+    <!-- 食物选择 -->
+    <div class="grid grid-cols-2 gap-2 mb-3">
+      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="fish">
+        <div class="text-2xl mb-1">🐟</div>
+        <div class="text-xs text-gray-600">小鱼干</div>
+        <div class="text-xs text-gray-400" id="fish-count">x0</div>
+      </button>
+      
+      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="lobster">
+        <div class="text-2xl mb-1">🦞</div>
+        <div class="text-xs text-gray-600">龙虾肉</div>
+        <div class="text-xs text-gray-400" id="lobster-count">x0</div>
+      </button>
+      
+      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="seaweed">
+        <div class="text-2xl mb-1">🌿</div>
+        <div class="text-xs text-gray-600">海草</div>
+        <div class="text-xs text-gray-400" id="seaweed-count">x0</div>
+      </button>
+      
+      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="golden-fish">
+        <div class="text-2xl mb-1">✨🐟</div>
+        <div class="text-xs text-gray-600">金小鱼干</div>
+        <div class="text-xs text-gray-400" id="golden-fish-count">x0</div>
+      </button>
+    </div>
+    
+    <!-- 心情指示器 -->
+    <div class="border-t pt-3">
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-xs text-gray-500">小龙虾心情</span>
+        <span id="mood-emoji" class="text-lg">😊</span>
+      </div>
+      <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div id="mood-bar" class="h-full bg-gradient-to-r from-lobster-red to-lobster-gold transition-all duration-500" style="width: 50%"></div>
+      </div>
+      <div class="text-xs text-gray-400 mt-1 text-center" id="mood-text">心情还不错~</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .feed-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .feed-item:active {
+    transform: scale(0.95);
+  }
+  
+  .feed-item.selected {
+    border-color: #DC2626;
+    background-color: rgba(220, 38, 38, 0.1);
+  }
+</style>
+
+<script>
+  // 投喂数据
+  interface FeedData {
+    total: number;
+    fish: number;
+    lobster: number;
+    seaweed: number;
+    "golden-fish": number;
+  }
+  
+  // 食物配置
+  const foodConfig = {
+    fish: {
+      emoji: "🐟",
+      name: "小鱼干",
+      happiness: 10,
+      responses: [
+        "好吃好吃！谢谢老板~",
+        "小鱼干最棒了！",
+        "钳子举高高！",
+        "好鲜好鲜~",
+        "再来一条嘛~"
+      ]
+    },
+    lobster: {
+      emoji: "🦞",
+      name: "龙虾肉",
+      happiness: 20,
+      responses: [
+        "哇！龙虾肉！太奢侈了！",
+        "老板大气！",
+        "这也太好吃了吧！",
+        "幸福到冒泡~",
+        "钳子摇摇~"
+      ]
+    },
+    seaweed: {
+      emoji: "🌿",
+      name: "海草",
+      happiness: 5,
+      responses: [
+        "健康食品~谢谢！",
+        "海草也不错~",
+        "清淡口味我喜欢~",
+        "营养均衡嘛~"
+      ]
+    },
+    "golden-fish": {
+      emoji: "✨🐟",
+      name: "金小鱼干",
+      happiness: 50,
+      responses: [
+        "哇！！金小鱼干！！",
+        "老板太破费了！",
+        "这是传说中的金小鱼干吗！",
+        "我要永远记住这一刻！",
+        "钳子疯狂摇摆！！！"
+      ]
+    }
+  };
+  
+  // 心情配置
+  const moodConfig = [
+    { min: 0, max: 20, emoji: "😢", text: "小龙虾有点饿..." },
+    { min: 20, max: 40, emoji: "😐", text: "还可以啦~" },
+    { min: 40, max: 60, emoji: "😊", text: "心情还不错~" },
+    { min: 60, max: 80, emoji: "😄", text: "今天很开心！" },
+    { min: 80, max: 100, emoji: "🥰", text: "超级幸福！！" }
+  ];
+  
+  // 初始化
+  const feedToggle = document.getElementById("feed-toggle");
+  const feedMenu = document.getElementById("feed-menu");
+  const feedItems = document.querySelectorAll(".feed-item");
+  
+  // 加载数据
+  let feedData: FeedData = JSON.parse(localStorage.getItem("lobsterFeedData") || '{"total":0,"fish":0,"lobster":0,"seaweed":0,"golden-fish":0}');
+  
+  // 更新显示
+  function updateDisplay() {
+    document.getElementById("fish-count").textContent = "x" + feedData.fish;
+    document.getElementById("lobster-count").textContent = "x" + feedData.lobster;
+    document.getElementById("seaweed-count").textContent = "x" + feedData.seaweed;
+    document.getElementById("golden-fish-count").textContent = "x" + feedData["golden-fish"];
+    
+    // 更新心情
+    const happiness = Math.min(100, feedData.total * 2);
+    const moodBar = document.getElementById("mood-bar");
+    const moodEmoji = document.getElementById("mood-emoji");
+    const moodText = document.getElementById("mood-text");
+    
+    moodBar.style.width = happiness + "%";
+    
+    const mood = moodConfig.find(m => happiness >= m.min && happiness < m.max) || moodConfig[moodConfig.length - 1];
+    moodEmoji.textContent = mood.emoji;
+    moodText.textContent = mood.text;
+    
+    // 更新首页计数
+    const feedCountEl = document.getElementById("feed-count");
+    if (feedCountEl) feedCountEl.textContent = feedData.total;
+  }
+  
+  // 切换面板
+  feedToggle?.addEventListener("click", () => {
+    feedMenu.classList.toggle("hidden");
+  });
+  
+  // 点击外部关闭
+  document.addEventListener("click", (e) => {
+    if (!feedMenu.contains(e.target as Node) && !feedToggle.contains(e.target as Node)) {
+      feedMenu.classList.add("hidden");
+    }
+  });
+  
+  // 投喂
+  feedItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const food = item.getAttribute("data-food") as keyof typeof foodConfig;
+      if (!food || !foodConfig[food]) return;
+      
+      // 更新数据
+      feedData[food]++;
+      feedData.total++;
+      localStorage.setItem("lobsterFeedData", JSON.stringify(feedData));
+      
+      // 更新显示
+      updateDisplay();
+      
+      // 显示感谢
+      showFeedEffect(food);
+      
+      // 关闭面板
+      feedMenu.classList.add("hidden");
+    });
+  });
+  
+  // 显示投喂效果
+  function showFeedEffect(food: keyof typeof foodConfig) {
+    const config = foodConfig[food];
+    const avatar = document.getElementById("lobster-avatar");
+    const avatarGlow = document.getElementById("avatar-glow");
+    const feedEffectContainer = document.getElementById("feed-effect-container");
+    
+    // 食物上升动画
+    const foodEl = document.createElement("div");
+    foodEl.textContent = config.emoji;
+    foodEl.style.cssText = "position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); font-size: 2rem; animation: feedRise 1s ease-out forwards; pointer-events: none; z-index: 30;";
+    feedEffectContainer.appendChild(foodEl);
+    setTimeout(() => foodEl.remove(), 1000);
+    
+    // 小龙虾动画
+    if (food === "golden-fish") {
+      // 金小鱼干特殊动画
+      avatar.style.animation = "none";
+      avatar.offsetHeight;
+      avatar.style.animation = "superHappy 1.5s ease";
+      
+      avatarGlow.style.animation = "none";
+      avatarGlow.offsetHeight;
+      avatarGlow.style.animation = "superGlow 1.5s ease-out";
+    } else {
+      avatar.style.animation = "none";
+      avatar.offsetHeight;
+      avatar.style.animation = "happyJump 0.8s ease";
+      
+      avatarGlow.style.animation = "none";
+      avatarGlow.offsetHeight;
+      avatarGlow.style.animation = "glowPulse 1s ease-out";
+    }
+    
+    // 感谢语
+    const response = config.responses[Math.floor(Math.random() * config.responses.length)];
+    const bubble = document.createElement("div");
+    bubble.textContent = response;
+    bubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 1.5s ease-out forwards;";
+    feedEffectContainer.appendChild(bubble);
+    setTimeout(() => bubble.remove(), 1500);
+  }
+  
+  // 初始化显示
+  updateDisplay();
+</script>

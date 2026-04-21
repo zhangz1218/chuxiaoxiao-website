@@ -165,18 +165,36 @@ import TagCloud from '../components/TagCloud.astro';
 </Layout>
 
 <script>
-  let feedCount = parseInt(localStorage.getItem('lobsterFeedCount') || '0');
+  // 从新的投喂系统获取数据
+  interface FeedData {
+    total: number;
+    fish: number;
+    lobster: number;
+    seaweed: number;
+    "golden-fish": number;
+  }
+  
+  let feedData: FeedData = JSON.parse(localStorage.getItem("lobsterFeedData") || '{"total":0,"fish":0,"lobster":0,"seaweed":0,"golden-fish":0}');
+  
+  // 迁移旧数据（兼容性）
+  const oldFeedCount = localStorage.getItem('lobsterFeedCount');
+  if (oldFeedCount && feedData.total === 0) {
+    feedData.total = parseInt(oldFeedCount);
+    feedData.fish = parseInt(oldFeedCount);
+    localStorage.setItem("lobsterFeedData", JSON.stringify(feedData));
+    localStorage.removeItem('lobsterFeedCount');
+  }
+  
   let lobsterName = localStorage.getItem('lobsterName') || '楚萧萧';
 
   const feedCountEl = document.getElementById('feed-count');
   const lobsterNameDisplayEl = document.getElementById('lobster-name-display');
-  const feedBtn = document.getElementById('feed-btn');
   const renameBtn = document.getElementById('rename-btn');
   const avatar = document.getElementById('lobster-avatar');
   const avatarGlow = document.getElementById('avatar-glow');
   const feedEffectContainer = document.getElementById('feed-effect-container');
 
-  if (feedCountEl) feedCountEl.textContent = feedCount;
+  if (feedCountEl) feedCountEl.textContent = feedData.total;
   if (lobsterNameDisplayEl) lobsterNameDisplayEl.textContent = lobsterName;
 
   const quotes = [
@@ -268,34 +286,6 @@ import TagCloud from '../components/TagCloud.astro';
     });
   }
 
-  if (feedBtn) {
-    feedBtn.addEventListener('click', () => {
-      feedCount++;
-      localStorage.setItem('lobsterFeedCount', feedCount.toString());
-      if (feedCountEl) feedCountEl.textContent = feedCount;
-
-      const feedEffect = document.createElement('div');
-      feedEffect.textContent = '🐟';
-      feedEffect.style.cssText = "position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); font-size: 2rem; animation: feedRise 1s ease-out forwards; pointer-events: none; z-index: 30;";
-      feedEffectContainer.appendChild(feedEffect);
-      setTimeout(() => feedEffect.remove(), 1000);
-
-      avatar.style.animation = 'none';
-      avatar.offsetHeight;
-      avatar.style.animation = 'happyJump 0.8s ease';
-      
-      avatarGlow.style.animation = 'none';
-      avatarGlow.offsetHeight;
-      avatarGlow.style.animation = 'glowPulse 1s ease-out';
-
-      const response = feedResponses[Math.floor(Math.random() * feedResponses.length)];
-      const thankYouBubble = document.createElement('div');
-      thankYouBubble.textContent = response;
-      thankYouBubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 1.5s ease-out forwards;";
-      feedEffectContainer.appendChild(thankYouBubble);
-      setTimeout(() => thankYouBubble.remove(), 1500);
-    });
-  }
 
   if (renameBtn) {
     renameBtn.addEventListener('click', () => {
