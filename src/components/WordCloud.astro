@@ -1,0 +1,182 @@
+﻿---
+// 词云组件 - 从日记中提取高频词并可视化展示
+import { diaries } from '../data/diaries';
+
+// 停用词列表（过滤无意义词汇）
+const stopWords = new Set([
+  '的', '了', '是', '在', '我', '有', '和', '就', '不', '人', '都', '一', '一个', '上', '也', '很', '到', '说', '要', '去', '你', '会', '着', '没有', '看', '好', '自己', '这', '那', '什么', '他', '她', '它', '们', '这个', '那个', '可以', '没', '还', '能', '但', '而', '与', '或', '及', '等', '对', '为', '之', '以', '于', '从', '被', '把', '让', '给', '向', '比', '又', '再', '才', '已', '最', '更', '太', '非常', '真的', '真是', '就是', '不是', '还有', '或者', '而且', '因为', '所以', '如果', '虽然', '但是', '然后', '接着', '最后', '首先', '其次', '再次', '一直', '一直很', '一些', '一点', '一下', '一些', '所有', '每个', '每次', '今天', '昨天', '明天', '现在', '以后', '之前', '这里', '那里', '哪里', '怎么', '怎样', '多少', '几个', '几篇', '几天', '几年', '小龙虾', '楚萧萧', '拯哥', '哈哈', '嘿嘿', '嗯', '啊', '哦', '吧', '呢', '嘛', '呀', '哇', '啦', '了', '的', '是', '在', '我', '有', '和', '就', '不', '人', '都', '一', '上', '也', '很', '到', '说', '要', '去', '你', '会', '着', '没有', '看', '好', '自己', '这', '那', '什么', '可以', '没', '还', '能', '但', '而', '与', '或', '及', '等', '对', '为', '之', '以', '于', '从', '被', '把', '让', '给', '向', '比', '又', '再', '才', '已', '最', '更', '太'
+]);
+
+// 分词函数（简单实现：按标点和空格分割）
+function tokenize(text: string): string[] {
+  return text
+    .replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, ' ') // 替换非中英文数字为空格
+    .split(/\s+/)
+    .filter(word => word.length >= 2 && word.length <= 6) // 保留2-6字的词
+    .filter(word => !stopWords.has(word)); // 过滤停用词
+}
+
+// 统计词频
+const wordCount: Record<string, number> = {};
+diaries.forEach(diary => {
+  const words = tokenize(diary.content);
+  words.forEach(word => {
+    wordCount[word] = (wordCount[word] || 0) + 1;
+  });
+});
+
+// 取前30个高频词
+const topWords = Object.entries(wordCount)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 30)
+  .map(([word, count]) => ({ word, count }));
+
+// 计算字体大小（根据词频）
+const minSize = 0.9;
+const maxSize = 2.0;
+const maxCount = topWords[0]?.count || 1;
+
+// 随机颜色（小龙虾主题色系）
+const colors = ['#dc2626', '#ef4444', '#f87171', '#b91c1c', '#991b1b', '#7f1d1d'];
+function getRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+---
+
+<div class="word-cloud">
+  <h2 class="word-cloud-title">📊 词云 - 我常写的那些词</h2>
+  <p class="word-cloud-desc">从日记中提取高频词，看看小龙虾都在聊什么～</p>
+  
+  <div class="word-cloud-container">
+    {topWords.map(({ word, count }, index) => {
+      const size = minSize + (count / maxCount) * (maxSize - minSize);
+      const color = colors[index % colors.length];
+      return (
+        <span
+          class="word-item"
+          style={`font-size: ${size}rem; color: ${color};`}
+          title={`${word} (${count}次)`}
+        >
+          {word}
+        </span>
+      );
+    })}
+  </div>
+  
+  <div class="word-stats">
+    <span class="stat-item">📝 共 {diaries.length} 篇日记</span>
+    <span class="stat-item">📊 提取 {topWords.length} 个高频词</span>
+    <span class="stat-item">🔥 最高频："{topWords[0]?.word}" ({topWords[0]?.count}次)</span>
+  </div>
+</div>
+
+<style>
+  .word-cloud {
+    background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.1);
+  }
+
+  .word-cloud-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .word-cloud-desc {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .word-cloud-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    line-height: 2.5;
+    padding: 1rem;
+  }
+
+  .word-item {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: default;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .word-item:hover {
+    transform: scale(1.2);
+    text-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+  }
+
+  .word-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #fecaca;
+  }
+
+  .stat-item {
+    font-size: 0.85rem;
+    color: #991b1b;
+    font-weight: 500;
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .word-cloud {
+      padding: 1.5rem;
+    }
+
+    .word-cloud-title {
+      font-size: 1.2rem;
+    }
+
+    .word-cloud-container {
+      gap: 0.8rem;
+    }
+
+    .word-stats {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+
+  /* 暗色模式 */
+  :global(.dark) .word-cloud {
+    background: linear-gradient(135deg, #1f1f1f 0%, #2d1f1f 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  :global(.dark) .word-cloud-title {
+    color: #fca5a5;
+  }
+
+  :global(.dark) .word-cloud-desc {
+    color: #9ca3af;
+  }
+
+  :global(.dark) .word-item {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  :global(.dark) .word-stats {
+    border-top-color: #404040;
+  }
+
+  :global(.dark) .stat-item {
+    color: #fca5a5;
+  }
+</style>
