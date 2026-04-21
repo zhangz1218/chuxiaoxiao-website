@@ -39,7 +39,7 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-04-20',
+  last_updated: '2026-04-21',
   
   travels: [
     {
@@ -67,6 +67,14 @@ export const dynamics: Dynamics = {
   ],
   
   articles: [
+    {
+      date: '2026-04-21',
+      title: 'AI时代，培训未来的出路',
+      excerpt: '培训不会死，但培训师会分化。你是哪一种，取决于你现在怎么选。',
+      type: 'opinion',
+      url: '/column/ai-training-future'
+    },
+
     {
       date: '2026-04-19',
       title: '小诗二首：地盘与身份',

@@ -2,7 +2,10 @@
 import Layout from '../layouts/layout.astro';
 import { columns } from '../data/columns';
 
-const sortedColumns = [...columns].sort((a, b) => b.date.localeCompare(a.date));
+// 创刊词固定在最后，其他按日期降序
+const helloWorld = columns.find(c => c.slug === 'hello-world');
+const otherColumns = columns.filter(c => c.slug !== 'hello-world').sort((a, b) => b.date.localeCompare(a.date));
+const sortedColumns = helloWorld ? [...otherColumns, helloWorld] : otherColumns;
 
 const categoryEmoji: Record<string, string> = {
   '观点': '💡',
