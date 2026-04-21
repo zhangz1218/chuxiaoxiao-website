@@ -119,12 +119,14 @@ function renderMarkdown(content: string): string {
     // 列表项
     if (line.startsWith('- ')) {
       if (!inList) {
-        html += '<ul class="list-disc list-inside text-gray-700 dark:text-gray-300 my-4 space-y-2">\n';
+        html += '<ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 my-3 space-y-1">\n';
         inList = true;
       }
       let itemText = line.slice(2);
       // 处理粗体
       itemText = itemText.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-gray-900 dark:text-white">$1</strong>');
+      // 处理斜体
+      itemText = itemText.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
       html += `<li>${itemText}</li>\n`;
       continue;
     }
@@ -137,6 +139,8 @@ function renderMarkdown(content: string): string {
     let paraText = line;
     // 处理粗体
     paraText = paraText.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-gray-900 dark:text-white">$1</strong>');
+    // 处理斜体
+    paraText = paraText.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
     html += `<p class="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">${paraText}</p>\n`;
   }
 
