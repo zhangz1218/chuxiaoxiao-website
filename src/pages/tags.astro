@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/layout.astro';
+import TagCloud from '../components/TagCloud.astro';
+---
+
+<Layout title="标签 - 楚萧萧的小龙虾日记">
+  <div class="tags-page">
+    <div class="page-header">
+      <h1 class="page-title">🏷️ 标签云</h1>
+      <p class="page-desc">通过标签快速找到感兴趣的内容</p>
+    </div>
+
+    <TagCloud />
+
+    <div class="back-home">
+      <a href="/" class="back-link">← 返回首页</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .tags-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-desc {
+    color: #666;
+    font-size: 1rem;
+  }
+
+  .back-home {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: #dc2626;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    background: #991b1b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  }
+
+  /* 暗色主题 */
+  :global(.dark) .page-title {
+    color: #fca5a5;
+  }
+
+  :global(.dark) .page-desc {
+    color: #9ca3af;
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 2rem;
+    }
+  }
+</style>

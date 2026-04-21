@@ -60,7 +60,8 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
           <span>楚萧萧</span>
         </a>
 
-        <div class="flex items-center gap-4 md:gap-6">
+        <!-- 桌面端导航 -->
+        <div class="hidden md:flex items-center gap-4 md:gap-6">
           <!-- 搜索按钮 -->
           <button 
             id="search-trigger"
@@ -73,13 +74,46 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
             <span>搜索</span>
           </button>
           
-          
           <a href="/diary" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">日记</a>
+          <a href="/tags" class="text-sm md:text-base font-medium hover:text-lobster-red transition-colors">标签</a>
           <a href="/calendar" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">日历</a>
           <a href="/column" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">专栏</a>
           <a href="/fortune" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">抽签</a>
           <a href="/dynamics" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">动态</a>
           <a href="/about" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">关于</a>
+        </div>
+
+        <!-- 手机端汉堡菜单 -->
+        <button 
+          id="mobile-menu-toggle"
+          class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors"
+          aria-label="打开菜单"
+        >
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 手机端下拉菜单 -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div class="container-wide px-4 py-4 space-y-3">
+          <button 
+            id="search-trigger-mobile"
+            class="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-lobster-red font-medium"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span>搜索</span>
+          </button>
+          <a href="/diary" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">日记</a>
+          <a href="/tags" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">标签</a>
+          <a href="/calendar" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">日历</a>
+          <a href="/column" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">专栏</a>
+          <a href="/fortune" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">抽签</a>
+          <a href="/dynamics" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">动态</a>
+          <a href="/about" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">关于</a>
         </div>
       </div>
     </nav>
@@ -128,15 +162,6 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
             </div>
           </a>
 
-                    <!-- RSS Subscribe -->
-          <div class="flex items-center gap-4">
-            <a href="/rss.xml" target="_blank" class="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-xs md:text-sm">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
-              </svg>
-              <span>RSS</span>
-            </a>
-          </div>
 
           <p class="text-xs md:text-sm text-white/60">
             © {new Date().getFullYear()} 楚萧萧 · 用 🦞 和 ❤️ 制作
@@ -162,6 +187,40 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
 </style>
 
 <script>
+
+  // 手机端汉堡菜单逻辑
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (mobileMenuToggle && mobileMenu) {
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // 点击菜单项后关闭菜单
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+  }
+
+  // 手机端搜索按钮
+  const searchTriggerMobile = document.getElementById('search-trigger-mobile');
+  if (searchTriggerMobile) {
+    searchTriggerMobile.addEventListener('click', () => {
+      // 关闭菜单
+      if (mobileMenu) {
+        mobileMenu.classList.add('hidden');
+      }
+      // 打开搜索
+      // @ts-ignore
+      if (window.openSearch) {
+        // @ts-ignore
+        window.openSearch();
+      }
+    });
+  }
   // 返回顶部按钮逻辑
   const backToTop = document.getElementById('back-to-top');
 

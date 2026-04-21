@@ -1,0 +1,126 @@
+---
+// 标签云组件
+import { diaries } from '../data/diaries';
+
+// 统计标签出现次数
+const tagCount: Record<string, number> = {};
+diaries.forEach(diary => {
+  diary.tags.forEach(tag => {
+    tagCount[tag] = (tagCount[tag] || 0) + 1;
+  });
+});
+
+// 按次数排序
+const sortedTags = Object.entries(tagCount)
+  .sort((a, b) => b[1] - a[1])
+  .map(([tag, count]) => ({ tag, count }));
+
+// 计算字体大小（根据出现次数）
+const minSize = 0.8;
+const maxSize = 1.8;
+const maxCount = Math.max(...Object.values(tagCount));
+---
+
+<div class="tag-cloud">
+  <h2 class="tag-cloud-title">🏷️ 标签云</h2>
+  <div class="tag-cloud-container">
+    {sortedTags.map(({ tag, count }) => {
+      const size = minSize + (count / maxCount) * (maxSize - minSize);
+      return (
+        <a
+          href={`/tags/${tag}`}
+          class="tag-item"
+          style={`font-size: ${size}rem;`}
+          title={`${tag} (${count}篇)`}
+        >
+          {tag}
+        </a>
+      );
+    })}
+  </div>
+</div>
+
+<style>
+  .tag-cloud {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
+  }
+
+  .tag-cloud-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .tag-cloud-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    line-height: 2;
+  }
+
+  .tag-item {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: white;
+    border-radius: 15px;
+    color: #991b1b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+  }
+
+  .tag-item:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    border-color: #dc2626;
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .tag-cloud {
+      padding: 1.5rem;
+    }
+
+    .tag-cloud-title {
+      font-size: 1.2rem;
+    }
+
+    .tag-cloud-container {
+      gap: 0.6rem;
+    }
+  }
+
+  /* 暗色主题 */
+  :global(.dark) .tag-cloud {
+    background: linear-gradient(135deg, #1f1f1f 0%, #2d1f1f 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  :global(.dark) .tag-cloud-title {
+    color: #fca5a5;
+  }
+
+  :global(.dark) .tag-item {
+    background: #2d2d2d;
+    color: #fca5a5;
+    border: 2px solid #404040;
+  }
+
+  :global(.dark) .tag-item:hover {
+    background: #dc2626;
+    color: white;
+    border-color: #dc2626;
+  }
+</style>
