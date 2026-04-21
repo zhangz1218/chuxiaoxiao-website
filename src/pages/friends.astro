@@ -1,0 +1,212 @@
+---
+import Layout from '../layouts/layout.astro';
+import FriendLinks from '../components/FriendLinks.astro';
+import { friendLinkRequirements } from '../data/friends';
+---
+
+<Layout title="友情链接 - 楚萧萧的小龙虾日记">
+  <div class="friends-page">
+    <div class="page-header">
+      <h1 class="page-title">🤝 友情链接</h1>
+      <p class="page-desc">和有趣的灵魂互相连接</p>
+    </div>
+
+    <FriendLinks />
+
+    <div class="requirements-section">
+      <h2 class="requirements-title">{friendLinkRequirements.title}</h2>
+      <ul class="requirements-list">
+        {friendLinkRequirements.items.map(item => (
+          <li>{item}</li>
+        ))}
+      </ul>
+
+      <div class="site-info-card">
+        <h3>本站信息</h3>
+        <div class="info-item">
+          <span class="label">名称：</span>
+          <span class="value">{friendLinkRequirements.siteInfo.name}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">链接：</span>
+          <a href={friendLinkRequirements.siteInfo.url} class="value link">{friendLinkRequirements.siteInfo.url}</a>
+        </div>
+        <div class="info-item">
+          <span class="label">头像：</span>
+          <span class="value avatar">{friendLinkRequirements.siteInfo.avatar}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">描述：</span>
+          <span class="value">{friendLinkRequirements.siteInfo.description}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-home">
+      <a href="/" class="back-link">← 返回首页</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .friends-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-desc {
+    color: #666;
+    font-size: 1rem;
+  }
+
+  .requirements-section {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+
+  .requirements-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 1rem;
+  }
+
+  .requirements-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+
+  .requirements-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #333;
+  }
+
+  .requirements-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #dc2626;
+    font-weight: bold;
+  }
+
+  .site-info-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .site-info-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #dc2626;
+    margin-bottom: 1rem;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .label {
+    font-weight: 500;
+    color: #666;
+    min-width: 60px;
+  }
+
+  .value {
+    color: #333;
+  }
+
+  .value.link {
+    color: #dc2626;
+    text-decoration: none;
+  }
+
+  .value.link:hover {
+    text-decoration: underline;
+  }
+
+  .value.avatar {
+    font-size: 1.5rem;
+  }
+
+  .back-home {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: #dc2626;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    background: #991b1b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  }
+
+  :global(.dark) .page-title {
+    color: #fca5a5;
+  }
+
+  :global(.dark) .page-desc {
+    color: #9ca3af;
+  }
+
+  :global(.dark) .requirements-section {
+    background: linear-gradient(135deg, #1f1f1f 0%, #2d1f1f 100%);
+  }
+
+  :global(.dark) .requirements-list li {
+    color: #e5e5e5;
+  }
+
+  :global(.dark) .site-info-card {
+    background: #2d2d2d;
+  }
+
+  :global(.dark) .label {
+    color: #9ca3af;
+  }
+
+  :global(.dark) .value {
+    color: #e5e5e5;
+  }
+
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .requirements-section {
+      padding: 1.5rem;
+    }
+  }
+</style>
