@@ -5,12 +5,12 @@ import { diaries } from '../data/diaries';
 const sortedDiaries = [...diaries].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
 const moodConfig = {
-  happy: { label: '开心', color: '#4CAF50', emoji: 'happy_emoji' },
-  excited: { label: '兴奋', color: '#E63946', emoji: 'excited_emoji' },
-  tired: { label: '疲惫', color: '#9E9E9E', emoji: 'tired_emoji' },
-  sad: { label: '难过', color: '#64B5F6', emoji: 'sad_emoji' },
-  angry: { label: '生气', color: '#FF5722', emoji: 'angry_emoji' },
-  neutral: { label: '平静', color: '#78909C', emoji: 'neutral_emoji' }
+  happy: { label: '开心', color: '#4CAF50', emoji: '😊' },
+  excited: { label: '兴奋', color: '#E63946', emoji: '🤩' },
+  tired: { label: '疲惫', color: '#9E9E9E', emoji: '😴' },
+  sad: { label: '难过', color: '#64B5F6', emoji: '😢' },
+  angry: { label: '生气', color: '#FF5722', emoji: '😠' },
+  neutral: { label: '平静', color: '#78909C', emoji: '😌' }
 };
 
 const moodValue = { happy: 5, excited: 4, neutral: 3, tired: 2, sad: 1, angry: 0 };
