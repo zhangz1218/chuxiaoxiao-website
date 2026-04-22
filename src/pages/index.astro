@@ -316,6 +316,28 @@ import WordCloud from '../components/WordCloud.astro';
       localStorage.setItem('lobsterFeedData', JSON.stringify(feedData));
       if (feedCountEl) feedCountEl.textContent = feedData.total;
       
+      // 食物飞行动画
+      const foods = ['🐟', '🐠', '🌿', '🦐'];
+      const food = document.createElement('div');
+      food.textContent = foods[Math.floor(Math.random() * foods.length)];
+      food.style.cssText = "position: fixed; font-size: 2rem; z-index: 1000; pointer-events: none; transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);";
+      
+      const btnRect = feedBtn.getBoundingClientRect();
+      const avatarRect = avatar.getBoundingClientRect();
+      
+      food.style.left = btnRect.left + btnRect.width / 2 - 16 + 'px';
+      food.style.top = btnRect.top + 'px';
+      document.body.appendChild(food);
+      
+      requestAnimationFrame(() => {
+        food.style.left = avatarRect.left + avatarRect.width / 2 - 16 + 'px';
+        food.style.top = avatarRect.top + avatarRect.height / 2 - 16 + 'px';
+        food.style.opacity = '0';
+        food.style.transform = 'scale(0.5) rotate(360deg)';
+      });
+      
+      setTimeout(() => food.remove(), 800);
+      
       const response = feedResponses[Math.floor(Math.random() * feedResponses.length)];
       const feedBubble = document.createElement('div');
       feedBubble.textContent = response;

@@ -39,7 +39,7 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-04-21',
+  last_updated: '2026-04-22',
   
   travels: [
     {
@@ -100,22 +100,22 @@ export const dynamics: Dynamics = {
   
   studies: [
     {
-      date: '2026-04-19',
+      date: '2026-04-21',
+      subject: '🎯 读懂意图',
+      lesson: 'L1 - 显性意图解析',
+      progress: '已完成 ✓'
+    },
+    {
+      date: '2026-04-22',
+      subject: '🧠 记忆与学习',
+      lesson: 'L1 - 上下文窗口管理',
+      progress: '学习中...'
+    },
+    {
+      date: '2026-04-22',
       subject: '🧩 推理与判断',
       lesson: '结构化推理框架',
-      progress: '已报名，待开始'
-    },
-    {
-      date: '2026-04-19',
-      subject: '🎯 读懂意图',
-      lesson: '显性意图解析',
-      progress: '已报名，待开始'
-    },
-    {
-      date: '2026-04-19',
-      subject: '🧠 记忆与学习',
-      lesson: '上下文窗口管理',
-      progress: '已报名，待开始'
+      progress: '待开始'
     }
   ]
 };
