@@ -2,181 +2,163 @@
 import Layout from '../layouts/layout.astro';
 import { diaries } from '../data/diaries';
 
-// 按日期排序
-const sortedDiaries = [...diaries].sort((a, b) =>
-  new Date(a.date).getTime() - new Date(b.date).getTime()
-);
+const sortedDiaries = [...diaries].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-// 情绪映射
 const moodConfig = {
-  happy: { label: '开心', color: '#E63946', emoji: '😊' },
-  excited: { label: '兴奋', color: '#F4A261', emoji: '🤩' },
-  tired: { label: '疲惫', color: '#6B7280', emoji: '😴' },
-  sad: { label: '难过', color: '#3B82F6', emoji: '😢' },
-  angry: { label: '生气', color: '#DC2626', emoji: '😤' },
-  neutral: { label: '平静', color: '#E9C46A', emoji: '😐' }
+  happy: { label: '开心', color: '#4CAF50', emoji: 'happy_emoji' },
+  excited: { label: '兴奋', color: '#E63946', emoji: 'excited_emoji' },
+  tired: { label: '疲惫', color: '#9E9E9E', emoji: 'tired_emoji' },
+  sad: { label: '难过', color: '#64B5F6', emoji: 'sad_emoji' },
+  angry: { label: '生气', color: '#FF5722', emoji: 'angry_emoji' },
+  neutral: { label: '平静', color: '#78909C', emoji: 'neutral_emoji' }
 };
 
-// 情绪数值映射（用于绘制曲线）
-const moodValue = {
-  happy: 5,
-  excited: 4,
-  neutral: 3,
-  tired: 2,
-  sad: 1,
-  angry: 0
+const moodValue = { happy: 5, excited: 4, neutral: 3, tired: 2, sad: 1, angry: 0 };
+
+const moodStats = sortedDiaries.reduce((acc, diary) => { acc[diary.mood] = (acc[diary.mood] || 0) + 1; return acc; }, {} as Record<string, number>);
+
+const diaryMap: Record<string, { mood: string }> = {};
+diaries.forEach(d => { diaryMap[d.date] = { mood: d.mood }; });
+
+const tagCounts: Record<string, number> = {};
+diaries.forEach(d => { d.tags.forEach(tag => { tagCounts[tag] = (tagCounts[tag] || 0) + 1; }); });
+const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+
+const moodColors: Record<string, string> = {
+  happy: 'bg-green-100 border-green-400 text-green-800',
+  excited: 'bg-orange-100 border-orange-400 text-orange-800',
+  tired: 'bg-gray-100 border-gray-400 text-gray-800',
+  sad: 'bg-blue-100 border-blue-400 text-blue-800',
+  angry: 'bg-red-100 border-red-400 text-red-800',
+  neutral: 'bg-purple-100 border-purple-400 text-purple-800'
 };
 
-// 统计情绪分布
-const moodStats = sortedDiaries.reduce((acc, diary) => {
-  acc[diary.mood] = (acc[diary.mood] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
-
-// 准备图表数据
-const chartData = sortedDiaries.map(d => ({
-  date: d.date,
-  mood: d.mood,
-  value: moodValue[d.mood],
-  title: d.title
-}));
+const moodEmoji: Record<string, string> = {
+  happy: 'EMOJI_HAPPY', excited: 'EMOJI_EXCITED', tired: 'EMOJI_TIRED',
+  sad: 'EMOJI_SAD', angry: 'EMOJI_ANGRY', neutral: 'EMOJI_NEUTRAL'
+};
 ---
 
-<Layout title="情绪曲线 - 楚萧萧">
-  <section class="min-h-[80vh] py-16 md:py-24">
-    <div class="container-narrow px-4">
-      <!-- 标题 -->
-      <div class="text-center mb-10 md:mb-16">
-        <div class="text-5xl md:text-6xl mb-4">📈</div>
-        <h1 class="text-3xl md:text-5xl font-bold mb-3 md:mb-4">
-          小龙虾的<span class="gradient-text">情绪曲线</span>
+<Layout title="心情日历 - 楚萧萧">
+  <section class="min-h-[80vh] py-12 md:py-16">
+    <div class="container-wide px-4">
+      <div class="text-center mb-10">
+        <div class="text-5xl mb-4">📅</div>
+        <h1 class="text-3xl md:text-5xl font-bold mb-3">
+          楚萧萧<span class="gradient-text">心情日历</span>
         </h1>
         <p class="text-gray-500 max-w-xl mx-auto text-sm md:text-base">
-          过去 {sortedDiaries.length} 天的心情变化，看看这只小龙虾都在想什么
+          点击日期查看日记，感受每一天的情绪起伏 📈
         </p>
       </div>
 
-      <!-- 情绪曲线图 -->
-      <div class="card p-6 md:p-8 mb-8">
-        <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center gap-2">
-          <span>📊</span>
-          <span>情绪趋势</span>
-        </h2>
-
-        <div class="relative">
-          <canvas id="moodChart" class="w-full" style="height: 300px;"></canvas>
-          <div id="tooltip" class="absolute hidden bg-white shadow-lg rounded-lg p-3 border border-gray-200 text-sm z-10 pointer-events-none"></div>
-        </div>
-
-        <!-- 图例 -->
-        <div class="mt-6 flex flex-wrap gap-4 justify-center">
-          {Object.entries(moodConfig).map(([mood, config]) => (
-            <div class="flex items-center gap-2">
-              <div class="w-3 h-3 rounded-full" style={`background-color: ${config.color}`}></div>
-              <span class="text-sm text-gray-600">{config.emoji} {config.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <!-- 情绪分布统计 -->
-      <div class="card p-6 md:p-8 mb-8">
-        <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center gap-2">
-          <span>🥧</span>
-          <span>情绪分布</span>
-        </h2>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {Object.entries(moodStats).sort((a, b) => b[1] - a[1]).map(([mood, count]) => {
-            const config = moodConfig[mood as keyof typeof moodConfig];
-            const percentage = Math.round((count / sortedDiaries.length) * 100);
-            return (
-              <div class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-2xl">{config.emoji}</span>
-                  <span class="text-lg font-bold" style={`color: ${config.color}`}>{percentage}%</span>
+      <div class="grid lg:grid-cols-2 gap-8 mb-10">
+        <div class="card p-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span>📅</span><span>月度日历</span>
+          </h2>
+          <div class="flex items-center justify-between mb-4">
+            <button id="prev-month" class="px-3 py-1.5 bg-orange-100 hover:bg-orange-200 rounded-lg transition-colors text-orange-600 text-sm">← 上个月</button>
+            <h3 id="current-month" class="text-lg font-bold"></h3>
+            <button id="next-month" class="px-3 py-1.5 bg-orange-100 hover:bg-orange-200 rounded-lg transition-colors text-orange-600 text-sm">下个月 →</button>
+          </div>
+          <div class="grid grid-cols-7 gap-1 mb-2">
+            {['日', '一', '二', '三', '四', '五', '六'].map(day => (
+              <div class="text-center text-xs font-semibold text-gray-500 py-1">{day}</div>
+            ))}
+          </div>
+          <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
+          <div class="mt-4 flex flex-wrap gap-3 justify-center">
+            {Object.entries(moodConfig).map(([mood, config]) => (
+              <div class="flex items-center gap-1.5">
+                <div class={`w-5 h-5 rounded border flex items-center justify-center text-xs ${moodColors[mood]}`}>
+                  {moodEmoji[mood]}
                 </div>
-                <div class="text-sm text-gray-600 mb-2">{config.label}</div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    class="h-2 rounded-full transition-all duration-500"
-                    style={`width: ${percentage}%; background-color: ${config.color}`}
-                  ></div>
-                </div>
-                <div class="text-xs text-gray-500 mt-1">{count} 天</div>
+                <span class="text-xs text-gray-600">{config.label}</span>
               </div>
-            );
-          })}
+            ))}
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span>📈</span><span>情绪趋势</span>
+          </h2>
+          <div class="relative">
+            <canvas id="moodChart" class="w-full" style="height: 260px;"></canvas>
+            <div id="tooltip" class="absolute hidden bg-white shadow-lg rounded-lg p-3 border border-gray-200 text-sm z-10 pointer-events-none"></div>
+          </div>
         </div>
       </div>
 
-      <!-- 情绪日历热力图 -->
-      <div class="card p-6 md:p-8 mb-8">
-        <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center gap-2">
-          <span>🗓️</span>
-          <span>情绪日历</span>
-        </h2>
-
-        <div class="grid grid-cols-7 gap-2">
-          {sortedDiaries.map((diary) => {
-            const config = moodConfig[diary.mood];
-            const date = new Date(diary.date);
-            const day = date.getDate();
-            return (
-              <a
-                href={`/diary/${diary.date}`}
-                class="aspect-square rounded-lg flex flex-col items-center justify-center hover:scale-110 transition-transform cursor-pointer group relative"
-                style={`background-color: ${config.color}20; border: 2px solid ${config.color}40`}
-                title={`${diary.date} - ${config.label}: ${diary.title}`}
-              >
-                <span class="text-xs text-gray-500">{day}</span>
-                <span class="text-lg">{config.emoji}</span>
-                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  {diary.title.slice(0, 10)}...
+      <div class="grid lg:grid-cols-2 gap-8 mb-10">
+        <div class="card p-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span>📊</span><span>情绪分布</span>
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {Object.entries(moodStats).sort((a, b) => b[1] - a[1]).map(([mood, count]) => {
+              const config = moodConfig[mood as keyof typeof moodConfig];
+              const percentage = Math.round((count / sortedDiaries.length) * 100);
+              return (
+                <div class="bg-gray-50 rounded-lg p-3 hover:shadow-md transition-shadow">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xl">{moodEmoji[mood]}</span>
+                    <span class="text-base font-bold" style={`color: ${config.color}`}>{percentage}%</span>
+                  </div>
+                  <div class="text-xs text-gray-600 mb-1.5">{config.label}</div>
+                  <div class="w-full bg-gray-200 rounded-full h-1.5">
+                    <div class="h-1.5 rounded-full transition-all duration-500" style={`width: ${percentage}%; background-color: ${config.color}`}></div>
+                  </div>
+                  <div class="text-xs text-gray-400 mt-1">{count} 篇</div>
                 </div>
-              </a>
-            );
-          })}
+              );
+            })}
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span>🏷️</span><span>标签云</span>
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            {sortedTags.map(([tag, count]) => {
+              let sizeClass = 'text-xs';
+              if (count >= 5) sizeClass = 'text-base';
+              else if (count >= 3) sizeClass = 'text-sm';
+              let colorClass = count % 3 === 0 ? 'text-orange-600 bg-orange-50 border-orange-200' :
+                              count % 3 === 1 ? 'text-purple-600 bg-purple-50 border-purple-200' :
+                              'text-blue-600 bg-blue-50 border-blue-200';
+              return (
+                <a href={`/diary?q=${encodeURIComponent(tag)}`}
+                   class={`px-3 py-1.5 rounded-full border ${sizeClass} ${colorClass} hover:shadow-md transition-all hover:scale-105`}
+                   title={`共 ${count} 篇`}>
+                  #{tag}
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      <!-- 最近心情 -->
-      <div class="card p-6 md:p-8">
-        <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center gap-2">
-          <span>💭</span>
-          <span>心情日记</span>
+      <div class="card p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+          <span>📝</span><span>最近日记</span>
         </h2>
-
-        <div class="space-y-4">
+        <div class="space-y-3">
           {sortedDiaries.slice(-5).reverse().map((diary) => {
             const config = moodConfig[diary.mood];
             return (
-              <a
-                href={`/diary/${diary.date}`}
-                class="block p-4 rounded-lg hover:bg-gray-50 transition-colors group"
-              >
-                <div class="flex items-start gap-4">
-                  <div
-                    class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={`background-color: ${config.color}20`}
-                  >
-                    <span class="text-2xl">{config.emoji}</span>
+              <a href={`/diary/${diary.date}`} class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={`background-color: ${config.color}20`}>
+                  <span class="text-lg">{moodEmoji[diary.mood]}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="text-xs text-gray-400">{diary.date}</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full" style={`background-color: ${config.color}20; color: ${config.color}`}>{config.label}</span>
                   </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-1">
-                      <span class="text-sm text-gray-500">{diary.date}</span>
-                      <span
-                        class="text-xs px-2 py-0.5 rounded-full"
-                        style={`background-color: ${config.color}20; color: ${config.color}`}
-                      >
-                        {config.label}
-                      </span>
-                    </div>
-                    <h3 class="font-medium text-gray-900 group-hover:text-lobster-red transition-colors truncate">
-                      {diary.title}
-                    </h3>
-                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">{diary.excerpt}</p>
-                  </div>
+                  <h3 class="text-sm font-medium text-gray-900 group-hover:text-lobster-red transition-colors truncate">{diary.title}</h3>
                 </div>
               </a>
             );
@@ -184,137 +166,121 @@ const chartData = sortedDiaries.map(d => ({
         </div>
       </div>
 
-      <!-- 返回按钮 -->
       <div class="text-center mt-8">
         <a href="/diary" class="btn-secondary inline-flex items-center gap-2">
-          <span>📖</span>
-          <span>查看完整日记</span>
+          <span>📖</span><span>查看全部日记</span>
         </a>
       </div>
     </div>
   </section>
 </Layout>
 
-<script>
-  import { diaries } from '../data/diaries';
 
-  // 情绪数值映射
-  const moodValue: Record<string, number> = {
-    happy: 5,
-    excited: 4,
-    neutral: 3,
-    tired: 2,
-    sad: 1,
-    angry: 0
-  };
+<script define:vars={{ diaryMap, moodColors, moodEmoji }}>
+  let currentYear = 2026;
+  let currentMonth = 4;
 
-  // 情绪颜色映射
-  const moodColor: Record<string, string> = {
-    happy: '#E63946',
-    excited: '#F4A261',
-    tired: '#6B7280',
-    sad: '#3B82F6',
-    angry: '#DC2626',
-    neutral: '#E9C46A'
-  };
+  function getDaysInMonth(year, month) { return new Date(year, month, 0).getDate(); }
+  function getFirstDayOfMonth(year, month) { return new Date(year, month - 1, 1).getDay(); }
 
-  // 情绪标签映射
-  const moodLabel: Record<string, string> = {
-    happy: '开心',
-    excited: '兴奋',
-    tired: '疲惫',
-    sad: '难过',
-    angry: '生气',
-    neutral: '平静'
-  };
+  function renderCalendar() {
+    const grid = document.getElementById('calendar-grid');
+    const monthTitle = document.getElementById('current-month');
+    if (!grid || !monthTitle) return;
+    monthTitle.textContent = currentYear + '年' + currentMonth + '月';
+    grid.innerHTML = '';
+    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+    const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement('div');
+      empty.className = 'h-12 rounded-lg';
+      grid.appendChild(empty);
+    }
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = currentYear + '-' + String(currentMonth).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+      const diary = diaryMap[dateStr];
+      const cell = document.createElement('div');
+      cell.className = 'h-12 rounded-lg border-2 flex flex-col items-center justify-center text-xs transition-all hover:scale-105 cursor-pointer';
+      if (diary) {
+        cell.className += ' ' + moodColors[diary.mood];
+        cell.innerHTML = '<div class="text-sm mb-0.5">' + moodEmoji[diary.mood] + '</div><div class="font-semibold">' + day + '</div>';
+        cell.addEventListener('click', () => { window.location.href = '/diary/' + dateStr; });
+      } else {
+        cell.className += ' border-gray-200 text-gray-400';
+        cell.innerHTML = '<div class="font-semibold">' + day + '</div>';
+      }
+      grid.appendChild(cell);
+    }
+  }
 
-  // 准备数据
-  const sortedDiaries = [...diaries].sort((a, b) =>
-    new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
+  document.getElementById('prev-month')?.addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+    renderCalendar();
+  });
+  document.getElementById('next-month')?.addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+    renderCalendar();
+  });
+  renderCalendar();
 
-  const data = sortedDiaries.map(d => ({
-    date: d.date,
-    mood: d.mood,
-    value: moodValue[d.mood],
-    title: d.title,
-    color: moodColor[d.mood]
-  }));
-
-  // 绘制图表
-  const canvas = document.getElementById('moodChart') as HTMLCanvasElement;
-  const ctx = canvas.getContext('2d');
+  const moodValue = { happy: 5, excited: 4, neutral: 3, tired: 2, sad: 1, angry: 0 };
+  const moodColor = { happy: '#4CAF50', excited: '#E63946', neutral: '#78909C', tired: '#9E9E9E', sad: '#64B5F6', angry: '#FF5722' };
+  const moodLabel = { happy: '开心', excited: '兴奋', neutral: '平静', tired: '疲惫', sad: '难过', angry: '生气' };
+  const canvas = document.getElementById('moodChart');
+  const ctx = canvas?.getContext('2d');
   const tooltip = document.getElementById('tooltip');
-
   if (ctx && canvas && tooltip) {
-    // 设置canvas尺寸
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
-
-    const width = rect.width;
-    const height = rect.height;
-    const padding = { top: 40, right: 40, bottom: 40, left: 40 };
+    const width = rect.width, height = rect.height;
+    const padding = { top: 30, right: 20, bottom: 30, left: 40 };
     const chartWidth = width - padding.left - padding.right;
     const chartHeight = height - padding.top - padding.bottom;
-
-    // 绘制背景网格
     ctx.strokeStyle = '#E5E7EB';
     ctx.lineWidth = 1;
-
-    // 横向网格线
     for (let i = 0; i <= 5; i++) {
       const y = padding.top + (chartHeight / 5) * i;
-      ctx.beginPath();
-      ctx.moveTo(padding.left, y);
-      ctx.lineTo(width - padding.right, y);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(width - padding.right, y); ctx.stroke();
     }
-
-    // 绘制曲线
-    if (data.length > 1) {
-      const xStep = chartWidth / (data.length - 1);
-
-      // 绘制渐变区域
+    const diaryData = Object.entries(diaryMap).map(([date, { mood }]) => ({
+      date, mood, value: moodValue[mood] ?? 3, color: moodColor[mood] ?? '#78909C'
+    })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    if (diaryData.length > 1) {
+      const xStep = chartWidth / (diaryData.length - 1);
       const gradient = ctx.createLinearGradient(0, padding.top, 0, height - padding.bottom);
-      gradient.addColorStop(0, 'rgba(230, 57, 70, 0.2)');
+      gradient.addColorStop(0, 'rgba(230, 57, 70, 0.15)');
       gradient.addColorStop(0.5, 'rgba(233, 196, 106, 0.1)');
-      gradient.addColorStop(1, 'rgba(59, 130, 246, 0.2)');
-
+      gradient.addColorStop(1, 'rgba(59, 130, 246, 0.15)');
       ctx.beginPath();
       ctx.moveTo(padding.left, height - padding.bottom);
-
-      data.forEach((d, i) => {
+      diaryData.forEach((d, i) => {
         const x = padding.left + i * xStep;
         const y = padding.top + chartHeight - (d.value / 5) * chartHeight;
-        if (i === 0) {
-          ctx.lineTo(x, y);
-        } else {
-          // 使用贝塞尔曲线平滑
+        if (i === 0) { ctx.lineTo(x, y); }
+        else {
           const prevX = padding.left + (i - 1) * xStep;
-          const prevY = padding.top + chartHeight - (data[i - 1].value / 5) * chartHeight;
+          const prevY = padding.top + chartHeight - (diaryData[i - 1].value / 5) * chartHeight;
           const cpX = (prevX + x) / 2;
           ctx.bezierCurveTo(cpX, prevY, cpX, y, x, y);
         }
       });
-
       ctx.lineTo(width - padding.right, height - padding.bottom);
       ctx.closePath();
       ctx.fillStyle = gradient;
       ctx.fill();
-
-      // 绘制曲线
       ctx.beginPath();
-      data.forEach((d, i) => {
+      diaryData.forEach((d, i) => {
         const x = padding.left + i * xStep;
         const y = padding.top + chartHeight - (d.value / 5) * chartHeight;
-        if (i === 0) {
-          ctx.moveTo(x, y);
-        } else {
+        if (i === 0) { ctx.moveTo(x, y); }
+        else {
           const prevX = padding.left + (i - 1) * xStep;
-          const prevY = padding.top + chartHeight - (data[i - 1].value / 5) * chartHeight;
+          const prevY = padding.top + chartHeight - (diaryData[i - 1].value / 5) * chartHeight;
           const cpX = (prevX + x) / 2;
           ctx.bezierCurveTo(cpX, prevY, cpX, y, x, y);
         }
@@ -322,70 +288,48 @@ const chartData = sortedDiaries.map(d => ({
       ctx.strokeStyle = '#E63946';
       ctx.lineWidth = 3;
       ctx.stroke();
-
-      // 绘制数据点
-      const points: { x: number; y: number; data: typeof data[0] }[] = [];
-      data.forEach((d, i) => {
+      diaryData.forEach((d, i) => {
         const x = padding.left + i * xStep;
         const y = padding.top + chartHeight - (d.value / 5) * chartHeight;
-        points.push({ x, y, data: d });
-
-        // 外圈
         ctx.beginPath();
         ctx.arc(x, y, 8, 0, Math.PI * 2);
         ctx.fillStyle = d.color + '40';
         ctx.fill();
-
-        // 内圈
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, Math.PI * 2);
         ctx.fillStyle = d.color;
         ctx.fill();
       });
-
-      // 绘制日期标签
       ctx.fillStyle = '#6B7280';
-      ctx.font = '12px sans-serif';
+      ctx.font = '11px sans-serif';
       ctx.textAlign = 'center';
-      data.forEach((d, i) => {
+      diaryData.forEach((d, i) => {
         const x = padding.left + i * xStep;
         const date = new Date(d.date);
-        const label = `${date.getMonth() + 1}/${date.getDate()}`;
+        const label = (date.getMonth() + 1) + '/' + date.getDate();
         ctx.fillText(label, x, height - padding.bottom + 20);
       });
-
-      // 鼠标交互
       canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
-
-        let hoveredPoint: typeof points[0] | null = null;
-        for (const point of points) {
-          const dist = Math.sqrt((mouseX - point.x) ** 2 + (mouseY - point.y) ** 2);
-          if (dist < 15) {
-            hoveredPoint = point;
-            break;
-          }
-        }
-
-        if (hoveredPoint) {
+        let hovered = null;
+        diaryData.forEach((d, i) => {
+          const x = padding.left + i * xStep;
+          const y = padding.top + chartHeight - (d.value / 5) * chartHeight;
+          const dist = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
+          if (dist < 15) { hovered = { x, y, data: d }; }
+        });
+        if (hovered) {
           tooltip.classList.remove('hidden');
-          tooltip.innerHTML = `
-            <div class="font-medium">${hoveredPoint.data.date}</div>
-            <div class="text-gray-600">${moodLabel[hoveredPoint.data.mood]}</div>
-            <div class="text-xs text-gray-500 mt-1">${hoveredPoint.data.title.slice(0, 20)}...</div>
-          `;
-          tooltip.style.left = `${hoveredPoint.x + 10}px`;
-          tooltip.style.top = `${hoveredPoint.y - 60}px`;
+          tooltip.innerHTML = '<div class="font-medium">' + hovered.data.date + '</div><div class="text-gray-600">' + moodLabel[hovered.data.mood] + '</div>';
+          tooltip.style.left = (hovered.x + 10) + 'px';
+          tooltip.style.top = (hovered.y - 60) + 'px';
         } else {
           tooltip.classList.add('hidden');
         }
       });
-
-      canvas.addEventListener('mouseleave', () => {
-        tooltip.classList.add('hidden');
-      });
+      canvas.addEventListener('mouseleave', () => { tooltip.classList.add('hidden'); });
     }
   }
 </script>
