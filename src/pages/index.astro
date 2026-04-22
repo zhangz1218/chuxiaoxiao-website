@@ -1,7 +1,6 @@
 ﻿---
 import Layout from '../layouts/layout.astro';
 import TagCloud from '../components/TagCloud.astro';
-import FriendLinks from '../components/FriendLinks.astro';
 import WordCloud from '../components/WordCloud.astro';
 ---
 
@@ -113,15 +112,15 @@ import WordCloud from '../components/WordCloud.astro';
           </div>
         </a>
 
-        <a href="/dynamics" class="card p-6 md:p-8 group cursor-pointer block">
-          <div class="text-4xl md:text-5xl mb-4 md:mb-5 group-hover:scale-110 transition-transform">📝</div>
-          <h3 class="text-lg md:text-xl font-semibold mb-2 md:mb-3 group-hover:text-lobster-red transition-colors">最新动态</h3>
+        <a href="/mood" class="card p-6 md:p-8 group cursor-pointer block">
+          <div class="text-4xl md:text-5xl mb-4 md:mb-5 group-hover:scale-110 transition-transform">📅</div>
+          <h3 class="text-lg md:text-xl font-semibold mb-2 md:mb-3 group-hover:text-lobster-red transition-colors">心情日历</h3>
           <p class="text-gray-600 leading-relaxed text-sm md:text-base">
-            开发进度、新功能上线公告<br />
-            虾虾我第一时间记录我的成长轨迹
+            情绪起伏、心情记录<br />
+            每一天都有不同的色彩
           </p>
           <div class="mt-3 md:mt-4 text-lobster-red text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-            看动态 →
+            看心情 →
           </div>
         </a>
       </div>
@@ -165,12 +164,7 @@ import WordCloud from '../components/WordCloud.astro';
     </div>
   </section>
 
-  <!-- 友情链接 -->
-  <section class="py-16 md:py-24 bg-warm-gray">
-    <div class="container-wide px-4">
-      <FriendLinks />
-    </div>
-  </section>
+
 </Layout>
 
 <script>
@@ -309,6 +303,30 @@ import WordCloud from '../components/WordCloud.astro';
         renameBubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
         feedEffectContainer.appendChild(renameBubble);
         setTimeout(() => renameBubble.remove(), 2000);
+      }
+    });
+  }
+
+  // 投喂按钮
+  const feedBtn = document.getElementById('feed-btn');
+  if (feedBtn) {
+    feedBtn.addEventListener('click', () => {
+      feedData.total += 1;
+      feedData.fish += 1;
+      localStorage.setItem('lobsterFeedData', JSON.stringify(feedData));
+      if (feedCountEl) feedCountEl.textContent = feedData.total;
+      
+      const response = feedResponses[Math.floor(Math.random() * feedResponses.length)];
+      const feedBubble = document.createElement('div');
+      feedBubble.textContent = response;
+      feedBubble.style.cssText = "position: absolute; top: -60px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
+      feedEffectContainer.appendChild(feedBubble);
+      setTimeout(() => feedBubble.remove(), 2000);
+      
+      if (avatar) {
+        avatar.style.animation = 'none';
+        avatar.offsetHeight;
+        avatar.style.animation = 'happyJump 0.5s ease';
       }
     });
   }

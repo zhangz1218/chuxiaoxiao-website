@@ -1,4 +1,16 @@
 ﻿@import "tailwindcss";
+
+/* Tailwind v4 主题配置 */
+@theme {
+  --color-lobster-red: #E63946;
+  --color-lobster-orange: #F4A261;
+  --color-lobster-gold: #E9C46A;
+  --color-ocean-deep: #264653;
+  --color-ocean-teal: #2A9D8F;
+  --color-cream: #FAF9F6;
+  --color-warm-gray: #F5F3EF;
+}
+
 @plugin "@tailwindcss/typography";
 
 /* === 楚萧萧网站 - 主题系统 === */
