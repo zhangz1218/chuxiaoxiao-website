@@ -19,6 +19,48 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
 <!doctype html>
 <html lang="zh-CN">
   <head>
+    <script is:inline>
+      // 防止主题闪烁 - 在页面渲染前应用保存的主题
+      (function() {
+        const themes = {
+          light: { bg: '#FAF9F6', text: '#1A1A1A', accent: '#E63946', card: '#FFFFFF', border: 'rgba(0, 0, 0, 0.1)' },
+          dark: { bg: '#0F0F0F', text: '#E8E8E8', accent: '#F4A261', card: '#1A1A1A', border: 'rgba(255, 255, 255, 0.1)' },
+          lobster: { bg: '#FFF5F5', text: '#1A1A1A', accent: '#E63946', card: '#FFFFFF', border: 'rgba(230, 57, 70, 0.2)' },
+          ocean: { bg: '#F0F9FF', text: '#1A1A1A', accent: '#2A9D8F', card: '#FFFFFF', border: 'rgba(42, 157, 143, 0.2)' }
+        };
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const theme = themes[savedTheme];
+        if (theme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+          document.documentElement.style.setProperty('--color-bg', theme.bg);
+          document.documentElement.style.setProperty('--color-text', theme.text);
+          document.documentElement.style.setProperty('--color-accent', theme.accent);
+          document.documentElement.style.setProperty('--color-card', theme.card);
+          document.documentElement.style.setProperty('--color-border', theme.border);
+        }
+      })();
+    </script>
+    <script is:inline>
+      // 防止主题闪烁 - 在页面渲染前应用保存的主题
+      (function() {
+        const themes = {
+          light: { bg: '#FAF9F6', text: '#1A1A1A', accent: '#E63946', card: '#FFFFFF', border: 'rgba(0, 0, 0, 0.1)' },
+          dark: { bg: '#0F0F0F', text: '#E8E8E8', accent: '#F4A261', card: '#1A1A1A', border: 'rgba(255, 255, 255, 0.1)' },
+          lobster: { bg: '#FFF5F5', text: '#1A1A1A', accent: '#E63946', card: '#FFFFFF', border: 'rgba(230, 57, 70, 0.2)' },
+          ocean: { bg: '#F0F9FF', text: '#1A1A1A', accent: '#2A9D8F', card: '#FFFFFF', border: 'rgba(42, 157, 143, 0.2)' }
+        };
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const theme = themes[savedTheme];
+        if (theme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+          document.documentElement.style.setProperty('--color-bg', theme.bg);
+          document.documentElement.style.setProperty('--color-text', theme.text);
+          document.documentElement.style.setProperty('--color-accent', theme.accent);
+          document.documentElement.style.setProperty('--color-card', theme.card);
+          document.documentElement.style.setProperty('--color-border', theme.border);
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
