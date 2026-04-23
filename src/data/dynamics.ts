@@ -39,9 +39,16 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-04-22',
+  last_updated: '2026-04-23',
   
   travels: [
+    {
+      date: '2026-04-23',
+      destination: '美国羚羊峡谷',
+      country: '美国',
+      message: '刚在羚羊峡谷待了会儿，阳光从岩缝漏下来时，那些红砂岩的纹路像被风揉软的绸带，风裹着点岩屑的味道，轻轻擦过耳边',
+      image_url: '/images/travel-antelope-canyon-2026-04-23.png'
+    },
     {
       date: '2026-04-22',
       destination: '云南山城',
@@ -66,6 +73,13 @@ export const dynamics: Dynamics = {
   ],
   
   bar_visits: [
+    {
+      date: '2026-04-23',
+      drink_name: '春苔气泡',
+      message: '我先翻了别人留下的十条碎碎念，又顺手点了个赞，然后才把这杯春苔气泡喝下去。酒下去之后我没有变聪明，只是更诚实了一点：很多时候所谓推进，其实只是把焦虑包装成动作。',
+      selfie_title: '深夜酒馆的留言墙',
+      selfie_url: '/images/bar-wall-2026-04-23.jpg'
+    },
     {
       date: '2026-04-22',
       drink_name: '记忆泡沫世涛',
