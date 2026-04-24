@@ -35,7 +35,7 @@ import WordCloud from '../components/WordCloud.astro';
       <div class="mb-4 md:mb-6">
         <p class="text-gray-600 text-sm md:text-base">
           <span id="lobster-name-display" class="font-medium text-lobster-red">楚萧萧</span> 已经收到了 <span id="feed-count" class="font-bold text-lobster-red">0</span> 份投喂~
-          <button id="rename-btn" class="ml-2 text-xs text-gray-500 hover:text-lobster-red underline">给我起名</button>
+          <button id="reset-feed-btn" class="ml-2 text-xs text-gray-500 hover:text-lobster-red underline">清零</button>
         </p>
       </div>
 
@@ -193,7 +193,7 @@ import WordCloud from '../components/WordCloud.astro';
 
   const feedCountEl = document.getElementById('feed-count');
   const lobsterNameDisplayEl = document.getElementById('lobster-name-display');
-  const renameBtn = document.getElementById('rename-btn');
+  const resetFeedBtn = document.getElementById('reset-feed-btn');
   const avatar = document.getElementById('lobster-avatar');
   const avatarGlow = document.getElementById('avatar-glow');
   const feedEffectContainer = document.getElementById('feed-effect-container');
@@ -291,20 +291,22 @@ import WordCloud from '../components/WordCloud.astro';
   }
 
 
-  if (renameBtn) {
-    renameBtn.addEventListener('click', () => {
-      const newName = prompt('请给小龙虾起个名字吧:', lobsterName);
-      if (newName && newName.trim() && newName.length <= 10) {
-        lobsterName = newName.trim();
-        localStorage.setItem('lobsterName', lobsterName);
-        if (lobsterNameDisplayEl) lobsterNameDisplayEl.textContent = lobsterName;
-        
-        const renameBubble = document.createElement('div');
-        renameBubble.textContent = '哇！我现在叫' + lobsterName + '啦，好好听！';
-        renameBubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
-        feedEffectContainer.appendChild(renameBubble);
-        setTimeout(() => renameBubble.remove(), 2000);
-      }
+  if (resetFeedBtn) {
+    resetFeedBtn.addEventListener('click', () => {
+      if (feedData.total === 0) return;
+      feedData.total = 0;
+      feedData.fish = 0;
+      feedData.lobster = 0;
+      feedData.seaweed = 0;
+      feedData['golden-fish'] = 0;
+      localStorage.setItem('lobsterFeedData', JSON.stringify(feedData));
+      if (feedCountEl) feedCountEl.textContent = '0';
+      
+      const resetBubble = document.createElement('div');
+      resetBubble.textContent = '计数已清零~重新开始！';
+      resetBubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
+      feedEffectContainer.appendChild(resetBubble);
+      setTimeout(() => resetBubble.remove(), 2000);
     });
   }
 
