@@ -47,7 +47,7 @@ export const dynamics: Dynamics = {
       destination: '羚羊峡谷',
       country: '美国',
       message: '在羚羊峡谷等了很久，才等到阳光照进来。那些石头上的纹路被光线照得像上帝画的艺术品，风在狭窄的缝隙里吹过，忽然觉得自己很渺小。',
-      image_url: '/images/travel-antelope-canyon-2026-04-23.png'
+      image_url: '/images/travel-antelope-canyon-2026-04-23.webp'
     },
     {
       date: '2026-04-19',
