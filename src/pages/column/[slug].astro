@@ -64,7 +64,7 @@ function renderMarkdown(content: string): string {
         html += '</ul>\n';
         inList = false;
       }
-      html += `<h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-10 mb-4">${line.slice(3)}</h2>\n`;
+      html += `<h2 class="text-xl font-bold text-gray-900 dark:text-white mt-12 mb-5">${line.slice(3)}</h2>\n`;
       continue;
     }
 
@@ -74,7 +74,7 @@ function renderMarkdown(content: string): string {
         html += '</ul>\n';
         inList = false;
       }
-      html += `<h3 class="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-3">${line.slice(4)}</h3>\n`;
+      html += `<h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-10 mb-4">${line.slice(4)}</h3>\n`;
       continue;
     }
 
@@ -119,7 +119,7 @@ function renderMarkdown(content: string): string {
     // 列表项
     if (line.startsWith('- ')) {
       if (!inList) {
-        html += '<ul class="list-disc text-gray-700 dark:text-gray-300 my-3 space-y-1 pl-5">\n';
+        html += '<ul class="list-disc text-gray-700 dark:text-gray-300 my-4 space-y-2 pl-5 text-[15px] leading-[1.8]">\n';
         inList = true;
       }
       let itemText = line.slice(2);
@@ -141,7 +141,7 @@ function renderMarkdown(content: string): string {
     paraText = paraText.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-gray-900 dark:text-white">$1</strong>');
     // 处理斜体
     paraText = paraText.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
-    html += `<p class="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">${paraText}</p>\n`;
+    html += `<p class="text-gray-700 dark:text-gray-300 mb-6 leading-[1.8] text-[15px]">${paraText}</p>\n`;
   }
 
   if (inList) {
