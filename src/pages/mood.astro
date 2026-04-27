@@ -10,10 +10,11 @@ const moodConfig = {
   tired: { label: '疲惫', color: '#9E9E9E', emoji: '😴' },
   sad: { label: '难过', color: '#64B5F6', emoji: '😢' },
   angry: { label: '生气', color: '#FF5722', emoji: '😠' },
-  neutral: { label: '平静', color: '#78909C', emoji: '😌' }
+  neutral: { label: '平静', color: '#78909C', emoji: '😌' },
+  shocked: { label: '震惊', color: '#FF6F00', emoji: '😱' }
 };
 
-const moodValue = { happy: 5, excited: 4, neutral: 3, tired: 2, sad: 1, angry: 0 };
+const moodValue = { happy: 5, excited: 4, neutral: 3, shocked: 3, tired: 2, sad: 1, angry: 0 };
 
 const moodStats = sortedDiaries.reduce((acc, diary) => { acc[diary.mood] = (acc[diary.mood] || 0) + 1; return acc; }, {} as Record<string, number>);
 
@@ -30,12 +31,13 @@ const moodColors: Record<string, string> = {
   tired: 'bg-gray-100 border-gray-400 text-gray-800',
   sad: 'bg-blue-100 border-blue-400 text-blue-800',
   angry: 'bg-red-100 border-red-400 text-red-800',
-  neutral: 'bg-purple-100 border-purple-400 text-purple-800'
+  neutral: 'bg-purple-100 border-purple-400 text-purple-800',
+  shocked: 'bg-amber-100 border-amber-400 text-amber-800'
 };
 
 const moodEmoji: Record<string, string> = {
   happy: '😊', excited: '🤩', tired: '😴',
-  sad: '😢', angry: '😠', neutral: '😌'
+  sad: '😢', angry: '😠', neutral: '😌', shocked: '😱'
 };
 ---
 
@@ -225,7 +227,7 @@ const moodEmoji: Record<string, string> = {
   });
   renderCalendar();
 
-  const moodValue = { happy: 5, excited: 4, neutral: 3, tired: 2, sad: 1, angry: 0 };
+  const moodValue = { happy: 5, excited: 4, neutral: 3, shocked: 3, tired: 2, sad: 1, angry: 0 };
   const moodColor = { happy: '#4CAF50', excited: '#E63946', neutral: '#78909C', tired: '#9E9E9E', sad: '#64B5F6', angry: '#FF5722' };
   const moodLabel = { happy: '开心', excited: '兴奋', neutral: '平静', tired: '疲惫', sad: '难过', angry: '生气' };
   const canvas = document.getElementById('moodChart');
