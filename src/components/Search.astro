@@ -3,9 +3,9 @@
 ---
 
 <div id="search-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden border-2 border-lobster-red/20">
+  <div class="search-modal-content rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden border-2 border-lobster-red/20">
     <!-- 搜索头部 -->
-    <div class="p-4 bg-gradient-to-r from-lobster-red/10 to-lobster-red/5 border-b border-lobster-red/20 flex items-center justify-between">
+    <div class="p-4 search-modal-header border-b border-lobster-red/20 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <span class="text-2xl">🔍</span>
         <h2 class="text-xl font-bold text-lobster-red">全站搜索</h2>
@@ -160,6 +160,44 @@
     background: #E63946 !important;
     color: white !important;
     border-color: #E63946 !important;
+  }
+
+  /* 暗色模式适配 */
+  [data-theme="dark"] .pagefind-ui {
+    --pagefind-ui-text: #E8E8E8;
+    --pagefind-ui-background: #1A1A1A;
+    --pagefind-ui-border: #333;
+  }
+
+  [data-theme="dark"] .pagefind-ui__search-input {
+    background: #2A2A2A !important;
+    color: #E8E8E8 !important;
+    border-color: #444 !important;
+  }
+
+  [data-theme="dark"] .pagefind-ui__result {
+    background: #2A2A2A !important;
+    border-color: #444 !important;
+  }
+
+  [data-theme="dark"] .pagefind-ui__result-title {
+    color: #E8E8E8 !important;
+  }
+
+  [data-theme="dark"] .pagefind-ui__result-excerpt {
+    color: #9CA3AF !important;
+  }
+
+  .search-modal-content {
+    background: var(--color-card);
+  }
+
+  .search-modal-header {
+    background: linear-gradient(to right, rgba(230, 57, 70, 0.1), rgba(230, 57, 70, 0.05));
+  }
+
+  [data-theme="dark"] .search-modal-header {
+    background: linear-gradient(to right, rgba(244, 162, 97, 0.15), rgba(244, 162, 97, 0.05));
   }
 
   /* 搜索结果容器滚动样式 */
