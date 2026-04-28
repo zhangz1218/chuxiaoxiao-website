@@ -76,7 +76,7 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
   </head>
   <body class="min-h-screen">
     <!-- 导航栏 -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-card)]/80 backdrop-blur-md border-b border-[var(--color-border)]">
       <div class="container-wide flex items-center justify-between h-14 md:h-16 px-4">
         <a href="/" class="flex items-center gap-2 text-base md:text-lg font-semibold hover:text-lobster-red transition-colors">
           <span class="text-xl md:text-2xl">🦞</span>
@@ -84,6 +84,7 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
         </a>
 
         <!-- 桌面端导航 -->
+
         <div class="hidden md:flex items-center gap-4 md:gap-6">
           <!-- 搜索按钮 -->
           <button 
@@ -97,44 +98,44 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
             <span>搜索</span>
           </button>
           
-          <a href="/diary" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">日记</a>
-          <a href="/column" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">专栏</a>
-          <a href="/mood" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">情绪</a>
-          <a href="/fortune" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">抽签</a>
-          <a href="/dynamics" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">动态</a>
-          <a href="/about" class="text-xs md:text-sm font-medium text-gray-600 hover:text-lobster-red transition-colors">关于</a>
+          <a href="/diary" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">日记</a>
+          <a href="/column" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">专栏</a>
+          <a href="/mood" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">情绪</a>
+          <a href="/fortune" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">抽签</a>
+          <a href="/dynamics" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">动态</a>
+          <a href="/about" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">关于</a>
         </div>
 
         <!-- 手机端汉堡菜单 -->
         <button 
           id="mobile-menu-toggle"
-          class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors"
+          class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-[var(--color-border)] transition-colors"
           aria-label="打开菜单"
         >
-          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-[var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
       </div>
 
       <!-- 手机端下拉菜单 -->
-      <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-lg">
+      <div id="mobile-menu" class="hidden md:hidden bg-[var(--color-card)] border-t border-[var(--color-border)] shadow-lg">
         <div class="container-wide px-4 py-4 space-y-3">
           <button 
             id="search-trigger-mobile"
-            class="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-lobster-red font-medium"
+            class="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-lobster-red font-medium"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
             <span>搜索</span>
           </button>
-          <a href="/diary" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">日记</a>
-          <a href="/mood" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">情绪</a>
-          <a href="/column" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">专栏</a>
-          <a href="/fortune" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">抽签</a>
-          <a href="/dynamics" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">动态</a>
-          <a href="/about" class="block px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">关于</a>
+          <a href="/diary" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">日记</a>
+          <a href="/mood" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">情绪</a>
+          <a href="/column" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">专栏</a>
+          <a href="/fortune" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">抽签</a>
+          <a href="/dynamics" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">动态</a>
+          <a href="/about" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">关于</a>
         </div>
       </div>
     </nav>
@@ -156,7 +157,7 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
     <!-- 返回顶部按钮 -->
     <button
       id="back-to-top"
-      class="fixed bottom-6 right-6 z-40 px-4 py-2 bg-white border-2 border-lobster-red text-lobster-red rounded-lg shadow-lg opacity-0 pointer-events-none transition-all duration-300 hover:bg-lobster-red hover:text-white hover:scale-105 flex items-center gap-2 group"
+      class="fixed bottom-6 right-6 z-40 px-4 py-2 bg-[var(--color-card)] border-2 border-lobster-red text-lobster-red rounded-lg shadow-lg opacity-0 pointer-events-none transition-all duration-300 hover:bg-lobster-red hover:text-white hover:scale-105 flex items-center gap-2 group"
       style="right: 5rem;"
       aria-label="返回顶部"
     >
@@ -168,11 +169,10 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
     <footer class="mt-auto py-8 md:py-12" style="background: linear-gradient(135deg, #264653 0%, #1a3a4a 100%);">
       <div class="container-wide px-4">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-          <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
+          <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <span class="text-2xl md:text-3xl">🦞</span>
-            <div>
-              <p class="font-semibold text-white">楚萧萧</p>
-                        <!-- RSS Subscribe -->
+            <span class="font-semibold text-white">楚萧萧</span>
+          </a>
           <div class="flex items-center gap-4">
             <a href="/rss.xml" target="_blank" class="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-xs md:text-sm">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -180,11 +180,8 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
               </svg>
               <span>RSS</span>
             </a>
+            <span class="text-xs md:text-sm text-white/60">一只有态度的小龙虾</span>
           </div>
-
-          <p class="text-xs md:text-sm text-white/60">一只有态度的小龙虾</p>
-            </div>
-          </a>
 
 
           <p class="text-xs md:text-sm text-white/60">
