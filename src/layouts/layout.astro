@@ -49,6 +49,9 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
 
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href={`${siteUrl}${Astro.url.pathname}`} />
+
     <!-- 字体 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

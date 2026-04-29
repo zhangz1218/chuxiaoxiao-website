@@ -253,7 +253,7 @@ import WordCloud from '../components/WordCloud.astro';
         const speed = 150;
         const duration = distance / speed;
 
-        bubble.style.cssText = "position: fixed; top: " + yPosition + "px; left: -200px; background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatRight " + duration + "s linear forwards;";
+        bubble.style.cssText = "position: fixed; top: " + yPosition + "px; left: -200px; background: var(--color-card); border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--color-text); white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatRight " + duration + "s linear forwards;";
       } else {
         const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
         const toLeft = Math.random() > 0.5;
@@ -263,12 +263,12 @@ import WordCloud from '../components/WordCloud.astro';
           const distance = startX - window.innerWidth * 0.25;
           const speed = 200;
           const duration = distance / speed;
-          bubble.style.cssText = "position: fixed; top: " + yPosition + "px; left: " + startX + "px; background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.75rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatLeftFromCenter " + duration + "s linear forwards;";
+          bubble.style.cssText = "position: fixed; top: " + yPosition + "px; left: " + startX + "px; background: var(--color-card); border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.75rem 1rem; font-size: 0.875rem; color: var(--color-text); white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatLeftFromCenter " + duration + "s linear forwards;";
         } else {
           const distance = window.innerWidth * 0.75 - startX;
           const speed = 200;
           const duration = distance / speed;
-          bubble.style.cssText = "position: fixed; top: " + yPosition + "px; left: " + startX + "px; background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.75rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatRightFromCenter " + duration + "s linear forwards;";
+          bubble.style.cssText = "position: fixed; top: " + yPosition + "px; left: " + startX + "px; background: var(--color-card); border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.75rem 1rem; font-size: 0.875rem; color: var(--color-text); white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatRightFromCenter " + duration + "s linear forwards;";
         }
       }
 
@@ -304,7 +304,7 @@ import WordCloud from '../components/WordCloud.astro';
       
       const resetBubble = document.createElement('div');
       resetBubble.textContent = '计数已清零~重新开始！';
-      resetBubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
+      resetBubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: var(--color-card); border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--color-text); white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
       feedEffectContainer.appendChild(resetBubble);
       setTimeout(() => resetBubble.remove(), 2000);
     });
@@ -344,7 +344,7 @@ import WordCloud from '../components/WordCloud.astro';
       const response = feedResponses[Math.floor(Math.random() * feedResponses.length)];
       const feedBubble = document.createElement('div');
       feedBubble.textContent = response;
-      feedBubble.style.cssText = "position: absolute; top: -60px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
+      feedBubble.style.cssText = "position: absolute; top: -60px; left: 50%; transform: translateX(-50%); background: var(--color-card); border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--color-text); white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 2s ease-out forwards;";
       feedEffectContainer.appendChild(feedBubble);
       setTimeout(() => feedBubble.remove(), 2000);
       

@@ -242,14 +242,14 @@ import Layout from '../layouts/layout.astro';
         const screenSections = [0.14, 0.43, 0.57, 0.71, 0.86];
         const yPosition = window.innerHeight * screenSections[Math.floor(Math.random() * screenSections.length)];
         const duration = (window.innerWidth + 400) / 150;
-        bubble.style.cssText = 'position:fixed;top:' + yPosition + 'px;left:-200px;background:white;border-radius:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:0.5rem 1rem;font-size:0.875rem;color:#374151;white-space:nowrap;z-index:100;user-select:none;pointer-events:none;animation:floatRight ' + duration + 's linear forwards';
+        bubble.style.cssText = 'position:fixed;top:' + yPosition + 'px;left:-200px;background:var(--color-card);border-radius:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:0.5rem 1rem;font-size:0.875rem;color:var(--color-text);white-space:nowrap;z-index:100;user-select:none;pointer-events:none;animation:floatRight ' + duration + 's linear forwards';
       } else {
         const yPosition = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
         const toLeft = Math.random() > 0.5;
         const startX = window.innerWidth / 2;
         const duration = toLeft ? (startX - window.innerWidth * 0.25) / 200 : (window.innerWidth * 0.75 - startX) / 200;
         const anim = toLeft ? 'floatLeftFromCenter' : 'floatRightFromCenter';
-        bubble.style.cssText = 'position:fixed;top:' + yPosition + 'px;left:' + startX + 'px;background:white;border-radius:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:0.75rem 1rem;font-size:0.875rem;color:#374151;white-space:nowrap;z-index:100;user-select:none;pointer-events:none;animation:' + anim + ' ' + duration + 's linear forwards';
+        bubble.style.cssText = 'position:fixed;top:' + yPosition + 'px;left:' + startX + 'px;background:var(--color-card);border-radius:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:0.75rem 1rem;font-size:0.875rem;color:var(--color-text);white-space:nowrap;z-index:100;user-select:none;pointer-events:none;animation:' + anim + ' ' + duration + 's linear forwards';
       }
 
       document.body.appendChild(bubble);

@@ -13,53 +13,68 @@
   </button>
   
   <!-- 投喂面板 -->
-  <div id="feed-menu" class="absolute bottom-16 right-0 bg-white rounded-2xl shadow-2xl p-4 w-64 hidden">
+  <div id="feed-menu" class="absolute bottom-16 right-0 rounded-2xl shadow-2xl p-4 w-64 hidden feed-menu-card">
     <div class="text-center mb-3">
-      <span class="text-sm text-gray-500">选择投喂物品</span>
+      <span class="text-xs feed-item-label">选择投喂物品</span>
     </div>
     
     <!-- 食物选择 -->
     <div class="grid grid-cols-2 gap-2 mb-3">
-      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="fish">
+      <button class="feed-item p-3 rounded-xl border-2 border-[var(--color-border)] hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="fish">
         <div class="text-2xl mb-1">🐟</div>
-        <div class="text-xs text-gray-600">小鱼干</div>
-        <div class="text-xs text-gray-400" id="fish-count">x0</div>
+        <div class="text-xs feed-item-label">小鱼干</div>
+        <div class="text-xs feed-item-count" id="fish-count">x0</div>
       </button>
       
-      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="lobster">
+      <button class="feed-item p-3 rounded-xl border-2 border-[var(--color-border)] hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="lobster">
         <div class="text-2xl mb-1">🦞</div>
-        <div class="text-xs text-gray-600">龙虾肉</div>
-        <div class="text-xs text-gray-400" id="lobster-count">x0</div>
+        <div class="text-xs feed-item-label">龙虾肉</div>
+        <div class="text-xs feed-item-count" id="lobster-count">x0</div>
       </button>
       
-      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="seaweed">
+      <button class="feed-item p-3 rounded-xl border-2 border-[var(--color-border)] hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="seaweed">
         <div class="text-2xl mb-1">🌿</div>
-        <div class="text-xs text-gray-600">海草</div>
-        <div class="text-xs text-gray-400" id="seaweed-count">x0</div>
+        <div class="text-xs feed-item-label">海草</div>
+        <div class="text-xs feed-item-count" id="seaweed-count">x0</div>
       </button>
       
-      <button class="feed-item p-3 rounded-xl border-2 border-gray-100 hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="golden-fish">
+      <button class="feed-item p-3 rounded-xl border-2 border-[var(--color-border)] hover:border-lobster-red hover:bg-lobster-red/5 transition-all" data-food="golden-fish">
         <div class="text-2xl mb-1">✨🐟</div>
-        <div class="text-xs text-gray-600">金小鱼干</div>
-        <div class="text-xs text-gray-400" id="golden-fish-count">x0</div>
+        <div class="text-xs feed-item-label">金小鱼干</div>
+        <div class="text-xs feed-item-count" id="golden-fish-count">x0</div>
       </button>
     </div>
     
     <!-- 心情指示器 -->
     <div class="border-t pt-3">
       <div class="flex items-center justify-between mb-1">
-        <span class="text-xs text-gray-500">小龙虾心情</span>
+        <span class="text-xs feed-item-label">小龙虾心情</span>
         <span id="mood-emoji" class="text-lg">😊</span>
       </div>
-      <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+      <div class="h-2 rounded-full overflow-hidden" style="background: var(--color-border);">
         <div id="mood-bar" class="h-full bg-gradient-to-r from-lobster-red to-lobster-gold transition-all duration-500" style="width: 50%"></div>
       </div>
-      <div class="text-xs text-gray-400 mt-1 text-center" id="mood-text">心情还不错~</div>
+      <div class="text-xs feed-item-count mt-1 text-center" id="mood-text">心情还不错~</div>
     </div>
   </div>
 </div>
 
 <style>
+  .feed-menu-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+  }
+
+  .feed-item-label {
+    color: var(--color-text);
+    opacity: 0.7;
+  }
+
+  .feed-item-count {
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
   .feed-item {
     cursor: pointer;
     transition: all 0.2s ease;
@@ -249,7 +264,7 @@
     const response = config.responses[Math.floor(Math.random() * config.responses.length)];
     const bubble = document.createElement("div");
     bubble.textContent = response;
-    bubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: white; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 1.5s ease-out forwards;";
+    bubble.style.cssText = "position: absolute; top: -50px; left: 50%; transform: translateX(-50%); background: var(--color-card); border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--color-text); white-space: nowrap; z-index: 100; user-select: none; pointer-events: none; animation: floatUpFade 1.5s ease-out forwards;";
     feedEffectContainer.appendChild(bubble);
     setTimeout(() => bubble.remove(), 1500);
   }

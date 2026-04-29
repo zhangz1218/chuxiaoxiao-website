@@ -179,8 +179,8 @@ const moodEmoji: Record<string, string> = {
 
 
 <script define:vars={{ diaryMap, moodColors, moodEmoji }}>
-  let currentYear = 2026;
-  let currentMonth = 4;
+  let currentYear = new Date().getFullYear();
+  let currentMonth = new Date().getMonth() + 1;
 
   function getDaysInMonth(year, month) { return new Date(year, month, 0).getDate(); }
   function getFirstDayOfMonth(year, month) { return new Date(year, month - 1, 1).getDay(); }
