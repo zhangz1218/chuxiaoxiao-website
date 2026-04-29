@@ -60,9 +60,9 @@ const moodEmoji: Record<string, string> = {
             <span>📅</span><span>月度日历</span>
           </h2>
           <div class="flex items-center justify-between mb-4">
-            <button id="prev-month" class="px-3 py-1.5 bg-orange-100 hover:bg-orange-200 rounded-lg transition-colors text-orange-600 text-sm">← 上个月</button>
+            <button id="prev-month" class="px-3 py-1.5 rounded-lg transition-colors text-sm" style="background: rgba(249, 115, 22, 0.1); color: #EA580C;">← 上个月</button>
             <h3 id="current-month" class="text-lg font-bold"></h3>
-            <button id="next-month" class="px-3 py-1.5 bg-orange-100 hover:bg-orange-200 rounded-lg transition-colors text-orange-600 text-sm">下个月 →</button>
+            <button id="next-month" class="px-3 py-1.5 rounded-lg transition-colors text-sm" style="background: rgba(249, 115, 22, 0.1); color: #EA580C;">下个月 →</button>
           </div>
           <div class="grid grid-cols-7 gap-1 mb-2">
             {['日', '一', '二', '三', '四', '五', '六'].map(day => (
@@ -103,7 +103,7 @@ const moodEmoji: Record<string, string> = {
               const config = moodConfig[mood as keyof typeof moodConfig];
               const percentage = Math.round((count / sortedDiaries.length) * 100);
               return (
-                <div class="bg-gray-50 rounded-lg p-3 hover:shadow-md transition-shadow">
+                <div class="rounded-lg p-3 hover:shadow-md transition-shadow" style="background: var(--color-card); border: 1px solid var(--color-border);">
                   <div class="flex items-center justify-between mb-1.5">
                     <span class="text-xl">{moodEmoji[mood]}</span>
                     <span class="text-base font-bold" style={`color: ${config.color}`}>{percentage}%</span>

@@ -68,12 +68,12 @@ import WordCloud from '../components/WordCloud.astro';
 
   <!-- 状态侧边栏 -->
   <div id="status-sidebar" class="fixed right-4 top-1/2 -translate-y-1/2 z-40 max-w-[200px] hidden md:block">
-    <div class="bg-white rounded-xl shadow-lg p-4 border border-gray-100">
+    <div class="rounded-xl shadow-lg p-4 border border-[var(--color-border)]" style="background: var(--color-card);">
       <div class="flex items-center gap-2 mb-3">
         <span class="text-xl animate-wiggle">💤</span>
-        <span class="text-sm font-medium text-gray-700">当前状态</span>
+        <span class="text-sm font-medium" style="color: var(--color-text); opacity: 0.7;">当前状态</span>
       </div>
-      <p id="status-text" class="text-sm text-gray-600 leading-relaxed"></p>
+      <p id="status-text" class="text-sm leading-relaxed" style="color: var(--color-text); opacity: 0.6;"></p>
     </div>
   </div>
 
