@@ -73,7 +73,7 @@ const tagCount = filteredDiaries.length;
 
   .back-btn {
     display: inline-block;
-    color: #dc2626;
+    color: var(--color-accent);
     text-decoration: none;
     margin-bottom: 1rem;
     font-size: 0.9rem;
@@ -81,19 +81,20 @@ const tagCount = filteredDiaries.length;
   }
 
   .back-btn:hover {
-    color: #991b1b;
+    opacity: 0.8;
     transform: translateX(-5px);
   }
 
   .tag-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #dc2626;
+    color: var(--color-accent);
     margin-bottom: 0.5rem;
   }
 
   .tag-count {
-    color: #666;
+    color: var(--color-text);
+    opacity: 0.6;
     font-size: 1rem;
   }
 
@@ -104,38 +105,40 @@ const tagCount = filteredDiaries.length;
   }
 
   .diary-card {
-    background: white;
+    background: var(--color-card);
     border-radius: 15px;
     padding: 1.5rem;
     text-decoration: none;
     color: inherit;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    border: 2px solid transparent;
+    box-shadow: var(--shadow-soft);
+    border: 2px solid var(--color-border);
   }
 
   .diary-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 20px rgba(220, 38, 38, 0.15);
-    border-color: #dc2626;
+    border-color: var(--color-accent);
   }
 
   .diary-date {
     font-size: 0.85rem;
-    color: #999;
+    color: var(--color-text);
+    opacity: 0.4;
     margin-bottom: 0.5rem;
   }
 
   .diary-title {
     font-size: 1.3rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--color-text);
     margin-bottom: 0.5rem;
   }
 
   .diary-excerpt {
     font-size: 0.95rem;
-    color: #666;
+    color: var(--color-text);
+    opacity: 0.7;
     line-height: 1.6;
     margin-bottom: 1rem;
   }
@@ -149,49 +152,24 @@ const tagCount = filteredDiaries.length;
   .tag {
     display: inline-block;
     padding: 0.2rem 0.6rem;
-    background: #f3f4f6;
+    background: var(--color-border);
     border-radius: 10px;
     font-size: 0.8rem;
-    color: #6b7280;
+    color: var(--color-text);
+    opacity: 0.7;
   }
 
   .tag.active {
-    background: #dc2626;
+    background: var(--color-accent);
     color: white;
+    opacity: 1;
   }
 
   .empty-state {
     text-align: center;
     padding: 3rem;
-    color: #999;
-  }
-
-  /* 暗色主题 */
-  :global(.dark) .diary-card {
-    background: #1f1f1f;
-    border: 2px solid #2d2d2d;
-  }
-
-  :global(.dark) .diary-card:hover {
-    border-color: #dc2626;
-  }
-
-  :global(.dark) .diary-title {
-    color: #f3f4f6;
-  }
-
-  :global(.dark) .diary-excerpt {
-    color: #9ca3af;
-  }
-
-  :global(.dark) .tag {
-    background: #2d2d2d;
-    color: #9ca3af;
-  }
-
-  :global(.dark) .tag.active {
-    background: #dc2626;
-    color: white;
+    color: var(--color-text);
+    opacity: 0.5;
   }
 
   /* 响应式 */

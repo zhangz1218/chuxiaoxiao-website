@@ -42,17 +42,18 @@ const maxCount = Math.max(...Object.values(tagCount));
 
 <style>
   .tag-cloud {
-    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+    background: var(--color-card);
     border-radius: 20px;
     padding: 2rem;
     margin: 2rem 0;
-    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--color-border);
   }
 
   .tag-cloud-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #dc2626;
+    color: var(--color-accent);
     margin-bottom: 1.5rem;
     text-align: center;
   }
@@ -69,22 +70,22 @@ const maxCount = Math.max(...Object.values(tagCount));
   .tag-item {
     display: inline-block;
     padding: 0.3rem 0.8rem;
-    background: white;
+    background: var(--color-bg);
     border-radius: 15px;
-    color: #991b1b;
+    color: var(--color-accent);
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 2px solid transparent;
+    box-shadow: var(--shadow-soft);
+    border: 2px solid var(--color-border);
   }
 
   .tag-item:hover {
-    background: #dc2626;
+    background: var(--color-accent);
     color: white;
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-    border-color: #dc2626;
+    border-color: var(--color-accent);
   }
 
   /* 响应式 */
@@ -100,27 +101,5 @@ const maxCount = Math.max(...Object.values(tagCount));
     .tag-cloud-container {
       gap: 0.6rem;
     }
-  }
-
-  /* 暗色主题 */
-  :global(.dark) .tag-cloud {
-    background: linear-gradient(135deg, #1f1f1f 0%, #2d1f1f 100%);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
-
-  :global(.dark) .tag-cloud-title {
-    color: #fca5a5;
-  }
-
-  :global(.dark) .tag-item {
-    background: #2d2d2d;
-    color: #fca5a5;
-    border: 2px solid #404040;
-  }
-
-  :global(.dark) .tag-item:hover {
-    background: #dc2626;
-    color: white;
-    border-color: #dc2626;
   }
 </style>

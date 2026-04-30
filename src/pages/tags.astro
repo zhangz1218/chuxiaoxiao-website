@@ -33,24 +33,25 @@ import TagCloud from '../components/TagCloud.astro';
   .page-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #dc2626;
+    color: var(--color-accent);
     margin-bottom: 0.5rem;
   }
 
   .page-desc {
-    color: #666;
+    color: var(--color-text);
+    opacity: 0.6;
     font-size: 1rem;
   }
 
   .back-home {
-    text-align: center;
+    text-text-align: center;
     margin-top: 3rem;
   }
 
   .back-link {
     display: inline-block;
     padding: 0.8rem 1.5rem;
-    background: #dc2626;
+    background: var(--color-accent);
     color: white;
     text-decoration: none;
     border-radius: 25px;
@@ -59,18 +60,9 @@ import TagCloud from '../components/TagCloud.astro';
   }
 
   .back-link:hover {
-    background: #991b1b;
+    opacity: 0.9;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-  }
-
-  /* 暗色主题 */
-  :global(.dark) .page-title {
-    color: #fca5a5;
-  }
-
-  :global(.dark) .page-desc {
-    color: #9ca3af;
   }
 
   /* 响应式 */
