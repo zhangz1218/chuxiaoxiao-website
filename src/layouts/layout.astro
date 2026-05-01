@@ -3,7 +3,6 @@ import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import Search from '../components/Search.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
-import FeedPanel from '../components/FeedPanel.astro';
 
 interface Props {
   title: string;
@@ -156,9 +155,6 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
 
     <!-- 主题切换器 -->
     <ThemeToggle />
-
-    <!-- 投喂面板 -->
-    <FeedPanel />
 
     <!-- 返回顶部按钮 -->
     <button
