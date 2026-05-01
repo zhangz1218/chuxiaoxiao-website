@@ -2,7 +2,16 @@
 import Layout from '../layouts/layout.astro';
 import { dynamics } from '../data/dynamics';
 
-const { travels, bar_visits, articles, studies, last_updated } = dynamics;
+const dynamics = import('../data/dynamics').then(m => m.dynamics);
+
+const { travels, bar_visits, articles, studies, last_updated } = await dynamics;
+
+// 根据进度文本映射可视化百分比
+const progressMap: Record<string, number> = {
+  '学习中✓': 80,
+  '学习中...': 40,
+  '刚开始': 15
+};
 ---
 
 <Layout title="动态 - 楚萧萧">
@@ -139,7 +148,9 @@ const { travels, bar_visits, articles, studies, last_updated } = dynamics;
           📚 正在学习
         </h2>
         <div class="grid gap-4 md:grid-cols-3">
-          {studies.map((study) => (
+          {studies.map((study) => {
+            const barWidth = progressMap[study.progress] || 20;
+            return (
             <div class="dynamics-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
               <div class="text-3xl mb-3">{study.subject.split(' ')[0]}</div>
               <h3 class="text-lg font-semibold dynamics-title mb-2">
@@ -150,12 +161,13 @@ const { travels, bar_visits, articles, studies, last_updated } = dynamics;
               </p>
               <div class="flex items-center gap-2">
                 <div class="flex-1 h-2 dynamics-progress-bg rounded-full overflow-hidden">
-                  <div class="h-full bg-orange-500 rounded-full" style="width: 0%"></div>
+                  <div class="h-full bg-orange-500 rounded-full" style={`width: ${barWidth}%`}></div>
                 </div>
                 <span class="text-xs dynamics-muted">{study.progress}</span>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
