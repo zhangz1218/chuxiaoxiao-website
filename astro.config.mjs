@@ -13,6 +13,12 @@ export default defineConfig({
 
   integrations: [react(), sitemap()],
 
+  // 重定向配置
+  redirects: {
+    '/calendar': '/mood',
+    '/calendar/': '/mood'
+  },
+
   // 构建配置
   build: {
     // 内联样式，提升性能
