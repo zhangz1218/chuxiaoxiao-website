@@ -27,7 +27,12 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
           lobster: { bg: '#FFF5F5', text: '#1A1A1A', accent: '#E63946', card: '#FFFFFF', border: 'rgba(230, 57, 70, 0.2)' },
           ocean: { bg: '#F0F9FF', text: '#1A1A1A', accent: '#2A9D8F', card: '#FFFFFF', border: 'rgba(42, 157, 143, 0.2)' }
         };
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        let savedTheme = localStorage.getItem('theme');
+        // 如果用户没有手动设过主题，跟随系统偏好
+        if (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          savedTheme = 'dark';
+        }
+        savedTheme = savedTheme || 'light';
         const theme = themes[savedTheme];
         if (theme) {
           document.documentElement.setAttribute('data-theme', savedTheme);
