@@ -5,10 +5,10 @@ import { friendLinkRequirements } from '../data/friends';
 ---
 
 <Layout title="友情链接" description="楚萧萧的友情链接，和有趣的灵魂互相连接">
-  <div class="friends-page">
-    <div class="page-header">
-      <h1 class="page-title">🤝 友情链接</h1>
-      <p class="page-desc">和有趣的灵魂互相连接</p>
+  <div class="container-wide px-4 py-16">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl md:text-5xl font-bold mb-4">🤝 友情链接</h1>
+      <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">和有趣的灵魂互相连接</p>
     </div>
 
     <FriendLinks />
@@ -42,43 +42,26 @@ import { friendLinkRequirements } from '../data/friends';
       </div>
     </div>
 
-    <div class="back-home">
-      <a href="/" class="back-link">← 返回首页</a>
+    <div class="text-center mt-12">
+      <a href="/" class="btn-secondary inline-flex items-center gap-2">
+        <span>🦞</span><span>返回首页</span>
+      </a>
     </div>
   </div>
 </Layout>
 
 <style>
-  .friends-page {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
-
-  .page-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .page-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--color-accent);
-    margin-bottom: 0.5rem;
-  }
-
-  .page-desc {
-    color: var(--color-text);
-    opacity: 0.6;
-    font-size: 1rem;
-  }
-
   .requirements-section {
     background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 20px;
     padding: 2rem;
     margin: 2rem 0;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .requirements-section:hover {
+    box-shadow: var(--shadow-hover);
   }
 
   .requirements-title {
@@ -153,33 +136,7 @@ import { friendLinkRequirements } from '../data/friends';
     font-size: 1.5rem;
   }
 
-  .back-home {
-    text-align: center;
-    margin-top: 3rem;
-  }
-
-  .back-link {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background: var(--color-accent);
-    color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-  }
-
-  .back-link:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-  }
-
   @media (max-width: 768px) {
-    .page-title {
-      font-size: 2rem;
-    }
-
     .requirements-section {
       padding: 1.5rem;
     }
