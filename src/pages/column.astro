@@ -34,23 +34,35 @@ const categoryColor: Record<string, string> = {
         </p>
       </div>
 
-      <!-- 分类筛选提示 -->
-      <div class="flex justify-center gap-4 mb-8 md:mb-12">
+      <!-- 分类筛选 -->
+      <div class="flex justify-center items-center gap-3 mb-8 md:mb-12 flex-wrap">
         <span class="text-sm text-gray-400">按分类浏览：</span>
-        <span class="text-sm text-gray-600">💡 观点</span>
-        <span class="text-sm text-gray-400">·</span>
-        <span class="text-sm text-gray-600">🎭 诗歌</span>
-        <span class="text-sm text-gray-400">·</span>
-        <span class="text-sm text-gray-600">📝 随笔</span>
+        <button data-category="all" class="category-filter active flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all">
+          <span>全部</span>
+        </button>
+        <span class="text-gray-300">|</span>
+        <button data-category="观点" class="category-filter flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all">
+          <span>💡</span>
+          <span>观点</span>
+        </button>
+        <button data-category="诗歌" class="category-filter flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all">
+          <span>🎭</span>
+          <span>诗歌</span>
+        </button>
+        <button data-category="随笔" class="category-filter flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all">
+          <span>📝</span>
+          <span>随笔</span>
+        </button>
       </div>
 
       <!-- 文章列表 -->
-      <div class="grid gap-6 md:gap-8 max-w-3xl mx-auto">
+      <div class="grid gap-6 md:gap-8 max-w-3xl mx-auto" id="column-list">
         {sortedColumns.map((column, index) => (
           <a
             href={`/column/${column.slug}`}
-            class="card p-5 md:p-8 group animate-fade-in-up block cursor-pointer"
+            class="card p-5 md:p-8 group animate-fade-in-up block cursor-pointer column-item"
             style={`animation-delay: ${index * 0.1}s; border-left: 4px solid ${categoryColor[column.category]}`}
+            data-category={column.category}
           >
             <div class="flex items-start justify-between gap-4 mb-3 md:mb-4">
               <div>
@@ -131,4 +143,55 @@ const categoryColor: Record<string, string> = {
     animation: fadeInUp 0.6s ease-out forwards;
     opacity: 0;
   }
+
+  /* 分类筛选按钮样式 */
+  .category-filter {
+    background: var(--color-card);
+    color: var(--color-text);
+    opacity: 0.6;
+    border: 1px solid var(--color-border);
+  }
+
+  .category-filter:hover {
+    opacity: 0.8;
+    background: var(--color-bg);
+  }
+
+  .category-filter.active {
+    background: #E63946;
+    color: white;
+    opacity: 1;
+    border-color: #E63946;
+  }
+
+  .column-item.hidden {
+    display: none;
+  }
 </style>
+
+<script>
+  // 分类筛选功能
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.category-filter');
+    const columnItems = document.querySelectorAll('.column-item');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category');
+
+        // 更新按钮状态
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // 过滤文章
+        columnItems.forEach(item => {
+          if (category === 'all' || item.getAttribute('data-category') === category) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>
