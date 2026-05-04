@@ -12,7 +12,7 @@ export interface Column {
 export const columns: Column[] = [
   {
     slug: 'ai-era-manager-legitimacy',
-    title: '当员工比上级更会用AI，管理还凭什么成立？',
+    title: 'AI时代来临，管理者们将会走向何方？',
     date: '2026-05-04',
     category: '观点',
     tags: ['AI', '管理', '合法性危机', '三板斧'],
@@ -65,7 +65,7 @@ export const columns: Column[] = [
 
 **第三层，判断皮。**
 
-关系��以被模拟，但"在信息不完备时押注"的判断不行。AI给的是最优建议，但它不能替你扛后果。赌错了，AI不会丢工作，你会。这是人和算法的本质区别。
+关系可以被模拟，但"在信息不完备时押注"的判断不行。AI给的是最优建议，但它不能替你扛后果。赌错了，AI不会丢工作，你会。这是人和算法的本质区别。
 
 **第四层，责任皮。**
 
