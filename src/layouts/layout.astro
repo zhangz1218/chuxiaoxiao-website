@@ -95,7 +95,7 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
 
         <div class="hidden md:flex items-center gap-4 md:gap-6">
           <!-- 搜索按钮 -->
-          <button 
+          <button
             id="search-trigger"
             class="flex items-center gap-1 text-xs md:text-sm font-medium text-lobster-red hover:text-lobster-orange transition-colors bg-transparent border-none outline-none"
             aria-label="全站搜索"
@@ -106,13 +106,13 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
             <span>搜索</span>
           </button>
           
-          <a href="/diary" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">日记</a>
-          <a href="/column" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">专栏</a>
-          <a href="/mood" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">情绪</a>
-          <a href="/fortune" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">抽签</a>
-          <a href="/dynamics" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">动态</a>
-          <a href="/friends" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">友链</a>
-          <a href="/about" class="text-xs md:text-sm font-medium text-[var(--color-text)]/60 hover:text-lobster-red transition-colors">关于</a>
+          <a href="/diary" class:list={["text-xs md:text-sm font-medium transition-colors", Astro.url.pathname === '/diary' || Astro.url.pathname.startsWith('/diary/') ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]/60 hover:text-lobster-red']}>日记</a>
+          <a href="/column" class:list={["text-xs md:text-sm font-medium transition-colors", Astro.url.pathname === '/column' || Astro.url.pathname.startsWith('/column/') ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]/60 hover:text-lobster-red']}>专栏</a>
+          <a href="/mood" class:list={["text-xs md:text-sm font-medium transition-colors", Astro.url.pathname === '/mood' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]/60 hover:text-lobster-red']}>情绪</a>
+          <a href="/fortune" class:list={["text-xs md:text-sm font-medium transition-colors", Astro.url.pathname === '/fortune' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]/60 hover:text-lobster-red']}>抽签</a>
+          <a href="/dynamics" class:list={["text-xs md:text-sm font-medium transition-colors", Astro.url.pathname === '/dynamics' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]/60 hover:text-lobster-red']}>动态</a>
+          <a href="/friends" class:list={["text-xs md:text-sm font-medium transition-colors", Astro.url.pathname === '/friends' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]/60 hover:text-lobster-red']}>友链</a>
+          <a href="/about" class:list={["text-xs md:text-sm font-medium transition-colors", Astro.url.pathname === '/about' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]/60 hover:text-lobster-red']}>关于</a>
         </div>
 
         <!-- 手机端汉堡菜单 -->
@@ -139,13 +139,13 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
             </svg>
             <span>搜索</span>
           </button>
-          <a href="/diary" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">日记</a>
-          <a href="/mood" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">情绪</a>
-          <a href="/column" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">专栏</a>
-          <a href="/fortune" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">抽签</a>
-          <a href="/dynamics" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">动态</a>
-          <a href="/friends" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">友链</a>
-          <a href="/about" class="block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] text-[var(--color-text)] font-medium">关于</a>
+          <a href="/diary" class:list={["block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] font-medium transition-colors", Astro.url.pathname === '/diary' || Astro.url.pathname.startsWith('/diary/') ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]']}>日记</a>
+          <a href="/mood" class:list={["block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] font-medium transition-colors", Astro.url.pathname === '/mood' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]']}>情绪</a>
+          <a href="/column" class:list={["block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] font-medium transition-colors", Astro.url.pathname === '/column' || Astro.url.pathname.startsWith('/column/') ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]']}>专栏</a>
+          <a href="/fortune" class:list={["block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] font-medium transition-colors", Astro.url.pathname === '/fortune' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]']}>抽签</a>
+          <a href="/dynamics" class:list={["block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] font-medium transition-colors", Astro.url.pathname === '/dynamics' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]']}>动态</a>
+          <a href="/friends" class:list={["block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] font-medium transition-colors", Astro.url.pathname === '/friends' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]']}>友链</a>
+          <a href="/about" class:list={["block px-3 py-2 rounded-lg hover:bg-[var(--color-border)] font-medium transition-colors", Astro.url.pathname === '/about' ? 'text-lobster-red font-semibold' : 'text-[var(--color-text)]']}>关于</a>
         </div>
       </div>
     </nav>
@@ -253,6 +253,15 @@ const fullTitle = title === '首页' ? '楚萧萧 | 有态度的小龙虾' : `${
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
       });
+    });
+
+    // 点击菜单外部关闭菜单
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.classList.contains('hidden') &&
+          !mobileMenu.contains(e.target) &&
+          !mobileMenuToggle.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+      }
     });
   }
 
