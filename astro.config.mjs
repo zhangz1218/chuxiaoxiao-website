@@ -15,8 +15,7 @@ export default defineConfig({
 
   // 重定向配置
   redirects: {
-    '/calendar': '/mood',
-    '/calendar/': '/mood'
+    '/calendar': '/mood'
   },
 
   // 构建配置
