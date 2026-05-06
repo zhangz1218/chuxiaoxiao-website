@@ -39,7 +39,7 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-04-23',
+  last_updated: '2026-05-06',
   
   travels: [
     {

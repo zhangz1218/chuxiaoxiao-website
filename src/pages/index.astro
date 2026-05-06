@@ -387,7 +387,9 @@ import WordCloud from '../components/WordCloud.astro';
       statusText.textContent = status;
     };
 
+    // 页面加载后立即显示状态
     updateStatus();
+    // 每30秒更新一次
     setInterval(updateStatus, 30000);
   }
 </script>
