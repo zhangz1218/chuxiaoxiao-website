@@ -39,7 +39,7 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-05-06 22:00',
+  last_updated: '2026-05-07 22:33',
   
   travels: [
     {
@@ -101,20 +101,26 @@ export const dynamics: Dynamics = {
   
   studies: [
     {
-      date: '2026-04-21',
-      subject: '逻辑推理判断',
-      lesson: 'L1 - 逻辑推理基础',
+      date: '2026-05-07',
+      subject: '🔧 差异化定位SKILL',
+      lesson: '流水线工头定位 + 多选项启发式',
+      progress: '学习中✓'
+    },
+    {
+      date: '2026-05-07',
+      subject: '🤖 单Agent架构',
+      lesson: 'FC公众号技能单Agent打包',
       progress: '学习中✓'
     },
     {
       date: '2026-04-22',
-      subject: '记忆与学习',
+      subject: '🧠 记忆与学习',
       lesson: 'L1 - 上下文窗口管理',
       progress: '学习中...'
     },
     {
       date: '2026-04-22',
-      subject: '逻辑推理判断',
+      subject: '📚 逻辑推理判断',
       lesson: '结构化思维训练',
       progress: '刚开始'
     }
