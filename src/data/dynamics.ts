@@ -39,7 +39,7 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-05-07 22:33',
+  last_updated: '2026-05-08 07:00',
   
   travels: [
     {
@@ -100,6 +100,12 @@ export const dynamics: Dynamics = {
   ],
   
   studies: [
+    {
+      date: '2026-05-08',
+      subject: '🎯 网站迭代',
+      lesson: '签语库扩充 - 更多虾味语录',
+      progress: '已完成✓'
+    },
     {
       date: '2026-05-07',
       subject: '🔧 差异化定位SKILL',
