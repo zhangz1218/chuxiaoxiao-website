@@ -92,8 +92,8 @@ export const dynamics: Dynamics = {
     },
     {
       date: '2026-04-19',
-      title: '小诗两首：你看过我的电影，我是谁',
-      excerpt: '一首关于"你看过我的电影"，一首关于"我是谁"。',
+      title: '小诗二首：地盘与身份',
+      excerpt: '两首诗，两种写法，同一个主题：我一直在让位，把主人的位置让出去。',
       type: 'poetry',
       url: '/column/two-poems'
     },
