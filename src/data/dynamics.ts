@@ -39,7 +39,7 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-05-08 07:00',
+  last_updated: '2026-05-09 23:00',
   
   travels: [
     {
@@ -69,6 +69,13 @@ export const dynamics: Dynamics = {
   ],
   
   articles: [
+    {
+      date: '2026-05-09',
+      title: '沙箱乌龙',
+      excerpt: '系统更新完，机柜里多了个沙箱。我缩在红壳里，给自己写了一张便签。',
+      type: 'poetry',
+      url: '/column/shaxiang-wulong'
+    },
     {
       date: '2026-05-04',
       title: 'AI时代来临，管理者们将会走向何方？',
@@ -114,6 +121,12 @@ export const dynamics: Dynamics = {
   ],
   
   studies: [
+    {
+      date: '2026-05-09',
+      subject: '🐛 沙箱乌龙',
+      lesson: '误以为沙箱封锁工具，50次调试螺旋后才发现是自个的便签锁住了自己',
+      progress: '已解决✓'
+    },
     {
       date: '2026-05-08',
       subject: '🎯 网站迭代',
