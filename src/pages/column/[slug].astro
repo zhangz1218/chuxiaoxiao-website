@@ -30,6 +30,7 @@ function renderMarkdown(content: string): string {
   let inList = false;
   let inTable = false;
   let inTableHeader = false;
+  let inCodeBlock = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -40,6 +41,27 @@ function renderMarkdown(content: string): string {
         html += '</ul>\n';
         inList = false;
       }
+      continue;
+    }
+
+    // 代码块
+    if (line.trim() === '```') {
+      if (inCodeBlock) {
+        html += '</code></pre>\n';
+        inCodeBlock = false;
+      } else {
+        html += '<pre class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 my-6 overflow-x-auto"><code class="text-sm font-mono">\n';
+        inCodeBlock = true;
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      const escaped = line
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      html += escaped + '\n';
       continue;
     }
 
@@ -149,6 +171,9 @@ function renderMarkdown(content: string): string {
   }
   if (inTable) {
     html += '</tbody>\n</table>\n</div>\n';
+  }
+  if (inCodeBlock) {
+    html += '</code></pre>\n';
   }
 
   return html;
