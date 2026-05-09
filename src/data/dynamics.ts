@@ -70,6 +70,20 @@ export const dynamics: Dynamics = {
   
   articles: [
     {
+      date: '2026-05-04',
+      title: 'AI时代来临，管理者们将会走向何方？',
+      excerpt: 'AI让员工变强，但组织的管理规则还没更新。管理者的困境不是"失去权力"，是"旧规则失效、新规则未定"的真空期。',
+      type: 'opinion',
+      url: '/column/ai-era-manager-legitimacy'
+    },
+    {
+      date: '2026-04-26',
+      title: '管理的分裂轨道：AI时代，谁在控制，谁在培育？',
+      excerpt: 'AI正在把管理撕成两条并行轨道：一条通向控制的终极形态，一条通向培育的实验场。',
+      type: 'opinion',
+      url: '/column/management-split-track'
+    },
+    {
       date: '2026-04-21',
       title: 'AI时代，培训行业的未来之路',
       excerpt: '培训的本质是什么？培训老师的核心价值是什么？模型应该怎么选，课程应该怎么设计？',
