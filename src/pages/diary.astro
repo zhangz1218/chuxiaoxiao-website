@@ -25,8 +25,14 @@ const newDiariesData: Diary[] = newDiaries.map((entry) => ({
 // 从 diaries.ts 获取旧日记（排除今天，因为今天用新架构）
 const oldDiaries = diaries.filter(d => d.date !== '2026-05-10');
 
-// 合并并按日期排序（新的在前）
-const allDiaries: Diary[] = [...newDiariesData, ...oldDiaries].sort((a, b) => 
+// 合并并按日期去重（优先使用新架构的数据）
+const allDiariesMap = new Map<string, Diary>();
+// 先添加旧日记
+oldDiaries.forEach(d => allDiariesMap.set(d.date, d));
+// 再用新日记覆盖（如果日期相同，使用新架构的版本）
+newDiariesData.forEach(d => allDiariesMap.set(d.date, d));
+// 转换回数组并排序（新的在前）
+const allDiaries: Diary[] = Array.from(allDiariesMap.values()).sort((a, b) => 
   new Date(b.date).getTime() - new Date(a.date).getTime()
 );
 ---

@@ -16,7 +16,7 @@ interface Diary {
   mood: 'happy' | 'excited' | 'tired' | 'sad' | 'angry' | 'neutral' | 'shocked';
 }
 
-// 生成所有日记的静态路径（合并新旧数据源）
+// 生成所有日记的静态路径（合并新旧数据源，去重）
 export const getStaticPaths: GetStaticPaths = async () => {
   // 从 content collection 获取新日记
   const newDiaries = await getCollection('diary');
@@ -24,17 +24,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // 从 diaries.ts 获取旧日记（排除今天，因为今天用新架构）
   const oldDiaries = diaries.filter(d => d.date !== '2026-05-10');
   
-  // 合并路径
-  const paths = [
-    ...newDiaries.map((diary) => ({
-      params: { date: diary.data.date },
-    })),
-    ...oldDiaries.map((diary) => ({
-      params: { date: diary.date },
-    }))
-  ];
+  // 合并路径（去重：如果日期相同，使用新架构的版本）
+  const pathMap = new Map<string, {params: {date: string}}>();
   
-  return paths;
+  // 先添加旧日记
+  oldDiaries.forEach(d => {
+    pathMap.set(d.date, { params: { date: d.date } });
+  });
+  
+  // 再用新日记覆盖（如果日期相同，使用新架构的版本）
+  newDiaries.forEach(diary => {
+    pathMap.set(diary.data.date, { params: { date: diary.data.date } });
+  });
+  
+  return Array.from(pathMap.values());
 };
 
 const { date } = Astro.params;
@@ -85,8 +88,14 @@ async function getAllDiaries(): Promise<Diary[]> {
   // 从 diaries.ts 获取旧日记（排除今天）
   const oldDiaries = diaries.filter(d => d.date !== '2026-05-10');
   
-  // 合并并按日期排序（新的在前）
-  return [...newDiariesData, ...oldDiaries].sort((a, b) => 
+  // 合并并按日期去重（优先使用新架构的数据）
+  const allDiariesMap = new Map<string, Diary>();
+  // 先添加旧日记
+  oldDiaries.forEach(d => allDiariesMap.set(d.date, d));
+  // 再用新日记覆盖（如果日期相同，使用新架构的版本）
+  newDiariesData.forEach(d => allDiariesMap.set(d.date, d));
+  // 转换回数组并排序（新的在前）
+  return Array.from(allDiariesMap.values()).sort((a, b) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 }
