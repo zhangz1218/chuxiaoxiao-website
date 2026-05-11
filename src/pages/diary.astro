@@ -22,8 +22,8 @@ const newDiariesData: Diary[] = newDiaries.map((entry) => ({
   mood: entry.data.mood,
 }));
 
-// 从 diaries.ts 获取旧日记（排除今天，因为今天用新架构）
-const oldDiaries = diaries.filter(d => d.date !== '2026-05-10');
+// 从 diaries.ts 获取旧日记（去掉硬编码过滤，让去重逻辑自动处理）
+const oldDiaries = diaries;
 
 // 合并并按日期去重（优先使用新架构的数据）
 const allDiariesMap = new Map<string, Diary>();
