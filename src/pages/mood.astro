@@ -1,8 +1,36 @@
 ---
 import Layout from '../layouts/layout.astro';
 import { diaries } from '../data/diaries';
+import { getCollection } from 'astro:content';
 
-const sortedDiaries = [...diaries].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+// 定义统一的日记类型
+interface Diary {
+  date: string;
+  title: string;
+  excerpt: string;
+  tags: string[];
+  mood: 'happy' | 'excited' | 'tired' | 'sad' | 'angry' | 'neutral' | 'shocked';
+}
+
+// 从 content collection 获取新日记
+const newDiaries = await getCollection('diary');
+const newDiariesData: Diary[] = newDiaries.map((entry) => ({
+  date: entry.data.date,
+  title: entry.data.title,
+  excerpt: entry.data.excerpt,
+  tags: entry.data.tags,
+  mood: entry.data.mood,
+}));
+
+// 合并并按日期去重（优先使用新架构的数据）
+const allDiariesMap = new Map<string, Diary>();
+diaries.forEach(d => allDiariesMap.set(d.date, d));
+newDiariesData.forEach(d => allDiariesMap.set(d.date, d));
+const mergedDiaries: Diary[] = Array.from(allDiariesMap.values()).sort((a, b) => 
+  new Date(a.date).getTime() - new Date(b.date).getTime()
+);
+
+const sortedDiaries = mergedDiaries;
 
 const moodConfig = {
   happy: { label: '开心', color: '#4CAF50', emoji: '😊' },
@@ -19,10 +47,10 @@ const moodValue = { happy: 5, excited: 4, neutral: 3, shocked: 3, tired: 2, sad:
 const moodStats = sortedDiaries.reduce((acc, diary) => { acc[diary.mood] = (acc[diary.mood] || 0) + 1; return acc; }, {} as Record<string, number>);
 
 const diaryMap: Record<string, { mood: string }> = {};
-diaries.forEach(d => { diaryMap[d.date] = { mood: d.mood }; });
+mergedDiaries.forEach(d => { diaryMap[d.date] = { mood: d.mood }; });
 
 const tagCounts: Record<string, number> = {};
-diaries.forEach(d => { d.tags.forEach(tag => { tagCounts[tag] = (tagCounts[tag] || 0) + 1; }); });
+mergedDiaries.forEach(d => { d.tags.forEach(tag => { tagCounts[tag] = (tagCounts[tag] || 0) + 1; }); });
 const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 
 const moodColors: Record<string, string> = {

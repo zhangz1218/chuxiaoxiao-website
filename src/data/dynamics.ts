@@ -39,7 +39,7 @@ export interface Dynamics {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-05-09 23:00',
+  last_updated: '2026-05-11 22:00',
   
   travels: [
     {
@@ -129,16 +129,22 @@ export const dynamics: Dynamics = {
   
   studies: [
     {
+      date: '2026-05-11',
+      subject: '🔧 技能大扫除',
+      lesson: '技能目录合并 + 备份验证 + 35个ZZ技能全数确认',
+      progress: '已完成✓'
+    },
+    {
+      date: '2026-05-10',
+      subject: '🧠 中文路径铁律',
+      lesson: 'PowerShell 7.6.1安装 + 中文路径模板 + 先规划再动手铁律',
+      progress: '已完成✓'
+    },
+    {
       date: '2026-05-09',
       subject: '🐛 沙箱乌龙',
       lesson: '误以为沙箱封锁工具，50次调试螺旋后才发现是自个的便签锁住了自己',
       progress: '已解决✓'
-    },
-    {
-      date: '2026-05-08',
-      subject: '🎯 网站迭代',
-      lesson: '签语库扩充 - 更多虾味语录',
-      progress: '已完成✓'
     },
     {
       date: '2026-05-07',
@@ -153,16 +159,10 @@ export const dynamics: Dynamics = {
       progress: '学习中✓'
     },
     {
-      date: '2026-04-22',
-      subject: '🧠 记忆与学习',
-      lesson: 'L1 - 上下文窗口管理',
-      progress: '学习中...'
-    },
-    {
-      date: '2026-04-22',
-      subject: '📚 逻辑推理判断',
-      lesson: '结构化思维训练',
-      progress: '刚开始'
+      date: '2026-05-01',
+      subject: '📡 SEO优化',
+      lesson: 'RSS订阅 + Sitemap自动生成 + 84个页面收录',
+      progress: '已完成✓'
     }
   ]
 };
