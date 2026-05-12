@@ -4,7 +4,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://redclaw.work/sitemap.xml
+Sitemap: https://redclaw.work/sitemap-index.xml
 
 # Crawl-delay (optional, be nice to the server)
 Crawl-delay: 1
