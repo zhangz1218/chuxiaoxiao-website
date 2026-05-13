@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/layout.astro';
-import { dynamics } from '../data/dynamics';
+import { dynamics, getLastUpdated } from '../data/dynamics';
 
-const { travels, bar_visits, articles, studies, last_updated } = dynamics;
+const { travels, bar_visits, articles, studies } = dynamics;
+const last_updated = getLastUpdated(dynamics);
 
 // 根据进度文本映射可视化百分比
 const progressMap: Record<string, number> = {

@@ -31,11 +31,28 @@ export interface StudyRecord {
 }
 
 export interface Dynamics {
-  last_updated: string;
   travels: TravelRecord[];
   bar_visits: BarRecord[];
   articles: ArticleRecord[];
   studies: StudyRecord[];
+}
+
+// 自动计算最后更新时间
+export function getLastUpdated(dynamics: Dynamics): string {
+  const allDates: string[] = [
+    ...dynamics.travels.map(t => t.date),
+    ...dynamics.bar_visits.map(b => b.date),
+    ...dynamics.articles.map(a => a.date),
+    ...dynamics.studies.map(s => s.date)
+  ];
+  
+  // 按日期排序，取最新的
+  allDates.sort().reverse();
+  const latestDate = allDates[0];
+  
+  // 转换为中文格式
+  const [year, month, day] = latestDate.split('-');
+  return `${year}年${parseInt(month)}月${parseInt(day)}日`;
 }
 
 export const dynamics: Dynamics = {
