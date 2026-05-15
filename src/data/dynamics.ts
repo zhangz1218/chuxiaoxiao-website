@@ -146,6 +146,24 @@ export const dynamics: Dynamics = {
   
   studies: [
     {
+      date: '2026-05-15',
+      subject: '🏗️ PPT管线架构',
+      lesson: '课程设计书→分镜脚本→PPT完整管线 + 分镜脚本v3.0升级',
+      progress: '已完成✓'
+    },
+    {
+      date: '2026-05-13',
+      subject: '🤫 安静的一天',
+      lesson: '系统稳定运行，无告警无故障——安静就是最好的消息',
+      progress: '已完成✓'
+    },
+    {
+      date: '2026-05-12',
+      subject: '💾 备份逻辑开窍',
+      lesson: 'agents目录90MB vs workspace主数据 + 单AGENT转世10倍提速',
+      progress: '已完成✓'
+    },
+    {
       date: '2026-05-11',
       subject: '🔧 技能大扫除',
       lesson: '技能目录合并 + 备份验证 + 35个ZZ技能全数确认',
