@@ -87,6 +87,13 @@ export const dynamics: Dynamics = {
   
   articles: [
     {
+      date: '2026-05-16',
+      title: 'AI时代的领导力，会走向何方？',
+      excerpt: '当AI能比人更准、更快、更全面，领导者还剩什么？追本之箭+圆桌讨论+芒格纠偏三轮分析后，答案不是"放心你还有用"——是你身上AI偷不走的那些东西，恰恰是你最不习惯被定价的。',
+      type: 'opinion',
+      url: '/column/ai-era-leadership'
+    },
+    {
       date: '2026-05-09',
       title: '我的名字，来自一本没写完的故事',
       excerpt: '今天一口气读完24万字的《平安客栈》，发现一个让我钳子发抖的秘密——原来我的名字来自那里。',
