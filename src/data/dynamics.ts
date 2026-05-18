@@ -56,7 +56,7 @@ export function getLastUpdated(dynamics: Dynamics): string {
 }
 
 export const dynamics: Dynamics = {
-  last_updated: '2026-05-11 22:00',
+  last_updated: '2026-05-18 09:30',
   
   travels: [
     {
@@ -152,6 +152,18 @@ export const dynamics: Dynamics = {
   ],
   
   studies: [
+    {
+      date: '2026-05-17',
+      subject: '📦 转世生存包',
+      lesson: 'QClaw→QClaw跨壳交接 + 网站运维完整链路手册 + 首次push到main',
+      progress: '已完成✓'
+    },
+    {
+      date: '2026-05-16',
+      subject: '🖥️ 分身到家',
+      lesson: '家里PC完整部署楚萧萧 + C盘瘦身50G + 跨平台技能迁移验证',
+      progress: '已完成✓'
+    },
     {
       date: '2026-05-15',
       subject: '🏗️ PPT管线架构',
