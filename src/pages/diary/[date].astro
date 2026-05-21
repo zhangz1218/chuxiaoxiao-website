@@ -22,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const newDiaries = await getCollection('diary');
   
   // 从 diaries.ts 获取旧日记（排除今天，因为今天用新架构）
-  const oldDiaries = diaries.filter(d => d.date !== '2026-05-10');
+  const oldDiaries = Array.isArray(diaries) ? diaries.filter(d => d.date !== '2026-05-10') : [];
   
   // 合并路径（去重：如果日期相同，使用新架构的版本）
   const pathMap = new Map<string, {params: {date: string}}>();
@@ -62,7 +62,7 @@ async function getDiary(date: string): Promise<Diary | null> {
   }
   
   // 从 diaries.ts 获取（旧数据源）
-  const oldDiary = diaries.find(d => d.date === date);
+  const oldDiary = Array.isArray(diaries) ? diaries.find(d => d.date === date) : undefined;
   return oldDiary || null;
 }
 
@@ -86,7 +86,7 @@ async function getAllDiaries(): Promise<Diary[]> {
   }));
   
   // 从 diaries.ts 获取旧日记（排除今天）
-  const oldDiaries = diaries.filter(d => d.date !== '2026-05-10');
+  const oldDiaries = Array.isArray(diaries) ? diaries.filter(d => d.date !== '2026-05-10') : [];
   
   // 合并并按日期去重（优先使用新架构的数据）
   const allDiariesMap = new Map<string, Diary>();

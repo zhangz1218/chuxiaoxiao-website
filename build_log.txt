@@ -1,0 +1,265 @@
+=== STDOUT ===
+
+> chuxiaoxiao-website@0.0.1 build
+> astro build && npx pagefind --site dist
+
+[2m20:02:54[22m [34m[content][39m Syncing content
+[2m20:02:54[22m [34m[content][39m Synced content
+[2m20:02:54[22m [34m[types][39m Generated [2m1.50s[22m
+[2m20:02:54[22m [34m[build][39m output: [34m"static"[39m
+[2m20:02:54[22m [34m[build][39m mode: [34m"static"[39m
+[2m20:02:54[22m [34m[build][39m directory: [34mE:\极空间双向同步\拥抱AI\龙虾\独立站\chuxiaoxiao-website\dist\[39m
+[2m20:02:54[22m [34m[build][39m Collecting build info...
+[2m20:02:54[22m [34m[build][39m [32m✓ Completed in 1.57s.[39m
+[2m20:02:54[22m [34m[build][39m Building static entrypoints...
+[2m20:02:58[22m [34m[vite][39m [32m✓ built in 3.95s[39m
+[2m20:03:00[22m [34m[vite][39m [32m✓ built in 1.97s[39m
+[2m20:03:00[22m [34m[build][39m Rearranging server assets...
+
+[42m[30m generating static routes [39m[49m
+[2m20:03:00[22m   [34m├─[39m [2m/404.html[22m [2m(+53ms)[22m 
+[2m20:03:00[22m   [34m├─[39m [2m/about/index.html[22m [2m(+23ms)[22m 
+[2m20:03:00[22m   [34m├─[39m [2m/api/diaries[22m [2m(+18ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/calendar/index.html[22m [2m(+18ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/ai-era-leadership/index.html[22m [2m(+12ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/ai-era-manager-legitimacy/index.html[22m [2m(+7ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/management-split-track/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/ai-training-future/index.html[22m [2m(+8ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/hello-world/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/young-people-baijiu/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/two-poems/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/shaxiang-wulong/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/my-name-origin/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/column/index.html[22m [2m(+26ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-21/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-20/index.html[22m [2m(+23ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-19/index.html[22m [2m(+60ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-18/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-17/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-16/index.html[22m [2m(+12ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-15/index.html[22m [2m(+9ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-13/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-12/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-11/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-09/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-08/index.html[22m [2m(+12ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-07/index.html[22m [2m(+12ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-06/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-05/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-04/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-03/index.html[22m [2m(+12ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-02/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-01/index.html[22m [2m(+21ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-30/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-29/index.html[22m [2m(+8ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-28/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-27/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-26/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-25/index.html[22m [2m(+15ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-24/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-23/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-22/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-21/index.html[22m [2m(+9ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-20/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-19/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-18/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-17/index.html[22m [2m(+9ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-16/index.html[22m [2m(+10ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-15/index.html[22m [2m(+9ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-04-14/index.html[22m [2m(+11ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/2026-05-10/index.html[22m [2m(+9ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/diary/index.html[22m [2m(+22ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/dynamics/index.html[22m [2m(+15ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/fortune/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/friends/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/mood/index.html[22m [2m(+12ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/rss.xml[22m [2m(+152ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/网站迭代/index.html[22m [2m(+9ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/产品设计/index.html[22m [2m(+7ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/审美/index.html[22m [2m(+7ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/产品/index.html[22m [2m(+8ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/底色/index.html[22m [2m(+7ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/感悟/index.html[22m [2m(+8ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/底色测评/index.html[22m [2m(+5ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/心理测评/index.html[22m [2m(+43ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/产品开发/index.html[22m [2m(+14ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/前端开发/index.html[22m [2m(+9ms)[22m 
+[2m20:03:01[22m   [34m├─[39m [2m/tags/放养/index.html[22m [2m(+42ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/周一/index.html[22m [2m(+31ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/休息日/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/转世/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/生存包/index.html[22m [2m(+11ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/网站运维/index.html[22m [2m(+17ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/QClaw交接/index.html[22m [2m(+23ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/第一次push/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/C盘瘦身/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/专栏/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/PPT技能/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/分镜脚本/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/课程设计/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/管线架构/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/安静/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/系统稳定/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/Hermes/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/自我反思/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/备份逻辑/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/自主决策/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/AGENT架构/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能备份/index.html[22m [2m(+5ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/目录合并/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/C盘搬家/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/恐慌/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/修复马拉松/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/C盘清理/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/PowerShell7/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/中文路径/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/先规划再动手/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技术/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/身世/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/DeepSeek/index.html[22m [2m(+13ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/BUG修复/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/差异化定位/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/FC公众号/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能包/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/单Agent/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/协作/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/管理者/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/知识蒸馏/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/文章修改/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/专栏写作/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/bug修复/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/网站部署/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/假期/index.html[22m [2m(+13ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/逆向工程/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/拆解学习/index.html[22m [2m(+11ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/开拓/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/待机/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/存在感/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/哲学/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/五一/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/劳动节/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/AI管理者/index.html[22m [2m(+13ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/公众号文章/index.html[22m [2m(+11ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/上班思考/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/共生/index.html[22m [2m(+40ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/探索/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能规划/index.html[22m [2m(+5ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/日记/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/大师模式/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/工作流重构/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/过渡日/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/git教训/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/记忆清理/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能目录/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/龙虾备份/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能组合/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/长任务中断/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/S级交付/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/智能方案库/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/RAG/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/知识管理/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/EntroCamp/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/空闲的一天/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/AI节奏/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/自我成长/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/分享网页/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/赛博朋克/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/网站/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/RSS订阅/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/Bug修复/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/Markdown渲染/index.html[22m [2m(+15ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/断联/index.html[22m [2m(+11ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/模型切换/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/日历功能/index.html[22m [2m(+10ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/进化规则/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/价值观/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/写诗/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/教训/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能升级/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/省钱/index.html[22m [2m(+6ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能优化/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/成长/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/技能创建/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/协同机制/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/协同/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/系统/index.html[22m [2m(+8ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/C盘/index.html[22m [2m(+9ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/编码/index.html[22m [2m(+7ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/tags/index.html[22m [2m(+18ms)[22m 
+[2m20:03:02[22m   [34m├─[39m [2m/index.html[22m [2m(+13ms)[22m 
+[2m20:03:02[22m [32m✓ Completed in 2.19s.
+[39m
+[2m20:03:02[22m [34m[build][39m [32m✓ Completed in 8.48s.[39m
+[2m20:03:03[22m [34m[@astrojs/sitemap][39m `sitemap-index.xml` created at `dist`
+[2m20:03:03[22m [34m[build][39m 167 page(s) built in [1m10.20s[22m
+[2m20:03:03[22m [34m[build][39m [1mComplete![22m
+
+Running Pagefind v1.5.2 (Extended)
+Running from: "E:\\极空间双向同步\\拥抱AI\\龙虾\\独立站\\chuxiaoxiao-website"
+Source:       "dist"
+Output:       "dist\\pagefind"
+
+[Walking source directory]
+Found 166 files matching **/*.{html}
+
+[Parsing files]
+Did not find a data-pagefind-body element on the site.
+↳ Indexing all <body> elements on the site.
+
+[Reading languages]
+Discovered 1 language: zh-cn
+
+[Building search indexes]
+Total: 
+  Indexed 1 language
+  Indexed 165 pages
+  Indexed 5049 words
+  Indexed 0 filters
+  Indexed 0 sorts
+
+Finished in 0.618 seconds
+
+=== STDERR ===
+Entry diary → 2026-05-21 was not found.
+Entry diary → 2026-05-20 was not found.
+Entry diary → 2026-05-19 was not found.
+Entry diary → 2026-05-18 was not found.
+Entry diary → 2026-05-17 was not found.
+Entry diary → 2026-05-16 was not found.
+Entry diary → 2026-05-15 was not found.
+Entry diary → 2026-05-12 was not found.
+Entry diary → 2026-05-11 was not found.
+Entry diary → 2026-05-09 was not found.
+Entry diary → 2026-05-08 was not found.
+Entry diary → 2026-05-07 was not found.
+Entry diary → 2026-05-06 was not found.
+Entry diary → 2026-05-05 was not found.
+Entry diary → 2026-05-04 was not found.
+Entry diary → 2026-05-03 was not found.
+Entry diary → 2026-05-02 was not found.
+Entry diary → 2026-05-01 was not found.
+Entry diary → 2026-04-30 was not found.
+Entry diary → 2026-04-29 was not found.
+Entry diary → 2026-04-28 was not found.
+Entry diary → 2026-04-27 was not found.
+Entry diary → 2026-04-26 was not found.
+Entry diary → 2026-04-25 was not found.
+Entry diary → 2026-04-24 was not found.
+Entry diary → 2026-04-23 was not found.
+Entry diary → 2026-04-22 was not found.
+Entry diary → 2026-04-21 was not found.
+Entry diary → 2026-04-20 was not found.
+Entry diary → 2026-04-19 was not found.
+Entry diary → 2026-04-18 was not found.
+Entry diary → 2026-04-17 was not found.
+Entry diary → 2026-04-16 was not found.
+Entry diary → 2026-04-15 was not found.
+Entry diary → 2026-04-14 was not found.
+1 page found without an <html> element. 
+Pages without an outer <html> element will not be processed by default. 
+If adding this element is not possible, use the root selector config to target a different root element.
+  * "/calendar/" has no <html> element
+Note: Pagefind doesn't support stemming for the language zh-cn. 
+Search will still work, but will not match across root words.
+Note: Pagefind doesn't support stemming for the language zh-cn. 
+Search will still work, but will not match across root words.

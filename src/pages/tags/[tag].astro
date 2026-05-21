@@ -7,8 +7,11 @@ import type { GetStaticPaths } from 'astro';
 export const getStaticPaths: GetStaticPaths = async () => {
   // 统计所有标签
   const allTags = new Set<string>();
+  if (!diaries || !Array.isArray(diaries)) {
+    return [];
+  }
   diaries.forEach(diary => {
-    diary.tags.forEach(tag => allTags.add(tag));
+    if (diary?.tags) diary.tags.forEach(tag => allTags.add(tag));
   });
 
   // 注意：params中的tag不需要encodeURIComponent，Astro会自动处理
@@ -20,9 +23,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const { tag } = Astro.params;
 
 // 筛选包含该标签的日记
-const filteredDiaries = diaries.filter(diary =>
-  diary.tags.includes(tag || '')
-);
+const filteredDiaries = Array.isArray(diaries)
+  ? diaries.filter(diary =>
+      diary.tags.includes(tag || '')
+    )
+  : [];
 
 // 统计该标签的数量
 const tagCount = filteredDiaries.length;
