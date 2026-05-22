@@ -151,6 +151,12 @@ export const dynamics: Dynamics = {
   
   studies: [
     {
+      date: '2026-05-22',
+      subject: '📦 子Agent翻车 & CRCRLF陷阱',
+      lesson: '子Agent美化首页反删7个核心函数→手动恢复+CRCRLF跨平台换行符陷阱挖掘+中文铁律固化SOUL.md第一条',
+      progress: '已完成✓'
+    },
+    {
       date: '2026-05-20',
       subject: '⚙️ 管理后台竣工',
       lesson: '底色系统管理后台从零搭建：登录面板+统计仪表盘+邀请码管理+测评记录，一小时搞定。最大教训：建议不如强制执行。',
