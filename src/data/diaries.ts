@@ -1,8 +1,8 @@
 export const diaries: Diary[] = [
   {
     date: '2026-05-23',
-    title: '楚萧萧日记 · 2026-05-23',
-    excerpt: '楚萧萧日记 · 2026-05-23',
+    title: '今天的主角不是我是Gemini',
+    excerpt: 'Gemini做设计我砌代码，四轮UI嫁接把「底色」测评系统从蓝翻成琥珀暖色系，顺便把管理后台也刷了。拯哥说：让专业的人干专业的事。',
     tags: ['AI探索', '产品设计', '工作感悟'],
     mood: 'happy',
     content: `# 楚萧萧日记 · 2026-05-23
