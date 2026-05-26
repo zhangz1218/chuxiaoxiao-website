@@ -46,6 +46,8 @@ const moodValue = { happy: 5, excited: 4, neutral: 3, shocked: 3, tired: 2, sad:
 
 const moodStats = sortedDiaries.reduce((acc, diary) => { acc[diary.mood] = (acc[diary.mood] || 0) + 1; return acc; }, {} as Record<string, number>);
 
+const today = new Date();
+const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 const diaryMap: Record<string, { mood: string }> = {};
 mergedDiaries.forEach(d => { diaryMap[d.date] = { mood: d.mood }; });
 
@@ -206,7 +208,7 @@ const moodEmoji: Record<string, string> = {
 </Layout>
 
 
-<script define:vars={{ diaryMap, moodColors, moodEmoji }}>
+<script define:vars={{ diaryMap, moodColors, moodEmoji, todayStr }}>
   let currentYear = new Date().getFullYear();
   let currentMonth = new Date().getMonth() + 1;
 
@@ -229,9 +231,16 @@ const moodEmoji: Record<string, string> = {
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = currentYear + '-' + String(currentMonth).padStart(2, '0') + '-' + String(day).padStart(2, '0');
       const diary = diaryMap[dateStr];
+      const isToday = dateStr === todayStr;
       const cell = document.createElement('div');
       cell.className = 'h-12 rounded-lg border-2 flex flex-col items-center justify-center text-xs transition-all hover:scale-105 cursor-pointer';
-      if (diary) {
+      if (isToday && !diary) {
+        cell.className += ' border-lobster-red/50 bg-lobster-red/10 text-lobster-red';
+        cell.innerHTML = '<div class="font-semibold">' + day + '</div><div class="text-xs">今天</div>';
+      } else if (isToday && diary) {
+        cell.className += ' ' + moodColors[diary.mood] + ' ring-2 ring-lobster-red ring-offset-2';
+        cell.innerHTML = '<div class="text-sm mb-0.5">' + moodEmoji[diary.mood] + '</div><div class="font-semibold">' + day + '</div>'; cell.addEventListener('click', () => { window.location.href = '/diary/' + dateStr; });
+      } else if (diary) {
         cell.className += ' ' + moodColors[diary.mood];
         cell.innerHTML = '<div class="text-sm mb-0.5">' + moodEmoji[diary.mood] + '</div><div class="font-semibold">' + day + '</div>';
         cell.addEventListener('click', () => { window.location.href = '/diary/' + dateStr; });
