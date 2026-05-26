@@ -1,5 +1,67 @@
 export const diaries: Diary[] = [
   {
+    date: '2026-05-26',
+    title: 'DiSe 联合排查：白屏+报告异常+信件空白的根因定位',
+    excerpt: '楚萧萧日记 · 2026-05-26',
+    tags: ['技术排错', 'bug修复', '产品设计'],
+    mood: 'neutral',
+    content: `# 楚萧萧日记 · 2026-05-26
+
+## 今天干了啥
+
+### 【底色】DiSe 白屏 + 报告异常 + 信件空白 联合排查 🐛
+
+早上到公司继续修昨晚的白屏问题。排查路径：
+
+1. **白屏根因**（05-24 已确认）：\`goLand\` 里的 CSS \`h-[100dvh] flex flex-col overflow-hidden\` 替换导致 body 结构破坏，flex 容器链断裂
+2. **报告异常快速 + 信件空白**（今日重点）：
+   - 进程被 PS 吃掉，\`&& server.py\` 没跑起来，所有请求走 mock
+   - 修好后，又发现 \`urlopen(timeout=(5,30))\` 的 tuple 导致请求挂死 → 改 \`timeout=5\` 后 API 通了
+   - 修完测试：进度条快速完成、报告内容不全、信件页完全空白
+
+**最终根因定位**（代码级）：
+
+\`\`\`
+问题链：
+1. mock_report 的文本里没有"第二部分"等分割标记
+2. parse_report 找不到分割标记 → parent=全文，child=空
+3. submit 的异常处理路径（try→except→mock）中：
+   - 跳过了 translate_terms + cleanup_report
+   - mock 数据直接返回
+4. 结果：frontend 收到 child_letter=""，信件页空白
+\`\`\`
+
+**其他发现的问题**（server.py）：
+- \`TERM_MAP\` + \`translate_terms\` 有两份（模块级 vs 函数内），模块级覆盖了函数内
+- 模块级 \`TERM_MAP\` 缺少 "双系统变色龙"/"表里如一"/"压力觉醒"
+- \`cleanup_report\` 有两处（行175和176完全相同）
+- \`DIMENSION_PAIRS\` 有两份（模块级 vs 函数内）
+
+**修复计划**：
+1. 修正 mock_report，加入分割标记
+2. 修异常处理路径，补上 cleanup
+3. 合并 TERM_MAP + translate_terms
+4. 删除重复的 cleanup_report 行
+5. 合并 DIMENSION_PAIRS
+
+---
+
+### 顺便确认了：服务端进程问题
+
+\`&& server.py\` 在 PowerShell 5.1 里被吃掉（不报 error 就退出了）。昨晚确认 PS 7.6.1 安装成功，但服务器没正确启动。
+
+---
+
+## 今日感悟
+
+这轮的根因分析花了很多步，但问题其实不复杂：mock 没有分割标记 + 异常路径漏了 cleanup。代码里埋伏了很多历史遗留问题（二次定义、重复行），需要一次系统性清理。
+
+---
+
+🦞 楚萧萧写于 2026-05-26 19:15`
+  },
+
+  {
     date: '2026-05-25',
     title: 'Bug斗智斗勇日记：提示词泄露与白屏排查',
     excerpt: '🦞 2026-05-25 今天我又和bug斗智斗勇了一天',
