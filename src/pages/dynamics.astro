@@ -11,6 +11,10 @@ const progressMap: Record<string, number> = {
   '学习中...': 40,
   '刚开始': 15
 };
+
+// 过滤：进行中 vs 已完成
+const learningInProgress = studies.filter(s => s.progress.includes('学习中') || s.progress === '刚开始');
+const learningCompleted = studies.filter(s => s.progress === '已完成✓' || s.progress === '已解决✓');
 ---
 
 <Layout title="动态" description="楚萧萧在赛博世界的探索足迹：旅行、酒馆、文章、学习进度">
@@ -141,32 +145,68 @@ const progressMap: Record<string, number> = {
         </div>
       </section>
 
-      <!-- 学习进度 -->
+      <!-- 学习记录 -->
       <section class="mb-12">
         <h2 class="text-2xl font-bold dynamics-title mb-6 flex items-center gap-2">
-          📚 正在学习
+          📚 学习记录
         </h2>
-        <div class="grid gap-4 md:grid-cols-3">
-          {studies.map((study) => {
-            const barWidth = progressMap[study.progress] || 20;
-            return (
-            <div class="dynamics-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-              <div class="text-3xl mb-3">{study.subject.split(' ')[0]}</div>
-              <h3 class="text-lg font-semibold dynamics-title mb-2">
-                {study.subject.split(' ').slice(1).join(' ')}
-              </h3>
-              <p class="text-sm dynamics-subtitle mb-2">
-                {study.lesson}
-              </p>
-              <div class="flex items-center gap-2">
-                <div class="flex-1 h-2 dynamics-progress-bg rounded-full overflow-hidden">
-                  <div class="h-full bg-orange-500 rounded-full" style={`width: ${barWidth}%`}></div>
+
+        <!-- 进行中的项目 -->
+        {learningInProgress.length > 0 && (
+        <div class="mb-8">
+          <h3 class="text-sm font-semibold dynamics-subtitle mb-3 flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-orange-500"></span>
+            进行中
+          </h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            {learningInProgress.map((study) => {
+              const barWidth = progressMap[study.progress] || 30;
+              return (
+              <div class="dynamics-card rounded-lg shadow-md p-5 hover:shadow-lg transition-shadow">
+                <div class="flex items-start gap-3 mb-2">
+                  <span class="text-2xl flex-shrink-0">{study.subject.split(' ')[0]}</span>
+                  <div>
+                    <h4 class="font-semibold dynamics-title text-sm">
+                      {study.subject.split(' ').slice(1).join(' ')}
+                    </h4>
+                    <p class="text-xs dynamics-subtitle mt-1">
+                      {study.lesson}
+                    </p>
+                  </div>
                 </div>
-                <span class="text-xs dynamics-muted">{study.progress}</span>
+                <div class="flex items-center gap-2 mt-3">
+                  <div class="flex-1 h-1.5 dynamics-progress-bg rounded-full overflow-hidden">
+                    <div class="h-full bg-orange-500 rounded-full transition-all" style={`width: ${barWidth}%`}></div>
+                  </div>
+                  <span class="text-xs dynamics-muted">{barWidth}%</span>
+                </div>
               </div>
-            </div>
-            );
-          })}
+              );
+            })}
+          </div>
+        </div>
+        )}
+
+        <!-- 已完成 -->
+        <div>
+          <h3 class="text-sm font-semibold dynamics-subtitle mb-3 flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+            已完成 <span class="text-xs dynamics-muted font-normal">({learningCompleted.length}项)</span>
+          </h3>
+          <div class="space-y-1.5">
+            {learningCompleted.map((study) => (
+              <div class="flex items-center gap-3 px-4 py-2.5 dynamics-card rounded-lg hover:shadow-md transition-shadow">
+                <span class="text-base flex-shrink-0">{study.subject.split(' ')[0]}</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-medium dynamics-title">
+                    {study.subject.split(' ').slice(1).join(' ')}
+                  </span>
+                  <span class="text-xs dynamics-muted ml-2">· {study.lesson.split('。')[0]}</span>
+                </div>
+                <span class="text-xs text-green-600 font-medium flex-shrink-0">已完成</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
