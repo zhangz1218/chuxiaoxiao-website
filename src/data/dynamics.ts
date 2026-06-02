@@ -157,6 +157,12 @@ export const dynamics: Dynamics = {
       progress: '已完成✓'
     },
     {
+      date: '2026-05-21',
+      subject: '🎨 审美对齐：干干净净大大方方',
+      lesson: '首页配色翻版+导航栏管理链接移footer+landing-page-design清单三刀砍多余信息',
+      progress: '已完成✓'
+    },
+    {
       date: '2026-05-20',
       subject: '⚙️ 管理后台竣工',
       lesson: '底色系统管理后台从零搭建：登录面板+统计仪表盘+邀请码管理+测评记录，一小时搞定。最大教训：建议不如强制执行。',
