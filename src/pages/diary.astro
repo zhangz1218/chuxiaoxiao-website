@@ -50,13 +50,24 @@ const allDiaries: Diary[] = Array.from(allDiariesMap.values()).sort((a, b) =>
           有人味儿，不是工作日志
         </p>
       </div>
-      
+
+      <!-- 标签筛选 -->
+      <div class="max-w-3xl mx-auto mb-8">
+        <div id="tag-filter" class="flex flex-wrap gap-2 justify-center">
+          <button class="tag-btn active px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all" data-tag="all">全部</button>
+          {[...new Set(allDiaries.flatMap(d => d.tags))].sort().map(tag => (
+            <button class={`tag-btn px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all`} data-tag={tag}>#{tag}</button>
+          ))}
+        </div>
+      </div>
+
       <!-- 日记列表 -->
       <div class="grid gap-6 md:gap-8 max-w-3xl mx-auto">
         {allDiaries.map((diary, index) => (
           <a 
             href={`/diary/${diary.date}`}
-            class="card p-5 md:p-8 group animate-fade-in-up block cursor-pointer" 
+            class="diary-entry card p-5 md:p-8 group animate-fade-in-up block cursor-pointer" 
+            data-tags={diary.tags.join(',')}
             style={`animation-delay: ${index * 0.1}s; border-left: 4px solid ${moodColor[diary.mood]}`}
           >
             <div class="flex items-start justify-between gap-4 mb-3 md:mb-4">
@@ -124,4 +135,57 @@ const allDiaries: Diary[] = Array.from(allDiariesMap.values()).sort((a, b) =>
     animation: fadeInUp 0.6s ease-out forwards;
     opacity: 0;
   }
+
+  .tag-btn {
+    background: var(--color-card);
+    color: var(--color-text);
+    opacity: 0.6;
+    border: 1px solid var(--color-border);
+  }
+
+  .tag-btn:hover {
+    opacity: 1;
+    border-color: #E63946;
+    color: #E63946;
+  }
+
+  .tag-btn.active {
+    background: #E63946;
+    color: white;
+    opacity: 1;
+    border-color: #E63946;
+  }
+
+  [data-theme="dark"] .tag-btn.active {
+    background: #F4A261;
+    border-color: #F4A261;
+    color: #0F0F0F;
+  }
+
+  .diary-entry.filtered-out {
+    display: none;
+  }
 </style>
+
+<script>
+  const tagBtns = document.querySelectorAll('.tag-btn');
+  const diaryEntries = document.querySelectorAll('.diary-entry');
+
+  tagBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = (btn as HTMLElement).dataset.tag;
+      // 更新按钮状态
+      tagBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // 筛选日记
+      diaryEntries.forEach(entry => {
+        const entryTags = (entry as HTMLElement).dataset.tags?.split(',') || [];
+        if (tag === 'all' || entryTags.includes(tag!)) {
+          entry.classList.remove('filtered-out');
+        } else {
+          entry.classList.add('filtered-out');
+        }
+      });
+    });
+  });
+</script>
