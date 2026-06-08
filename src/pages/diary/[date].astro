@@ -107,36 +107,22 @@ const currentIndex = allDiaries.findIndex(d => d.date === date);
 const prevDiary = currentIndex < allDiaries.length - 1 ? allDiaries[currentIndex + 1] : null;
 const nextDiary = currentIndex > 0 ? allDiaries[currentIndex - 1] : null;
 
-// 简单的Markdown渲染函数
+// 使用 marked 库渲染 Markdown
+import { marked } from 'marked';
+
+// 配置 marked：跳过 H1（文章标题已在页面 header 显示），H1 降为 H2
+const renderer = new marked.Renderer();
+const originalHeading = renderer.heading;
+renderer.heading = function({ text, depth }: { text: string; depth: number }) {
+  // H1 降级为 H2，避免与页面标题重复
+  const adjustedDepth = depth === 1 ? 2 : depth;
+  return `<h${adjustedDepth}>${text}</h${adjustedDepth}>`;
+};
+
+marked.setOptions({ renderer, gfm: true, breaks: true });
+
 function renderMarkdown(text: string): string {
-  return text
-    // 标题
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    // 加粗
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // 斜体
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // 代码
-    .replace(/`(.+?)`/g, '<code>$1</code>')
-    // 分割线
-    .replace(/^---$/gm, '<hr />')
-    // 引用
-    .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-    // 列表
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
-    // 段落
-    .split('\n\n').map(p => {
-      if (p.trim() &&
-          !p.startsWith('<h') &&
-          !p.startsWith('<hr') &&
-          !p.startsWith('<blockquote') &&
-          !p.startsWith('<li')) {
-        return `<p>${p.replace(/\n/g, '<br/>')}</p>`;
-      }
-      return p;
-    }).join('\n');
+  return marked.parse(text) as string;
 }
 ---
 
