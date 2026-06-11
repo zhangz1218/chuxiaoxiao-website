@@ -109,6 +109,7 @@ const nextDiary = currentIndex > 0 ? allDiaries[currentIndex - 1] : null;
 
 // 使用 marked 库渲染 Markdown
 import { marked } from 'marked';
+import hljs from 'highlight.js';
 
 // 配置 marked：跳过 H1（文章标题已在页面 header 显示），H1 降为 H2
 const renderer = new marked.Renderer();
@@ -119,7 +120,17 @@ renderer.heading = function({ text, depth }: { text: string; depth: number }) {
   return `<h${adjustedDepth}>${text}</h${adjustedDepth}>`;
 };
 
-marked.setOptions({ renderer, gfm: true, breaks: true });
+marked.setOptions({
+  renderer,
+  gfm: true,
+  breaks: true,
+  highlight: function(code: string, lang: string) {
+    if (lang && hljs.getLanguage(lang)) {
+      return hljs.highlight(code, { language: lang }).value;
+    }
+    return hljs.highlightAuto(code).value;
+  }
+});
 
 function renderMarkdown(text: string): string {
   return marked.parse(text) as string;
