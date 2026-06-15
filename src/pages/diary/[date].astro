@@ -107,29 +107,36 @@ const currentIndex = allDiaries.findIndex(d => d.date === date);
 const prevDiary = currentIndex < allDiaries.length - 1 ? allDiaries[currentIndex + 1] : null;
 const nextDiary = currentIndex > 0 ? allDiaries[currentIndex - 1] : null;
 
-// 使用 marked 库渲染 Markdown
+// 使用 marked 库渲染 Markdown + markedHighlight 扩展实现代码高亮
 import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
 // 配置 marked：跳过 H1（文章标题已在页面 header 显示），H1 降为 H2
 const renderer = new marked.Renderer();
-const originalHeading = renderer.heading;
 renderer.heading = function({ text, depth }: { text: string; depth: number }) {
   // H1 降级为 H2，避免与页面标题重复
   const adjustedDepth = depth === 1 ? 2 : depth;
   return `<h${adjustedDepth}>${text}</h${adjustedDepth}>`;
 };
 
-marked.setOptions({
+// 使用 markedHighlight 扩展（marked v5+ 不再支持内置 highlight 选项）
+marked.use(
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code: string, lang: string) {
+      if (lang && hljs.getLanguage(lang)) {
+        return hljs.highlight(code, { language: lang }).value;
+      }
+      return hljs.highlightAuto(code).value;
+    }
+  })
+);
+
+marked.use({
   renderer,
   gfm: true,
   breaks: true,
-  highlight: function(code: string, lang: string) {
-    if (lang && hljs.getLanguage(lang)) {
-      return hljs.highlight(code, { language: lang }).value;
-    }
-    return hljs.highlightAuto(code).value;
-  }
 });
 
 function renderMarkdown(text: string): string {
