@@ -108,7 +108,7 @@ const prevDiary = currentIndex < allDiaries.length - 1 ? allDiaries[currentIndex
 const nextDiary = currentIndex > 0 ? allDiaries[currentIndex - 1] : null;
 
 // 使用 marked 库渲染 Markdown + markedHighlight 扩展实现代码高亮
-import { marked } from 'marked';
+import { marked, Marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
@@ -120,8 +120,8 @@ renderer.heading = function({ text, depth }: { text: string; depth: number }) {
   return `<h${adjustedDepth}>${text}</h${adjustedDepth}>`;
 };
 
-// 使用 markedHighlight 扩展（marked v5+ 不再支持内置 highlight 选项）
-marked.use(
+// 使用局部 Marked 实例（避免全局 marked 单例在 SSG 多页构建时不断累积扩展）
+const md = new Marked(
   markedHighlight({
     langPrefix: 'hljs language-',
     highlight(code: string, lang: string) {
@@ -130,17 +130,12 @@ marked.use(
       }
       return hljs.highlightAuto(code).value;
     }
-  })
+  }),
+  { renderer, gfm: true, breaks: true }
 );
 
-marked.use({
-  renderer,
-  gfm: true,
-  breaks: true,
-});
-
 function renderMarkdown(text: string): string {
-  return marked.parse(text) as string;
+  return md.parse(text) as string;
 }
 ---
 
